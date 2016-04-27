@@ -32,6 +32,7 @@ public class OnFragment extends Fragment{
 
     private FragmentActivity myContext;
     ArrayList<SectionDataModel> allSampleData;
+
     public OnFragment() {
         // Required empty public constructor
     }

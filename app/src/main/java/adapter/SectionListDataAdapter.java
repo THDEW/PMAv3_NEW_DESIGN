@@ -14,6 +14,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.senoir.newpmatry1.R;
+
+import activity.Home;
+import activity.LocationFragment;
 import model.SingleItemModel;
 
 import java.util.ArrayList;
@@ -42,12 +45,12 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
 
         holder.tvTitle.setText(singleItem.getName());
 
-        if(singleItem.getUrl().equals("a2")){
-            holder.itemImage.setBackgroundResource(R.drawable.ic_brightness_7_black_36dp);
-        }
+        //if(singleItem.getUrl().equals("a2")){
+        holder.itemImage.setBackgroundResource(R.drawable.ic_brightness_7_black_36dp);
+        /*}
         else{
             holder.itemImage.setBackgroundResource(R.drawable.ic_action_search);
-        }
+        }*/
        /* Glide.with(mContext)
                 .load(feedItem.getImageURL())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -67,6 +70,9 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
 
         protected ImageView itemImage;
 
+        boolean selected = false;
+
+        int index;
 
         public SingleItemRowHolder(View view) {
             super(view);
@@ -77,10 +83,23 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-
-                    Toast.makeText(v.getContext(), tvTitle.getText(), Toast.LENGTH_SHORT).show();
-
+                    if(Home.page == 0) {
+                        Toast.makeText(v.getContext(), tvTitle.getText(), Toast.LENGTH_SHORT).show();
+                    } else if (Home.page == 1){
+                        if (selected) {
+                            LocationFragment.data.set(index, -1d);
+                            selected = false;
+                            itemImage.setAlpha(1f);
+                            //itemImage.setBackgroundResource(R.drawable.ic_brightness_7_black_36dp);
+                        } else {
+                            index = LocationFragment.data.size();
+                            LocationFragment.data.add((index+1) * 2d);
+                            LocationFragment.data2.add(0d);
+                            itemImage.setAlpha(0.2f);
+                            selected = true;
+                            //itemImage.setBackgroundResource(R.drawable.ic_action_search);
+                        }
+                    }
                 }
             });
 

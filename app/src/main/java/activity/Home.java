@@ -22,8 +22,8 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
     private Toolbar mToolbar;
     private FragmentDrawer drawerFragment;
 
-    public OnFragment temp1 = new OnFragment();
-    public OffFragment temp2 = new OffFragment();
+    public static int page = 0;
+
     OnOffFragment fragment = null;
     LocationFragment fragment0 = null;
     StatisticFragment fragment1 = null;
@@ -71,10 +71,13 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
 
     @Override
     public void onDrawerItemSelected(View view, int position) {
+
         if(position == 0){
             fragment.update(this);
+        } else if(position != 1) {
+            LocationFragment.data.clear();
         }
-            displayView(position);
+        displayView(position);
     }
     private void displayView(int position) {
 
@@ -85,14 +88,17 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
             case 0:
                 fragmentTransaction.replace(R.id.container_body, fragment);
                 title = getString(R.string.title_home);
+                page = 0;
                 break;
             case 1:
                 fragmentTransaction.replace(R.id.container_body, fragment0);
                 title = getString(R.string.title_Location);
+                page = 1;
                 break;
             case 2:
                 fragmentTransaction.replace(R.id.container_body, fragment1);
                 title = getString(R.string.title_statistic);
+                page = 2;
                 break;
             default:
                 break;
