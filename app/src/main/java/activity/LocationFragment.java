@@ -1,8 +1,5 @@
 package activity;
 
-/**
- * Created by my131 on 26/4/2559.
- */
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,8 +9,10 @@ import android.view.ViewGroup;
 
 import com.example.senoir.newpmatry1.R;
 
-
-public class LocationFragment extends Fragment {
+/**
+ * Created by my131 on 26/4/2559.
+ */
+public class LocationFragment extends Fragment{
 
     public LocationFragment() {
         // Required empty public constructor
@@ -36,8 +35,7 @@ public class LocationFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Activity activity) {super.onAttach(activity);
     }
 
     @Override
@@ -45,4 +43,3 @@ public class LocationFragment extends Fragment {
         super.onDetach();
     }
 }
-

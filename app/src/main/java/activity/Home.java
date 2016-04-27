@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.os.Bundle;
@@ -13,10 +14,19 @@ import android.view.View;
 import android.widget.Toast;
 import com.example.senoir.newpmatry1.R;
 
+import fragments.OffFragment;
+import fragments.OnFragment;
+
 public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentDrawerListener{
 
     private Toolbar mToolbar;
     private FragmentDrawer drawerFragment;
+
+    public OnFragment temp1 = new OnFragment();
+    public OffFragment temp2 = new OffFragment();
+    OnOffFragment fragment = null;
+    LocationFragment fragment0 = null;
+    StatisticFragment fragment1 = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +42,10 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
         drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mToolbar);
         drawerFragment.setDrawerListener(this);
         // display the first navigation drawer view on app launch
-        displayView(0);
+        fragment = new OnOffFragment();
+        fragment0 = new LocationFragment();
+        fragment1 = new StatisticFragment();
+        displayView(1);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -58,56 +71,34 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
 
     @Override
     public void onDrawerItemSelected(View view, int position) {
-        displayView(position);
+        if(position == 0){
+            fragment.update(this);
+        }
+            displayView(position);
     }
     private void displayView(int position) {
-        OnOffFragment fragment = null;
-        LocationFragment fragment0 = null;
-        StatisticFragment fragment1 = null;
+
         String title = getString(R.string.app_name);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         switch (position) {
             case 0:
-                fragment = new OnOffFragment();
+                fragmentTransaction.replace(R.id.container_body, fragment);
                 title = getString(R.string.title_home);
                 break;
             case 1:
-                fragment0 = new LocationFragment();
+                fragmentTransaction.replace(R.id.container_body, fragment0);
                 title = getString(R.string.title_Location);
                 break;
             case 2:
-                fragment1 = new StatisticFragment();
+                fragmentTransaction.replace(R.id.container_body, fragment1);
                 title = getString(R.string.title_statistic);
                 break;
             default:
                 break;
         }
-
-        if (fragment != null) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.container_body, fragment);
-            fragmentTransaction.commit();
-
-            // set the toolbar title
-            getSupportActionBar().setTitle(title);
-        }
-        if (fragment0 != null) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.container_body, fragment0);
-            fragmentTransaction.commit();
-
-            // set the toolbar title
-            getSupportActionBar().setTitle(title);
-        }
-        if (fragment1 != null) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.container_body, fragment1);
-            fragmentTransaction.commit();
-
-            // set the toolbar title
-            getSupportActionBar().setTitle(title);
-        }
+        getSupportActionBar().setTitle(title);
+        fragmentTransaction.commit();
     }
+
 }

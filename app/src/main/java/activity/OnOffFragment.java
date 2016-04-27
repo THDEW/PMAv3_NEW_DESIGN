@@ -14,10 +14,12 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,51 +33,55 @@ public class OnOffFragment extends Fragment {
     private TabLayout tabLayout;
     private FragmentActivity myContext;
     private ViewPager viewPager;
-    private int[] tabIcons = {
-            R.drawable.ic_tab_offline,
-            R.drawable.ic_tab_online
-    };
 
 
     public OnOffFragment() {
+
         // Required empty public constructor
     }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-
+    public void update(Activity context){
+        if(viewPager != null) {
+            FragmentActivity contextTemp = (FragmentActivity) context;
+            FragmentManager fragManager = contextTemp.getSupportFragmentManager();
+            ViewPagerAdapter adapter = new ViewPagerAdapter(fragManager);
+            adapter.addFrag(new OnFragment(), "ON");
+            adapter.addFrag(new OffFragment(), "OFF");
+            viewPager.setAdapter(adapter);
+        }
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View rootView = inflater.inflate(R.layout.fragment_on_off, container, false);
         viewPager = (ViewPager) rootView.findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
         tabLayout = (TabLayout) rootView.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-        setupTabIcons();
-        return rootView;
 
+        setupTabIcons();
+
+        return rootView;
     }
+
 
     private void setupTabIcons() {
 
         TextView tabOn = (TextView) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab, null);
-        tabOn.setText("ON");
+
         tabOn.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tab_online, 0, 0);
         tabLayout.getTabAt(0).setCustomView(tabOn);
 
         TextView tabOff = (TextView) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab, null);
-        tabOff.setText("OFF");
+
         tabOff.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tab_offline, 0, 0);
         tabLayout.getTabAt(1).setCustomView(tabOff);
 
     }
 
-    private void setupViewPager(ViewPager viewPager) {
+    public void setupViewPager(ViewPager viewPager) {
         FragmentManager fragManager = myContext.getSupportFragmentManager();
         ViewPagerAdapter adapter = new ViewPagerAdapter(fragManager);
         adapter.addFrag(new OnFragment(), "ON");
@@ -117,4 +123,5 @@ public class OnOffFragment extends Fragment {
         myContext = (FragmentActivity) activity;
         super.onAttach(activity);
     }
+
 }
