@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.example.senoir.newpmatry1.R;
 
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ public class OffFragment extends Fragment{
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_off, container, false);
         allSampleData = new ArrayList<>();
+
         createDummyData();
 
 
@@ -74,6 +76,7 @@ public class OffFragment extends Fragment{
 
         }
     }
+
     @Override
     public void onAttach(final Activity activity) {
         myContext = (FragmentActivity) activity;

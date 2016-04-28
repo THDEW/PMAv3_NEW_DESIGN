@@ -9,9 +9,19 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
+        android:layout_height="160dp"
         android:layout_height="wrap_content"
         android:padding="2dp">
 
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/expandSignal"
+            android:background="@drawable/down_arrow"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/itemTitle"
+            android:layout_toEndOf="@+id/itemTitle" />
 
         <TextView
             android:id="@+id/itemTitle"
@@ -27,13 +37,13 @@
             android:textSize="18sp" />
 
 
-
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_list"
         android:layout_width="match_parent"
         android:layout_height="160dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:orientation="horizontal" />
 
