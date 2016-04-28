@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +43,7 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
     public void onBindViewHolder(SingleItemRowHolder holder, int i) {
 
         SingleItemModel singleItem = itemsList.get(i);
+
 
         holder.tvTitle.setText(singleItem.getName());
 
@@ -80,12 +82,13 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
             this.tvTitle = (TextView) view.findViewById(R.id.tvTitle);
             this.itemImage = (ImageView) view.findViewById(R.id.itemImage);
 
+
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(Home.page == 0) {
+                    if (Home.page == 0) {
                         Toast.makeText(v.getContext(), tvTitle.getText(), Toast.LENGTH_SHORT).show();
-                    } else if (Home.page == 1){
+                    } else if (Home.page == 1) {
                         if (selected) {
                             LocationFragment.data.set(index, -1d);
                             selected = false;
@@ -93,7 +96,7 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                             //itemImage.setBackgroundResource(R.drawable.ic_brightness_7_black_36dp);
                         } else {
                             index = LocationFragment.data.size();
-                            LocationFragment.data.add((index+1) * 2d);
+                            LocationFragment.data.add((index + 1) * 2d);
                             LocationFragment.data2.add(0d);
                             itemImage.setAlpha(0.2f);
                             selected = true;
