@@ -12,8 +12,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,8 +23,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.senoir.newpmatry1.R;
+
+
 import fragments.OnFragment;
 import fragments.OffFragment;
+import fragments.YearlyFragment;
 
 
 public class OnOffFragment extends Fragment {
@@ -61,25 +62,12 @@ public class OnOffFragment extends Fragment {
         tabLayout = (TabLayout) rootView.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-        setupTabIcons();
 
         return rootView;
     }
 
 
-    private void setupTabIcons() {
 
-        TextView tabOn = (TextView) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab, null);
-
-        tabOn.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tab_online, 0, 0);
-        tabLayout.getTabAt(0).setCustomView(tabOn);
-
-        TextView tabOff = (TextView) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab, null);
-
-        tabOff.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tab_offline, 0, 0);
-        tabLayout.getTabAt(1).setCustomView(tabOff);
-
-    }
 
     public void setupViewPager(ViewPager viewPager) {
         FragmentManager fragManager = myContext.getSupportFragmentManager();

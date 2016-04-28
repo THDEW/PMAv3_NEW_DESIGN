@@ -9,17 +9,19 @@
     <string name="nav_item_home">On/Off</string>
     <string name="nav_item_Location">Location</string>
     <string name="nav_item_statistic">Statistic</string>
+    <string name="nav_item_electricitybill">Electricity Bill</string>
 
     <!-- navigation drawer item labels  -->
     <string-array name="nav_drawer_labels">
         <item>@string/nav_item_home</item>
         <item>@string/nav_item_Location</item>
         <item>@string/nav_item_statistic</item>
+        <item>@string/nav_item_electricitybill</item>
     </string-array>
 
     <string name="title_Location">Location</string>
     <string name="title_statistic">Statistic</string>
-    <string name="title_notifications">Cost</string>
+    <string name="title_electricitybill">Electricity Bill</string>
     <string name="title_home">On/Off</string>
 
     <!-- TODO: Remove or change this placeholder text -->

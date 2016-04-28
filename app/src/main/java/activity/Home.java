@@ -14,8 +14,7 @@ import android.view.View;
 import android.widget.Toast;
 import com.example.senoir.newpmatry1.R;
 
-import fragments.OffFragment;
-import fragments.OnFragment;
+
 
 public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentDrawerListener{
 
@@ -27,6 +26,8 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
     OnOffFragment fragment = null;
     LocationFragment fragment0 = null;
     StatisticFragment fragment1 = null;
+    ElectricityBillFragment fragment2 = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,7 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
         fragment = new OnOffFragment();
         fragment0 = new LocationFragment();
         fragment1 = new StatisticFragment();
+        fragment2 = new ElectricityBillFragment();
         displayView(1);
     }
     @Override
@@ -74,9 +76,14 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
 
         if(position == 0){
             fragment.update(this);
-        } else if(position != 1) {
+        }
+        if(position == 2){
+            fragment1.updateStatistic(this);
+        }
+        if(position != 0) {
             LocationFragment.data.clear();
         }
+
         displayView(position);
     }
     private void displayView(int position) {
@@ -99,6 +106,11 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
                 fragmentTransaction.replace(R.id.container_body, fragment1);
                 title = getString(R.string.title_statistic);
                 page = 2;
+                break;
+            case 3:
+                fragmentTransaction.replace(R.id.container_body, fragment2);
+                title = "Electricity Bill";
+                page = 3;
                 break;
             default:
                 break;

@@ -11,9 +11,9 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:drawable="@color/colorAccent"
+            android:background="@color/colorPrimary"
             android:state_activated="true"
             android:layout_height="@dimen/custom_tab_layout_height"
-            android:background="@color/colorPrimary"
             app:tabGravity="fill"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:android="http://schemas.android.com/apk/res/android">

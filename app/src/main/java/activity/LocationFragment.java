@@ -105,7 +105,7 @@ public class LocationFragment extends Fragment{
 
                 for(int i = 0; i < data.size(); i++){
                     if(data.get(i) > data2.get(i)) {
-                        data2.set(i, data2.get(i) + 0.2d);
+                        data2.set(i, data2.get(i) + (data.get(i)/100)*3);
                     }
                 }
 
