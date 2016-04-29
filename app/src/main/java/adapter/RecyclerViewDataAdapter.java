@@ -5,6 +5,7 @@ package adapter;
  */
 import android.app.ActionBar;
 import android.content.Context;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,10 +31,12 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
 
     private ArrayList<SectionDataModel> dataList;
     private Context mContext;
+    private FragmentManager fm;
 
-    public RecyclerViewDataAdapter(Context context, ArrayList<SectionDataModel> dataList) {
+    public RecyclerViewDataAdapter(Context context, ArrayList<SectionDataModel> dataList, FragmentManager fm) {
         this.dataList = dataList;
         this.mContext = context;
+        this.fm = fm;
     }
 
     @Override
@@ -52,7 +55,7 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
 
         itemRowHolder.itemTitle.setText(sectionName);
 
-        SectionListDataAdapter itemListDataAdapter = new SectionListDataAdapter(mContext, singleSectionItems);
+        SectionListDataAdapter itemListDataAdapter = new SectionListDataAdapter(mContext, singleSectionItems, fm, sectionName);
 
         itemRowHolder.backUp = itemListDataAdapter;
 
@@ -114,7 +117,7 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
             itemTitle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(open){
+                    if (open) {
                         recycler_view_list.setAdapter(null);
                         img.setBackgroundResource(R.drawable.down_arrow);
                         open = false;

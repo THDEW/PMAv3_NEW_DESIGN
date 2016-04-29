@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -31,6 +32,7 @@ public class LocationFragment extends Fragment{
 
     private FragmentActivity myContext;
     ArrayList<SectionDataModel> allSampleData;
+    FragmentManager fm;
 
     public static DataPoint[] dataPoint;
     public static ArrayList<Double> data = new ArrayList<>();
@@ -58,11 +60,13 @@ public class LocationFragment extends Fragment{
         allSampleData = new ArrayList<>();
         createDummyData();
 
+        fm = getFragmentManager();
+
         RecyclerView my_recycler_view = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
 
         my_recycler_view.setHasFixedSize(true);
 
-        RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(myContext, allSampleData);
+        RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(myContext, allSampleData, fm);
 
         my_recycler_view.setLayoutManager(new LinearLayoutManager(myContext, LinearLayoutManager.VERTICAL, false));
 
