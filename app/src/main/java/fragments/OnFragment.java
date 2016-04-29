@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +33,7 @@ public class OnFragment extends Fragment{
 
     private FragmentActivity myContext;
     ArrayList<SectionDataModel> allSampleData;
+    FragmentManager fm;
 
     public OnFragment() {
         // Required empty public constructor
@@ -48,15 +50,17 @@ public class OnFragment extends Fragment{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_on, container, false);
+
         allSampleData = new ArrayList<>();
         createDummyData();
 
+        fm = getFragmentManager();
 
         RecyclerView my_recycler_view = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
 
         my_recycler_view.setHasFixedSize(true);
 
-        RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(myContext, allSampleData);
+        RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(myContext, allSampleData, fm);
 
         my_recycler_view.setLayoutManager(new LinearLayoutManager(myContext, LinearLayoutManager.VERTICAL, false));
 
@@ -64,6 +68,7 @@ public class OnFragment extends Fragment{
 
         return rootView;
     }
+
     public void createDummyData() {
         for (int i = 1; i <= 5; i++) {
 
@@ -72,7 +77,7 @@ public class OnFragment extends Fragment{
             dm.setHeaderTitle("Location " + i);
 
             ArrayList<SingleItemModel> singleItem = new ArrayList<>();
-            for (int j = 0; j <= 5; j++) {
+            for (int j = 0; j < 10; j++) {
                 singleItem.add(new SingleItemModel("Item " + j, "a"+j));
             }
 

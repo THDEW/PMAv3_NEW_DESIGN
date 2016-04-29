@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/graph"
+        android:layout_width="fill_parent"
+        android:layout_height="193dp"
+        android:layout_weight="0.81" />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="\    @"
+                android:id="@+id/textView"
+                android:textSize="20dp"
+                android:layout_span="0"
+                android:background="#FFC107" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="       Location 1    "
+                android:id="@+id/whereTv"
+                android:textSize="20dp"
+                android:layout_span="0"
+                android:gravity="right"
+                android:background="#FFECB3" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="    Energy Consumption"
+                android:id="@+id/textView2"
+                android:textSize="20dp"
+                android:background="#FFC107" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="8 Unit    "
+                android:id="@+id/energyTv"
+                android:textSize="20dp"
+                android:gravity="right"
+                android:background="#FFECB3" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="    Timing Usage"
+                android:id="@+id/textView3"
+                android:textSize="20dp"
+                android:layout_span="0"
+                android:background="#FFC107" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5.51 hr.    "
+                android:id="@+id/timeTv"
+                android:textSize="20dp"
+                android:layout_span="0"
+                android:gravity="right"
+                android:background="#FFECB3"
+                android:autoText="false" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="    Electricity Bill"
+                android:id="@+id/textView5"
+                android:textSize="20dp"
+                android:background="#FFC107" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="500 Baht    "
+                android:id="@+id/billTv"
+                android:textSize="20dp"
+                android:gravity="right"
+                android:autoText="false"
+                android:background="#FFECB3" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="    Status"
+                android:id="@+id/textView11"
+                android:textSize="20dp"
+                android:layout_span="0"
+                android:background="#FFC107" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="On"
+                android:id="@+id/statusTv"
+                android:textSize="20dp"
+                android:layout_span="0"
+                android:background="#FFECB3"
+                android:textColor="#54ff16"
+                android:gravity="center" />
+        </TableRow>
+
+    </TableLayout>
+
+    <Button
+        android:id="@+id/dismiss"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ok" />
+
+</LinearLayout>

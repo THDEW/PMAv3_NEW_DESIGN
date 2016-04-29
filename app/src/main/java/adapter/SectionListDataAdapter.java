@@ -4,6 +4,7 @@ package adapter;
  * Created by my131 on 28/4/2559.
  */
 import android.content.Context;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import com.example.senoir.newpmatry1.R;
 
 import activity.Home;
 import activity.LocationFragment;
+import fragments.EachDeviceDialog;
 import model.SingleItemModel;
 
 import java.util.ArrayList;
@@ -26,10 +28,14 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
 
     private ArrayList<SingleItemModel> itemsList;
     private Context mContext;
+    private FragmentManager fm;
+    private String location;
 
-    public SectionListDataAdapter(Context context, ArrayList<SingleItemModel> itemsList) {
+    public SectionListDataAdapter(Context context, ArrayList<SingleItemModel> itemsList, FragmentManager fm, String location) {
         this.itemsList = itemsList;
         this.mContext = context;
+        this.fm = fm;
+        this.location = location;
     }
 
     @Override
@@ -87,7 +93,14 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                 @Override
                 public void onClick(View v) {
                     if (Home.page == 0) {
-                        Toast.makeText(v.getContext(), tvTitle.getText(), Toast.LENGTH_SHORT).show();
+                        String unit = " Unit    ";
+                        String hour = " Hr.    ";
+                        String baht = " BAHT.    ";
+
+                        EachDeviceDialog dialogFragment = new EachDeviceDialog (tvTitle.getText().toString() , location,"80" + unit ,"20" + hour,"500" + baht, false);
+                        dialogFragment.show(fm, tvTitle.getText().toString() );
+
+
                     } else if (Home.page == 1) {
                         if (selected) {
                             LocationFragment.data.set(index, -1d);
