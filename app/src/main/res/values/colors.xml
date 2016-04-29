@@ -6,4 +6,6 @@
     <color name="windowBackground">#FFFFFF</color>
     <color name="navigationBarColor">#FFECB3</color>
     <color name="colorAccent">#FFFFFF</color>
+    <color name="date">#999999</color>
+    <color name="title">#222222</color>
 </resources>
