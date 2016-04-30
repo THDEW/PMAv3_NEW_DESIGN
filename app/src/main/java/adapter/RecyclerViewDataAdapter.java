@@ -129,7 +129,7 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
                     if(!selectAll) {
                         selectAll = true;
                         index = LocationFragment.data.size();
-                        
+
                         for (int i = 0; i < index; i++){
 
                             if(!LocationFragment.data.get(i).getIsLocation() &&
