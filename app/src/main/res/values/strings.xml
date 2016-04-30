@@ -5,11 +5,12 @@
     <string name="action_search">Search</string>
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
-
+f^wx
     <string name="nav_item_home">On/Off</string>
     <string name="nav_item_Location">Location</string>
     <string name="nav_item_statistic">Statistic</string>
     <string name="nav_item_electricitybill">Electricity Bill</string>
+    <string name="nav_item_setting">Setting</string>
     <string name="spinner_item_max">Max Power usage</string>
     <string name="spinner_item_min">Min Power usage</string>
     <string name="spinner_item_date">Date and Time</string>
@@ -19,12 +20,14 @@
         <item>@string/nav_item_Location</item>
         <item>@string/nav_item_statistic</item>
         <item>@string/nav_item_electricitybill</item>
+        <item>@string/nav_item_setting</item>
     </string-array>
 
     <string name="title_Location">Location</string>
     <string name="title_statistic">Statistic</string>
     <string name="title_electricitybill">Electricity Bill</string>
     <string name="title_home">On/Off</string>
+    <string name="title_Setting">Settings</string>
 
     <!-- spinner sort by choices -->
     <string-array name="sort_by_array">

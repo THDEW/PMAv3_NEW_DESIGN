@@ -27,6 +27,7 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
     LocationFragment fragment0 = null;
     StatisticFragment fragment1 = null;
     ElectricityBillFragment fragment2 = null;
+    SettingFragments fragment3 = null;
 
 
     @Override
@@ -47,6 +48,7 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
         fragment0 = new LocationFragment();
         fragment1 = new StatisticFragment();
         fragment2 = new ElectricityBillFragment();
+        fragment3 = new SettingFragments();
         displayView(1);
     }
     @Override
@@ -112,6 +114,9 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
                 title = "Electricity Bill";
                 page = 3;
                 break;
+            case 4:
+                fragmentTransaction.replace(R.id.container_body, fragment3);
+                title = "Setting";
             default:
                 break;
         }
