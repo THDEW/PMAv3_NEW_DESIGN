@@ -6,6 +6,7 @@ package adapter;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.example.senoir.newpmatry1.R;
 import activity.Home;
 import activity.LocationFragment;
 import dialog.EachDeviceDialog;
+import model.GraphSeriesModel;
 import model.SingleItemModel;
 
 import java.util.ArrayList;
@@ -46,7 +48,6 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
     public void onBindViewHolder(SingleItemRowHolder holder, int i) {
 
         SingleItemModel singleItem = itemsList.get(i);
-
 
         holder.tvTitle.setText(singleItem.getName());
 
@@ -100,13 +101,14 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
 
                     } else if (Home.page == 1) {
                         if (selected) {
-                            LocationFragment.data.set(index, -1d);
+                            LocationFragment.data.get(index).setValue(-1d);
                             selected = false;
                             itemImage.setAlpha(1f);
                             //itemImage.setBackgroundResource(R.drawable.ic_brightness_7_black_36dp);
                         } else {
                             index = LocationFragment.data.size();
-                            LocationFragment.data.add((index + 1) * 2d);
+
+                            LocationFragment.data.add(new GraphSeriesModel(tvTitle.getText().toString(),location ,(index + 1) * 2d,false));
                             LocationFragment.data2.add(0d);
                             itemImage.setAlpha(0.2f);
                             selected = true;

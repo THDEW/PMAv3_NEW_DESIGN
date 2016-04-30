@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
@@ -30,6 +31,7 @@ import java.util.List;
 import adapter.RecyclerViewDataAdapter;
 import dialog.EachDeviceDialog;
 import dialog.TimeSelectionDialog;
+import model.GraphSeriesModel;
 import model.SectionDataModel;
 import model.SingleItemModel;
 
@@ -43,7 +45,7 @@ public class LocationFragment extends Fragment{
     FragmentManager fm;
 
     public static DataPoint[] dataPoint;
-    public static ArrayList<Double> data = new ArrayList<>();
+    public static ArrayList<GraphSeriesModel> data = new ArrayList<>();
     public static ArrayList<Double> data2 = new ArrayList<>();
 
     BarGraphSeries<DataPoint> series;
@@ -118,8 +120,8 @@ public class LocationFragment extends Fragment{
                 graph.getViewport().setMaxY(getMax() + 5);
 
                 for(int i = 0; i < data.size(); i++){
-                    if(data.get(i) > data2.get(i)) {
-                        data2.set(i, data2.get(i) + (data.get(i)/100)*3);
+                    if(data.get(i).getValue() > data2.get(i)) {
+                        data2.set(i, data2.get(i) + (data.get(i).getValue()/100)*3);
                     }
                 }
 
@@ -143,6 +145,11 @@ public class LocationFragment extends Fragment{
             }
         });
 
+        DatePicker dp = new DatePicker(myContext);
+
+        TextView periodOfTime = (TextView) rootView.findViewById(R.id.periodOfTime);
+
+        periodOfTime.setText(dp.getDayOfMonth() + "/" + (dp.getMonth()+1) + "/" + dp.getYear());
 
         // Inflate the layout for this fragment
         return rootView;
@@ -172,16 +179,17 @@ public class LocationFragment extends Fragment{
         int count = 0;
 
         for(int i = 0; i < data.size(); i++){
-            if(data.get(i) != -1d){
+            if(data.get(i).getValue() != -1d){
                 count++;
             }
         }
+
         dataPoint = new DataPoint[count];
 
         count = 0;
 
         for(int i = 0; i < data.size(); i++){
-            if(data.get(i) != -1d){
+            if(data.get(i).getValue() != -1d){
                 dataPoint[count] = new DataPoint(count,data2.get(i));
                 count++;
             }
@@ -193,8 +201,8 @@ public class LocationFragment extends Fragment{
         double max = 0;
 
         for(int i = 0; i < data.size(); i++){
-            if(data.get(i) > max){
-                max = data.get(i);
+            if(data.get(i).getValue() > max){
+                max = data.get(i).getValue();
             }
         }
 
