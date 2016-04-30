@@ -23,6 +23,7 @@ import com.example.senoir.newpmatry1.R;
 
 import activity.Home;
 import activity.LocationFragment;
+import model.GraphSeriesModel;
 import model.SectionDataModel;
 
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
     private ArrayList<SectionDataModel> dataList;
     private Context mContext;
     private FragmentManager fm;
+    private int indexLocation;
 
     public RecyclerViewDataAdapter(Context context, ArrayList<SectionDataModel> dataList, FragmentManager fm) {
         this.dataList = dataList;
@@ -49,7 +51,9 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
     @Override
     public void onBindViewHolder(ItemRowHolder itemRowHolder, int i) {
 
-        final String sectionName = dataList.get(i).getHeaderTitle();
+        indexLocation = i;
+
+        String sectionName = dataList.get(i).getHeaderTitle();
 
         ArrayList singleSectionItems = dataList.get(i).getAllItemsInSection();
 
@@ -100,9 +104,13 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
 
         protected ImageView img;
 
-        protected Button btnMore;
+        protected Button allBt;
 
         boolean open = false;
+
+        boolean selectAll = false;
+
+        int index;
 
         SectionListDataAdapter backUp;
 
@@ -112,19 +120,53 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
             this.itemTitle = (TextView) view.findViewById(R.id.itemTitle);
             this.recycler_view_list = (RecyclerView) view.findViewById(R.id.recycler_view_list);
             this.img = (ImageView) view.findViewById(R.id.expandSignal);
+            this.allBt = (Button) view.findViewById(R.id.allBt);
             //this.btnMore= (Button) view.findViewById(R.id.btnMore);
+
+            allBt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(!selectAll) {
+                        selectAll = true;
+                        index = LocationFragment.data.size();
+                        
+                        for (int i = 0; i < index; i++){
+
+                            if(!LocationFragment.data.get(i).getIsLocation() &&
+                                    LocationFragment.data.get(i).getLocation().equals(itemTitle.getText().toString())){
+                                LocationFragment.data.get(i).setValue(-1d);
+                            }
+                        }
+
+                        LocationFragment.data.add(new GraphSeriesModel("", itemTitle.getText().toString(),50d,true));
+                        LocationFragment.data2.add(0d);
+                    } else {
+                        LocationFragment.data.get(index).setValue(-1d);
+                        selectAll = false;
+                    }
+                }
+
+            });
 
             itemTitle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+                    if(selectAll) {
+                        LocationFragment.data.get(index).setValue(-1d);
+                        selectAll = false;
+                    }
+
                     if (open) {
                         recycler_view_list.setAdapter(null);
                         img.setBackgroundResource(R.drawable.down_arrow);
                         open = false;
+                        allBt.setVisibility(View.VISIBLE);
                     } else {
                         recycler_view_list.setAdapter(backUp);
                         img.setBackgroundResource(R.drawable.up_arrow);
                         open = true;
+                        allBt.setVisibility(View.INVISIBLE);
                     }
                 }
 
