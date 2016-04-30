@@ -10,19 +10,31 @@
     <string name="nav_item_Location">Location</string>
     <string name="nav_item_statistic">Statistic</string>
     <string name="nav_item_electricitybill">Electricity Bill</string>
-
+    <string name="nav_item_setting">Setting</string>
+    <string name="spinner_item_max">Max Power usage</string>
+    <string name="spinner_item_min">Min Power usage</string>
+    <!--<string name="spinner_item_date">Date and Time</string>-->
     <!-- navigation drawer item labels  -->
     <string-array name="nav_drawer_labels">
         <item>@string/nav_item_home</item>
         <item>@string/nav_item_Location</item>
         <item>@string/nav_item_statistic</item>
         <item>@string/nav_item_electricitybill</item>
+        <item>@string/nav_item_setting</item>
     </string-array>
 
     <string name="title_Location">Location</string>
     <string name="title_statistic">Statistic</string>
     <string name="title_electricitybill">Electricity Bill</string>
     <string name="title_home">On/Off</string>
+    <string name="title_Setting">Settings</string>
+
+    <!-- spinner sort by choices -->
+    <string-array name="sort_by_array">
+        <item>@string/spinner_item_max</item>
+        <item>@string/spinner_item_min</item>
+        <!--<item>@string/spinner_item_date</item>-->
+    </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

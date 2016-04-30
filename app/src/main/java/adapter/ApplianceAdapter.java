@@ -23,8 +23,9 @@ public class ApplianceAdapter extends RecyclerView.Adapter<ApplianceAdapter.MyVi
     public void onBindViewHolder(MyViewHolder holder, int position) {
         ApplianceModel appliancemodel = applianceList.get(position);
         holder.appliname.setText(appliancemodel.getTitle());
-        holder.genre.setText(appliancemodel.getGenre());
+        holder.genre.setText(Long.toString(appliancemodel.getElect()));
         holder.date.setText(appliancemodel.getDate());
+        holder.frontelect.setText(appliancemodel.getFrontElect());
     }
 
     @Override
@@ -44,13 +45,14 @@ public class ApplianceAdapter extends RecyclerView.Adapter<ApplianceAdapter.MyVi
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView appliname, date, genre;
+        public TextView appliname, date, genre, frontelect;
 
         public MyViewHolder(View view) {
             super(view);
             appliname = (TextView) view.findViewById(R.id.appliance_name);
-            genre = (TextView) view.findViewById(R.id.genre);
+            genre = (TextView) view.findViewById(R.id.elect__usage);
             date = (TextView) view.findViewById(R.id.date);
+            frontelect = (TextView) view.findViewById(R.id.front_elect_usage);
         }
     }
 

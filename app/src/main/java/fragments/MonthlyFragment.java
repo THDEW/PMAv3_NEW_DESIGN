@@ -3,18 +3,37 @@ package fragments;
 /**
  * Created by my131 on 28/4/2559.
  */
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.senoir.newpmatry1.R;
 
+import java.util.ArrayList;
+import java.util.Collections;
 
-public class MonthlyFragment extends Fragment{
+import adapter.ApplianceAdapter;
+import adapter.DividerItemDecoration;
+import model.ApplianceModel;
 
+
+public class MonthlyFragment extends Fragment implements AdapterView.OnItemSelectedListener {
+    private FragmentActivity myContext;
+    private ArrayList<ApplianceModel> applianceModelListeList = new ArrayList<ApplianceModel>();
+    private RecyclerView recyclerView;
+    private ApplianceAdapter mAdapter;
     public MonthlyFragment() {
         // Required empty public constructor
     }
@@ -27,9 +46,70 @@ public class MonthlyFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        //Log.d("MonthlyFragment", "Monthly was created again");
-        return inflater.inflate(R.layout.fragment_monthly, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_monthly, container, false);
+
+        Spinner spinner = (Spinner) rootView.findViewById(R.id.sort_by_spinner_monthly);
+        spinner.setOnItemSelectedListener(this);
+        ArrayAdapter<CharSequence> SpinnerAdapter = ArrayAdapter.createFromResource(myContext, R.array.sort_by_array, android.R.layout.simple_spinner_item);
+        SpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(SpinnerAdapter);
+
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_monthly);
+        mAdapter = new ApplianceAdapter(applianceModelListeList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(myContext);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new DividerItemDecoration(myContext, LinearLayoutManager.VERTICAL));
+        recyclerView.setAdapter(mAdapter);
+        if(applianceModelListeList!=null){
+            applianceModelListeList.clear();
+        }
+        prepareApplianceData(20);
+        return rootView;
+    }
+    @Override
+    public void onAttach(final Activity activity) {
+        myContext = (FragmentActivity) activity;
+        super.onAttach(activity);
+    }
+    private void prepareApplianceData(int numSize) {
+        int start;
+        long elecusages = 0;
+        for(start = 0; start<numSize; start++){
+            ApplianceModel appliances = new ApplianceModel("Name: Air-Conditioner "+ start,  elecusages++, "03/02/2016", "Electricity's Usage: ");
+            applianceModelListeList.add(appliances);
+        }
+        mAdapter.notifyDataSetChanged();
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        // On selecting a spinner item
+        String item = parent.getItemAtPosition(position).toString();
+        switch (position){
+            case 0:
+                Collections.sort(applianceModelListeList, ApplianceModel.electusageMaxComparator);
+                recyclerView.setAdapter(mAdapter);
+                Toast.makeText(parent.getContext(), "Selected 0: " + item, Toast.LENGTH_LONG).show();
+                break;
+            case 1:
+                Collections.sort(applianceModelListeList, ApplianceModel.electusageMinComparator);
+                recyclerView.setAdapter(mAdapter);
+                Toast.makeText(parent.getContext(), "Selected 1: " + item, Toast.LENGTH_LONG).show();
+                break;
+            /*case 2:
+                Toast.makeText(parent.getContext(), "Selected 2: " + item, Toast.LENGTH_LONG).show();
+                break;*/
+        }
+
+        // Showing selected spinner item
+        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 
 }
