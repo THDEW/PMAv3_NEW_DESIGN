@@ -7,11 +7,14 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
 
@@ -19,9 +22,14 @@ import com.example.senoir.newpmatry1.R;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 
+import java.io.FileDescriptor;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 
 import adapter.RecyclerViewDataAdapter;
+import dialog.EachDeviceDialog;
+import dialog.TimeSelectionDialog;
 import model.SectionDataModel;
 import model.SingleItemModel;
 
@@ -42,6 +50,8 @@ public class LocationFragment extends Fragment{
 
     GraphView graph;
 
+    static TextView tv;
+
     public LocationFragment() {
         // Required empty public constructor
     }
@@ -55,7 +65,7 @@ public class LocationFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_location, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_location, container, false);
 
         allSampleData = new ArrayList<>();
         createDummyData();
@@ -118,6 +128,22 @@ public class LocationFragment extends Fragment{
         };
         mHandler.postDelayed(mTimer1, 300);
 
+        // Time selection
+        tv = (TextView) rootView.findViewById(R.id.periodOfTime);
+
+        Button timeSelection = (Button) rootView.findViewById(R.id.timeTv);
+        timeSelection.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                TimeSelectionDialog dialog = new TimeSelectionDialog(rootView);
+                dialog.show(fm, "Time Selection");
+
+            }
+        });
+
+
         // Inflate the layout for this fragment
         return rootView;
     }
@@ -174,6 +200,12 @@ public class LocationFragment extends Fragment{
 
         return max;
     }
+
+    public void setPeriodOfTime(String str){
+        tv.setText(str);
+    }
+
+
     @Override
     public void onAttach(final Activity activity) {
         myContext = (FragmentActivity) activity;

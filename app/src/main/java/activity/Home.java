@@ -47,7 +47,7 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
         fragment0 = new LocationFragment();
         fragment1 = new StatisticFragment();
         fragment2 = new ElectricityBillFragment();
-        displayView(0);
+        displayView(1);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -1,4 +1,4 @@
-package fragments;
+package dialog;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -57,7 +57,6 @@ public class EachDeviceDialog extends DialogFragment {
     public EachDeviceDialog(){}
 
     public EachDeviceDialog(String name, String location,String energy,String bill,String time,boolean status){
-
         this.name = name;
         this.location = location;
         this.energy = energy;
