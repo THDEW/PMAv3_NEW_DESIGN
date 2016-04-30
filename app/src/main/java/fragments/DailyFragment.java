@@ -22,6 +22,8 @@ import android.widget.Toast;
 import com.example.senoir.newpmatry1.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import activity.Home;
@@ -32,7 +34,7 @@ import model.ApplianceModel;
 
 public class DailyFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     private FragmentActivity myContext;
-    private List<ApplianceModel> applianceModelListeList = new ArrayList<>();
+    private ArrayList<ApplianceModel> applianceModelListeList = new ArrayList<ApplianceModel>();
     private RecyclerView recyclerView;
     private ApplianceAdapter mAdapter;
     public DailyFragment() {
@@ -50,7 +52,7 @@ public class DailyFragment extends Fragment implements AdapterView.OnItemSelecte
         View rootView = inflater.inflate(R.layout.fragment_daily, container, false);
 
         Spinner spinner = (Spinner) rootView.findViewById(R.id.sort_by_spinner);
-
+        spinner.setOnItemSelectedListener(this);
         ArrayAdapter<CharSequence> SpinnerAdapter = ArrayAdapter.createFromResource(myContext, R.array.sort_by_array, android.R.layout.simple_spinner_item);
         SpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(SpinnerAdapter);
@@ -66,8 +68,6 @@ public class DailyFragment extends Fragment implements AdapterView.OnItemSelecte
             applianceModelListeList.clear();
         }
         prepareApplianceData(20);
-        spinner.setOnItemSelectedListener(this);
-
         return rootView;
     }
     @Override
@@ -77,9 +77,10 @@ public class DailyFragment extends Fragment implements AdapterView.OnItemSelecte
     }
     private void prepareApplianceData(int numSize) {
         int start;
+        long elecusages = 0;
         for(start = 0; start<numSize; start++){
-            ApplianceModel movie = new ApplianceModel("Name: Air-Conditioner "+ start, "Electricity's usage: 200 Units", "03/02/2016");
-            applianceModelListeList.add(movie);
+            ApplianceModel appliances = new ApplianceModel("Name: Air-Conditioner "+ start,  elecusages++, "03/02/2016", "Electricity's Usage: ");
+            applianceModelListeList.add(appliances);
         }
         mAdapter.notifyDataSetChanged();
 
@@ -89,6 +90,21 @@ public class DailyFragment extends Fragment implements AdapterView.OnItemSelecte
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // On selecting a spinner item
         String item = parent.getItemAtPosition(position).toString();
+        switch (position){
+            case 0:
+                Collections.sort(applianceModelListeList, ApplianceModel.electusageMaxComparator);
+                recyclerView.setAdapter(mAdapter);
+                Toast.makeText(parent.getContext(), "Selected 0: " + item, Toast.LENGTH_LONG).show();
+                break;
+            case 1:
+                Collections.sort(applianceModelListeList, ApplianceModel.electusageMinComparator);
+                recyclerView.setAdapter(mAdapter);
+                Toast.makeText(parent.getContext(), "Selected 1: " + item, Toast.LENGTH_LONG).show();
+                break;
+            /*case 2:
+                Toast.makeText(parent.getContext(), "Selected 2: " + item, Toast.LENGTH_LONG).show();
+                break;*/
+        }
 
         // Showing selected spinner item
         Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
@@ -98,4 +114,5 @@ public class DailyFragment extends Fragment implements AdapterView.OnItemSelecte
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
 }

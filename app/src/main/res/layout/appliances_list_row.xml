@@ -21,9 +21,10 @@
         android:layout_height="wrap_content" />
 
     <TextView
-        android:id="@+id/genre"
-        android:layout_below="@id/appliance_name"
-        android:layout_width="match_parent"
+        android:id="@+id/elect._usage"
+        android:layout_below="@+id/appliance_name"
+        android:layout_toRightOf="@+id/front_elect_usage"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <TextView
@@ -31,6 +32,12 @@
         android:textColor="@color/date"
         android:layout_width="wrap_content"
         android:layout_alignParentRight="true"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/front_elect_usage"
+        android:layout_below="@id/appliance_name"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
 </RelativeLayout>

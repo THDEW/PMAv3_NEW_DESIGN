@@ -109,4 +109,5 @@ public class StatisticFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
     }
+
 }

@@ -1,18 +1,22 @@
 package model;
 
+import java.util.Comparator;
+
 /**
  * Created by my131 on 29/4/2559.
  */
 public class ApplianceModel {
-    private String appliname, genre, date;
+    private String appliname, date, frontelectusage;
+    private long elecusage;
 
     public ApplianceModel() {
     }
 
-    public ApplianceModel(String appliname, String genre, String date) {
+    public ApplianceModel(String appliname, long elecusage, String date, String frontelectusage) {
         this.appliname = appliname;
-        this.genre = genre;
+        this.elecusage = elecusage;
         this.date = date;
+        this.frontelectusage = frontelectusage;
     }
 
     public String getTitle() {
@@ -31,11 +35,43 @@ public class ApplianceModel {
         this.date = date;
     }
 
-    public String getGenre() {
-        return genre;
+    public long getElect() {
+        return elecusage;
     }
 
-    public void setGenre(String genre) {
-        this.genre = genre;
+    public String getFrontElect() {
+        return frontelectusage;
     }
+
+    public void setElect(long Elect) {
+        this.elecusage = Elect;
+    }
+
+    public static Comparator<ApplianceModel> electusageMaxComparator = new Comparator<ApplianceModel>() {
+
+        public int compare(ApplianceModel e1, ApplianceModel e2) {
+            long electusage1 = e1.getElect();
+            long electusage2 = e2.getElect();
+
+            //ascending order
+            //return appliname1.compareTo(appliname2);
+
+            //descending order
+            return (int) (electusage2-electusage1);
+        }};
+
+    public static Comparator<ApplianceModel> electusageMinComparator = new Comparator<ApplianceModel>() {
+
+        public int compare(ApplianceModel e1, ApplianceModel e2) {
+            long electusage1 = e1.getElect();
+            long electusage2 = e2.getElect();
+
+            //ascending order
+            return (int) (electusage1-electusage2);
+
+            //descending order
+            //return (int) (electusage2-electusage1);
+        }};
+
+
 }
