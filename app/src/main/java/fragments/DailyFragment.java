@@ -14,6 +14,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.senoir.newpmatry1.R;
 
@@ -26,7 +30,7 @@ import adapter.DividerItemDecoration;
 import model.ApplianceModel;
 
 
-public class DailyFragment extends Fragment{
+public class DailyFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     private FragmentActivity myContext;
     private List<ApplianceModel> applianceModelListeList = new ArrayList<>();
     private RecyclerView recyclerView;
@@ -44,6 +48,13 @@ public class DailyFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_daily, container, false);
+
+        Spinner spinner = (Spinner) rootView.findViewById(R.id.sort_by_spinner);
+
+        ArrayAdapter<CharSequence> SpinnerAdapter = ArrayAdapter.createFromResource(myContext, R.array.sort_by_array, android.R.layout.simple_spinner_item);
+        SpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(SpinnerAdapter);
+
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_daily);
         mAdapter = new ApplianceAdapter(applianceModelListeList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(myContext);
@@ -55,8 +66,7 @@ public class DailyFragment extends Fragment{
             applianceModelListeList.clear();
         }
         prepareApplianceData(20);
-
-
+        spinner.setOnItemSelectedListener(this);
 
         return rootView;
     }
@@ -72,6 +82,20 @@ public class DailyFragment extends Fragment{
             applianceModelListeList.add(movie);
         }
         mAdapter.notifyDataSetChanged();
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        // On selecting a spinner item
+        String item = parent.getItemAtPosition(position).toString();
+
+        // Showing selected spinner item
+        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
 
     }
 }

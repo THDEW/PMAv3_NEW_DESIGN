@@ -10,11 +10,28 @@
     tools:context="fragments.DailyFragment"
     >
 
+    <TextView
+        android:id="@+id/sort_by_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="74dp"
+        android:text="Sort by: "
+        android:textAllCaps="true"
+        android:textColor="#FFC107"
+        android:textStyle="bold"
+        android:textSize="15dp" />
+    <Spinner
+        android:id="@+id/sort_by_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:layout_toRightOf="@id/sort_by_text"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_daily"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
+        android:layout_below="@id/sort_by_spinner"
         android:scrollbars="vertical" />
 
 </RelativeLayout>
