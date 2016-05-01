@@ -1,8 +1,6 @@
 package dialog;
 
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,11 +11,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.senoir.newpmatry1.R;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.text.DateFormat;
-import java.util.Calendar;
 
 /**
  * Created by Toshiba on 4/29/2016.
@@ -46,7 +39,7 @@ public class TimeSelectionDialog extends DialogFragment {
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.time_dialog, container, false);
+        View rootView = inflater.inflate(R.layout.dialog_time, container, false);
         getDialog().setTitle("Time Selection");
 
         startTv = (TextView) rootView.findViewById(R.id.startTv);

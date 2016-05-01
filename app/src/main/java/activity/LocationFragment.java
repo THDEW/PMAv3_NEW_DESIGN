@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -23,13 +22,10 @@ import com.example.senoir.newpmatry1.R;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 
-import java.io.FileDescriptor;
-import java.io.PrintWriter;
+
 import java.util.ArrayList;
-import java.util.List;
 
 import adapter.RecyclerViewDataAdapter;
-import dialog.EachDeviceDialog;
 import dialog.TimeSelectionDialog;
 import model.GraphSeriesModel;
 import model.SectionDataModel;

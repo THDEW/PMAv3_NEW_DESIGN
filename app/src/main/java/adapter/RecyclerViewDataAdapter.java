@@ -3,21 +3,16 @@ package adapter;
 /**
  * Created by my131 on 28/4/2559.
  */
-import android.app.ActionBar;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.senoir.newpmatry1.R;
 
@@ -33,7 +28,6 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
     private ArrayList<SectionDataModel> dataList;
     private Context mContext;
     private FragmentManager fm;
-    private int indexLocation;
 
     public RecyclerViewDataAdapter(Context context, ArrayList<SectionDataModel> dataList, FragmentManager fm) {
         this.dataList = dataList;
@@ -50,8 +44,6 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
 
     @Override
     public void onBindViewHolder(ItemRowHolder itemRowHolder, int i) {
-
-        indexLocation = i;
 
         String sectionName = dataList.get(i).getHeaderTitle();
 
@@ -123,30 +115,37 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
             this.allBt = (Button) view.findViewById(R.id.allBt);
             //this.btnMore= (Button) view.findViewById(R.id.btnMore);
 
-            allBt.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(!selectAll) {
-                        selectAll = true;
-                        index = LocationFragment.data.size();
+            if(Home.page == 1) {
 
-                        for (int i = 0; i < index; i++){
+                allBt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!selectAll) {
+                            selectAll = true;
+                            index = LocationFragment.data.size();
 
-                            if(!LocationFragment.data.get(i).getIsLocation() &&
-                                    LocationFragment.data.get(i).getLocation().equals(itemTitle.getText().toString())){
-                                LocationFragment.data.get(i).setValue(-1d);
+                            for (int i = 0; i < index; i++) {
+
+                                if (!LocationFragment.data.get(i).getIsLocation() &&
+                                        LocationFragment.data.get(i).getLocation().equals(itemTitle.getText().toString())) {
+                                    LocationFragment.data.get(i).setValue(-1d);
+                                }
                             }
+
+                            LocationFragment.data.add(new GraphSeriesModel("", itemTitle.getText().toString(), 50d, true));
+                            LocationFragment.data2.add(0d);
+                            allBt.setAlpha(0.5f);
+                        } else {
+                            LocationFragment.data.get(index).setValue(-1d);
+                            allBt.setAlpha(1f);
+                            selectAll = false;
                         }
-
-                        LocationFragment.data.add(new GraphSeriesModel("", itemTitle.getText().toString(),50d,true));
-                        LocationFragment.data2.add(0d);
-                    } else {
-                        LocationFragment.data.get(index).setValue(-1d);
-                        selectAll = false;
                     }
-                }
 
-            });
+                });
+            } else {
+                allBt.setVisibility(View.INVISIBLE);
+            }
 
             itemTitle.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -155,6 +154,7 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
                     if(selectAll) {
                         LocationFragment.data.get(index).setValue(-1d);
                         selectAll = false;
+                        allBt.setAlpha(1f);
                     }
 
                     if (open) {

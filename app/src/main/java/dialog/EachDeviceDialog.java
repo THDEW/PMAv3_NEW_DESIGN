@@ -1,14 +1,10 @@
 package dialog;
 
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.res.ColorStateList;
+
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +15,6 @@ import com.example.senoir.newpmatry1.R;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
-
-import java.util.ArrayList;
 
 /**
  * Created by Toshiba on 4/29/2016.
@@ -67,7 +61,7 @@ public class EachDeviceDialog extends DialogFragment {
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.device_dialog, container, false);
+        View rootView = inflater.inflate(R.layout.dialog_device, container, false);
         getDialog().setTitle(name);
 
         whereTv = (TextView) rootView.findViewById(R.id.whereTv);
