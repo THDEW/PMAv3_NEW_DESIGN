@@ -42,7 +42,8 @@
             android:id="@+id/allBt"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/expandSignal"
-            android:layout_toEndOf="@+id/expandSignal" />
+            android:layout_toEndOf="@+id/expandSignal"
+            android:background="#FFC107" />
 
 
     </RelativeLayout>

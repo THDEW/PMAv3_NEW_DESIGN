@@ -37,27 +37,48 @@ public class RowDataDialog extends DialogFragment {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View rootView = inflater.inflate(R.layout.dialog_row_data_type, container, false);
         getDialog().setTitle(typeOfData);
-        type = 2;
+
+        addBt = (Button) rootView.findViewById(R.id.addBt_1);
+        deleteBt = (Button) rootView.findViewById(R.id.deleteBt_1);
+        cancelBt = (Button) rootView.findViewById(R.id.cancelBt_1);
+
         if(type == 1) {
             rootView = inflater.inflate(R.layout.dialog_row_data_detail, container, false);
             getDialog().setTitle(typeOfData);
+
+            addBt = (Button) rootView.findViewById(R.id.addBt_2);
+            deleteBt = (Button) rootView.findViewById(R.id.deleteBt_2);
+            cancelBt = (Button) rootView.findViewById(R.id.cancelBt_2);
         } else if (type == 2) {
             rootView = inflater.inflate(R.layout.dialog_row_data_node, container, false);
             getDialog().setTitle(typeOfData);
+
+            addBt = (Button) rootView.findViewById(R.id.addBt_3);
+            deleteBt = (Button) rootView.findViewById(R.id.deleteBt_3);
+            cancelBt = (Button) rootView.findViewById(R.id.cancelBt_3);
         } else if (type == 3) {
             rootView = inflater.inflate(R.layout.dialog_row_data_location, container, false);
             getDialog().setTitle(typeOfData);
+
+            addBt = (Button) rootView.findViewById(R.id.addBt_4);
+            deleteBt = (Button) rootView.findViewById(R.id.deleteBt_4);
+            cancelBt = (Button) rootView.findViewById(R.id.cancelBt_4);
         } else if (type == 4) {
             rootView = inflater.inflate(R.layout.dialog_row_data_group_of_device, container, false);
             getDialog().setTitle(typeOfData);
+
+            addBt = (Button) rootView.findViewById(R.id.addBt_5);
+            deleteBt = (Button) rootView.findViewById(R.id.deleteBt_5);
+            cancelBt = (Button) rootView.findViewById(R.id.cancelBt_5);
         } else if (type == 5) {
             rootView = inflater.inflate(R.layout.dialog_row_data_device, container, false);
             getDialog().setTitle(typeOfData);
+
+            addBt = (Button) rootView.findViewById(R.id.addBt_6);
+            deleteBt = (Button) rootView.findViewById(R.id.deleteBt_6);
+            cancelBt = (Button) rootView.findViewById(R.id.cancelBt_6);
         }
 
-        addBt = (Button) rootView.findViewById(R.id.addBt2);
-        deleteBt = (Button) rootView.findViewById(R.id.deleteBt2);
-        cancelBt = (Button) rootView.findViewById(R.id.cancelBt2);
 
         if(isAdd){
             addBt.setText("Add");

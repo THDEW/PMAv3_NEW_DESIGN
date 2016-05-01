@@ -28,6 +28,7 @@ public class SettingFragments extends Fragment{
     private FragmentActivity myContext;
     ArrayList<SectionDataModel> allSampleData;
     FragmentManager fm;
+    String[] type;
 
     public SettingFragments() {
         // Required empty public constructor
@@ -44,6 +45,9 @@ public class SettingFragments extends Fragment{
         // Inflate the layout for this fragment
         //Log.d("MonthlyFragment", "Monthly was created again");
         View rootView = inflater.inflate(R.layout.fragment_setting, container, false);
+
+        type = new String[]{"Data Type", "Data Detail", "Power Node"
+        ,"Location" ,"Group of Device", "Device" };
 
         FragmentManager fm = getFragmentManager();
         LoginDialog dialog = new LoginDialog();
@@ -65,11 +69,11 @@ public class SettingFragments extends Fragment{
     }
 
     public void createDummyData() {
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 0; i < 6; i++) {
 
             SectionDataModel dm = new SectionDataModel();
 
-            dm.setHeaderTitle("Location " + i);
+            dm.setHeaderTitle(type[i]);
 
             ArrayList<SingleItemModel> singleItem = new ArrayList<>();
             for (int j = 0; j < 10; j++) {
