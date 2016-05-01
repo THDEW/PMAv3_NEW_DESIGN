@@ -26,6 +26,16 @@ public class ApplianceAdapter extends RecyclerView.Adapter<ApplianceAdapter.MyVi
         holder.genre.setText(Long.toString(appliancemodel.getElect()));
         holder.date.setText(appliancemodel.getDate());
         holder.frontelect.setText(appliancemodel.getFrontElect());
+
+
+    }
+
+    @Override
+    public long getItemId(int position) {
+        if (position < applianceList.size()) {
+            return applianceList.get(position).getElect();
+        }
+        return RecyclerView.NO_ID;
     }
 
     @Override

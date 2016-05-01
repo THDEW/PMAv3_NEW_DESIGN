@@ -58,11 +58,13 @@ public class DailyFragment extends Fragment implements AdapterView.OnItemSelecte
         spinner.setAdapter(SpinnerAdapter);
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_daily);
-        mAdapter = new ApplianceAdapter(applianceModelListeList);
+
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(myContext);
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new DividerItemDecoration(myContext, LinearLayoutManager.VERTICAL));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        mAdapter = new ApplianceAdapter(applianceModelListeList);
+        mAdapter.setHasStableIds(true);
         recyclerView.setAdapter(mAdapter);
         if(applianceModelListeList!=null){
             applianceModelListeList.clear();
@@ -93,13 +95,15 @@ public class DailyFragment extends Fragment implements AdapterView.OnItemSelecte
         switch (position){
             case 0:
                 Collections.sort(applianceModelListeList, ApplianceModel.electusageMaxComparator);
+                recyclerView.setItemAnimator(new DefaultItemAnimator());
                 recyclerView.setAdapter(mAdapter);
-                Toast.makeText(parent.getContext(), "Selected 0: " + item, Toast.LENGTH_LONG).show();
+                //Toast.makeText(parent.getContext(), "Selected 0: " + item, Toast.LENGTH_LONG).show();
                 break;
             case 1:
                 Collections.sort(applianceModelListeList, ApplianceModel.electusageMinComparator);
+                recyclerView.setItemAnimator(new DefaultItemAnimator());
                 recyclerView.setAdapter(mAdapter);
-                Toast.makeText(parent.getContext(), "Selected 1: " + item, Toast.LENGTH_LONG).show();
+                //Toast.makeText(parent.getContext(), "Selected 1: " + item, Toast.LENGTH_LONG).show();
                 break;
             /*case 2:
                 Toast.makeText(parent.getContext(), "Selected 2: " + item, Toast.LENGTH_LONG).show();
