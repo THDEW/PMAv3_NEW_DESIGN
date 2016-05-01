@@ -91,12 +91,12 @@ public class YearlyFragment extends Fragment implements AdapterView.OnItemSelect
             case 0:
                 Collections.sort(applianceModelListeList, ApplianceModel.electusageMaxComparator);
                 recyclerView.setAdapter(mAdapter);
-                Toast.makeText(parent.getContext(), "Selected 0: " + item, Toast.LENGTH_LONG).show();
+                //Toast.makeText(parent.getContext(), "Selected 0: " + item, Toast.LENGTH_LONG).show();
                 break;
             case 1:
                 Collections.sort(applianceModelListeList, ApplianceModel.electusageMinComparator);
                 recyclerView.setAdapter(mAdapter);
-                Toast.makeText(parent.getContext(), "Selected 1: " + item, Toast.LENGTH_LONG).show();
+                //Toast.makeText(parent.getContext(), "Selected 1: " + item, Toast.LENGTH_LONG).show();
                 break;
             /*case 2:
                 Toast.makeText(parent.getContext(), "Selected 2: " + item, Toast.LENGTH_LONG).show();
