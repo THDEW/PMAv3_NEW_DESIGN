@@ -62,19 +62,6 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
         itemRowHolder.recycler_view_list.setAdapter(null);
 
 
-        /*itemRowHolder.btnMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                Toast.makeText(v.getContext(), "click event on more, "+sectionName , Toast.LENGTH_SHORT).show();
-
-
-
-            }
-        });*/
-
-
        /* Glide.with(mContext)
                 .load(feedItem.getImageURL())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -161,7 +148,9 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
                         recycler_view_list.setAdapter(null);
                         img.setBackgroundResource(R.drawable.down_arrow);
                         open = false;
-                        allBt.setVisibility(View.VISIBLE);
+                        if(Home.page == 1){
+                            allBt.setVisibility(View.VISIBLE);
+                        }
                     } else {
                         recycler_view_list.setAdapter(backUp);
                         img.setBackgroundResource(R.drawable.up_arrow);
