@@ -13,7 +13,6 @@
         android:id="@+id/sort_by_text_yearly"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="74dp"
         android:text="Sort by: "
         android:textAllCaps="true"
         android:textColor="#FFC107"
@@ -23,7 +22,6 @@
         android:id="@+id/sort_by_spinner_yearly"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
         android:layout_toRightOf="@id/sort_by_text_yearly"/>
     <TextView
         android:id="@+id/telling_location_device_yearly"

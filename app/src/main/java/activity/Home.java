@@ -24,6 +24,8 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
     public static int page = 0;
     public static int menu_statistic = 0;
 
+    public static boolean login = false;
+
     OnOffFragment fragment = null;
     LocationFragment fragment0 = null;
     StatisticFragment fragment1 = null;
@@ -94,7 +96,7 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
         if(position == 2){
             fragment1.updateStatistic(this);
         }
-        if(position != 0) {
+        if(position != 0 && position != 1) {
             LocationFragment.data.clear();
         }
 

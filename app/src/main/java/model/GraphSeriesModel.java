@@ -26,6 +26,10 @@ public class GraphSeriesModel {
         this.value = value;
     }
 
+    public String getDevice() {
+        return device;
+    }
+
     public String getLocation() {
         return location;
     }

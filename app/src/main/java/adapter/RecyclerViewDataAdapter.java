@@ -100,7 +100,6 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
             this.recycler_view_list = (RecyclerView) view.findViewById(R.id.recycler_view_list);
             this.img = (ImageView) view.findViewById(R.id.expandSignal);
             this.allBt = (Button) view.findViewById(R.id.allBt);
-            //this.btnMore= (Button) view.findViewById(R.id.btnMore);
 
             if(Home.page == 1) {
 
@@ -137,6 +136,15 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
             itemTitle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+                    for (int i = 0; i < index; i++) {
+
+                        if (!LocationFragment.data.get(i).getIsLocation() &&
+                                LocationFragment.data.get(i).getLocation().equals(itemTitle.getText().toString())) {
+                            LocationFragment.data.get(i).setValue(-1d);
+                        }
+                    }
+
 
                     if(selectAll) {
                         LocationFragment.data.get(index).setValue(-1d);

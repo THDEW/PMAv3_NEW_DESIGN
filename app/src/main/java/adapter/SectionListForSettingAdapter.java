@@ -15,6 +15,7 @@ import com.example.senoir.newpmatry1.R;
 import java.util.ArrayList;
 
 import dialog.RowDataDialog;
+import model.ItemDataModel;
 import model.SingleItemModel;
 
 /**
@@ -22,14 +23,16 @@ import model.SingleItemModel;
  */
 public class SectionListForSettingAdapter extends RecyclerView.Adapter<SectionListForSettingAdapter.SingleItemRowHolder> {
 
-    private ArrayList<SingleItemModel> itemsList;
+    private ArrayList<ItemDataModel> itemsList;
+    private ArrayList<ItemDataModel>[] itemsListSupport;
     private Context mContext;
     private FragmentManager fm;
     private String rowName;
     private int condition;
 
-    public SectionListForSettingAdapter(Context context, ArrayList<SingleItemModel> itemsList, FragmentManager fm, String rowName, int i) {
+    public SectionListForSettingAdapter(Context context,ArrayList<ItemDataModel>[] itemsListSupport, ArrayList<ItemDataModel> itemsList, FragmentManager fm, String rowName, int i) {
         this.itemsList = itemsList;
+        this.itemsListSupport = itemsListSupport;
         this.mContext = context;
         this.fm = fm;
         this.rowName = rowName;
@@ -46,7 +49,9 @@ public class SectionListForSettingAdapter extends RecyclerView.Adapter<SectionLi
     @Override
     public void onBindViewHolder(SingleItemRowHolder holder, int i) {
 
-        SingleItemModel singleItem = itemsList.get(i);
+        ItemDataModel singleItem = itemsList.get(i);
+
+        holder.ownData = singleItem;
 
         holder.rowNameTv.setText(singleItem.getName());
 
@@ -64,7 +69,7 @@ public class SectionListForSettingAdapter extends RecyclerView.Adapter<SectionLi
 
         protected RelativeLayout rl;
 
-        protected Button addBt;
+        protected ItemDataModel ownData;
 
         public SingleItemRowHolder(View view) {
             super(view);
@@ -76,8 +81,9 @@ public class SectionListForSettingAdapter extends RecyclerView.Adapter<SectionLi
             rl.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    RowDataDialog dialog = new RowDataDialog(rowName, condition, false, fm);
+                    RowDataDialog dialog = new RowDataDialog(rowName, condition, false, fm, itemsListSupport, ownData);
                     dialog.show(fm, "Tag");
+                    dialog.setCancelable(false);
                 }
             });
 
