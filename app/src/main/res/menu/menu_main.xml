@@ -5,9 +5,13 @@
     tools:context=".MainActivity">
 
     <item
-        android:id="@+id/action_settings"
-        android:title="@string/action_settings"
+        android:id="@+id/action_statistic_location"
+        android:title="Location"
         android:orderInCategory="100"
-        app:showAsAction="never" />
-
+        app:showAsAction="withText"/>
+    <item
+        android:id="@+id/action_statistic_devices"
+        android:title="Devices"
+        android:orderInCategory="100"
+        app:showAsAction="withText"/>
 </menu>

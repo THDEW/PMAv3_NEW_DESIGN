@@ -6,8 +6,9 @@ import java.util.Comparator;
  * Created by my131 on 29/4/2559.
  */
 public class ApplianceModel {
-    private String appliname, date, frontelectusage;
-    private long elecusage;
+    private String appliname, date, frontelectusage, locationname;
+    private long elecusage, elecusageLocation;
+    private boolean isLocation = false;
 
     public ApplianceModel() {
     }
@@ -17,6 +18,14 @@ public class ApplianceModel {
         this.elecusage = elecusage;
         this.date = date;
         this.frontelectusage = frontelectusage;
+    }
+    public ApplianceModel(String locationname, long elecusageLocation, String date, String frontelectusage,boolean isLocation){
+        this.locationname = locationname;
+        this.elecusageLocation = elecusageLocation;
+        this.date = date;
+        this.frontelectusage = frontelectusage;
+        this.isLocation = isLocation;
+
     }
 
     public String getTitle() {

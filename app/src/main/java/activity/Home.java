@@ -22,6 +22,7 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
     private FragmentDrawer drawerFragment;
 
     public static int page = 0;
+    public static int menu_statistic = 0;
 
     public static boolean login = false;
 
@@ -56,7 +57,10 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        if(page == 2){
+            getMenuInflater().inflate(R.menu.menu_main, menu);
+        }
+
         return true;
     }
 
@@ -68,9 +72,17 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_statistic_devices){
+            menu_statistic = 0;
+            fragment1.changeStatisticData();
             return true;
         }
+        if (id == R.id.action_statistic_location){
+            menu_statistic = 1;
+            fragment1.changeStatisticData();
+            return true;
+        }
+
 
         return super.onOptionsItemSelected(item);
     }

@@ -15,6 +15,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.widget.AdapterView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,8 @@ public class StatisticFragment extends Fragment {
     private FragmentActivity myContext;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private ViewPagerAdapter viewPagerAdapter;
+    AdapterView<?> parent;
 
     public StatisticFragment() {
         // Required empty public constructor
@@ -39,11 +42,11 @@ public class StatisticFragment extends Fragment {
         if(viewPager != null) {
             FragmentActivity contextTemp = (FragmentActivity) context;
             FragmentManager fragManager = contextTemp.getSupportFragmentManager();
-            ViewPagerAdapter adapter = new ViewPagerAdapter(fragManager);
-            adapter.addFragment(new DailyFragment(), "Daily");
-            adapter.addFragment(new MonthlyFragment(), "Monthly");
-            adapter.addFragment(new YearlyFragment(), "Yearly");
-            viewPager.setAdapter(adapter);
+            viewPagerAdapter = new ViewPagerAdapter(fragManager);
+            viewPagerAdapter.addFragment(new DailyFragment(), "Daily");
+            viewPagerAdapter.addFragment(new MonthlyFragment(), "Monthly");
+            viewPagerAdapter.addFragment(new YearlyFragment(), "Yearly");
+            viewPager.setAdapter(viewPagerAdapter);
         }
     }
 
@@ -61,13 +64,24 @@ public class StatisticFragment extends Fragment {
 
         return rootView;
     }
+
+    public void changeStatisticData(){
+        viewPagerAdapter.updateChangeDaily();
+        viewPagerAdapter.updateChangeMonthly();
+        viewPagerAdapter.updateChangYearly();
+    }
+
+
     private void setupViewPager(ViewPager viewPager) {
-        FragmentManager fragManager = myContext.getSupportFragmentManager();
-        ViewPagerAdapter adapter = new ViewPagerAdapter(fragManager);
-        adapter.addFragment(new DailyFragment(), "Daily");
-        adapter.addFragment(new MonthlyFragment(), "Monthly");
-        adapter.addFragment(new YearlyFragment(), "Yearly");
-        viewPager.setAdapter(adapter);
+        Activity context;
+        context = (FragmentActivity) getActivity();
+        FragmentActivity contextTemp = (FragmentActivity) context;
+        FragmentManager fragManager = contextTemp.getSupportFragmentManager();
+        viewPagerAdapter = new ViewPagerAdapter(fragManager);
+        viewPagerAdapter.addFragment(new DailyFragment(), "Daily");
+        viewPagerAdapter.addFragment(new MonthlyFragment(), "Monthly");
+        viewPagerAdapter.addFragment(new YearlyFragment(), "Yearly");
+        viewPager.setAdapter(viewPagerAdapter);
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -91,6 +105,19 @@ public class StatisticFragment extends Fragment {
         public void addFragment(Fragment fragment, String title) {
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
+        }
+
+        public void updateChangeDaily(){
+                DailyFragment DailyChange = (DailyFragment) mFragmentList.get(0);
+                DailyChange.changeDialy(20);
+        }
+        public void updateChangeMonthly(){
+            MonthlyFragment MonthlyChange = (MonthlyFragment) mFragmentList.get(1);
+            MonthlyChange.changeMonthly(20);
+        }
+        public void updateChangYearly(){
+            YearlyFragment YearlyChange = (YearlyFragment) mFragmentList.get(2);
+            YearlyChange.changeYearly(20);
         }
 
         @Override
