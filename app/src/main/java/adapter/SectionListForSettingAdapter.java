@@ -76,7 +76,7 @@ public class SectionListForSettingAdapter extends RecyclerView.Adapter<SectionLi
             rl.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    RowDataDialog dialog = new RowDataDialog(rowNameTv.getText().toString(), condition, false, fm);
+                    RowDataDialog dialog = new RowDataDialog(rowName, condition, false, fm);
                     dialog.show(fm, "Tag");
                 }
             });

@@ -3,4 +3,127 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp" >
+
+        <TextView
+            android:layout_width="140dp"
+            android:layout_height="40dp"
+            android:text="Device Name"
+            android:id="@+id/textView12"
+            android:gravity="center|left"
+            android:textSize="20dp" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:id="@+id/editText3"
+            android:textSize="20dp"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/textView12"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp" >
+
+        <TextView
+            android:layout_width="140dp"
+            android:layout_height="40dp"
+            android:text="Device Detail"
+            android:id="@+id/textView13"
+            android:gravity="center|left"
+            android:textSize="20dp" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:id="@+id/editText4"
+            android:textSize="20dp"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/textView13"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Group of Device"
+            android:id="@+id/textView14"
+            android:gravity="center"
+            android:textSize="20dp" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:id="@+id/editText5"
+            android:textSize="20dp"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/textView14"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp" >
+
+        <TextView
+            android:layout_width="140dp"
+            android:layout_height="40dp"
+            android:text="Description "
+            android:id="@+id/textView17"
+            android:gravity="center|left"
+            android:textSize="20dp" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:id="@+id/editText8"
+            android:textSize="20dp"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/textView17"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add"
+            android:id="@+id/addBt_6"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:id="@+id/cancelBt_6"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete"
+            android:id="@+id/deleteBt_6"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/addBt_6"
+            android:layout_toEndOf="@+id/addBt_6" />
+    </RelativeLayout>
 </LinearLayout>

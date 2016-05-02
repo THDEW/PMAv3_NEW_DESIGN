@@ -3,4 +3,81 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Location Name"
+            android:id="@+id/textView20"
+            android:gravity="center"
+            android:textSize="20dp" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:id="@+id/editText13"
+            android:textSize="20dp"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/textView20"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Description       "
+            android:id="@+id/textView22"
+            android:gravity="center"
+            android:textSize="20dp" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:id="@+id/editText15"
+            android:textSize="20dp"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/textView22"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add"
+            android:id="@+id/addBt_4"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:id="@+id/cancelBt_4"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete"
+            android:id="@+id/deleteBt_4"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/addBt_4"
+            android:layout_toEndOf="@+id/addBt_4" />
+    </RelativeLayout>
 </LinearLayout>

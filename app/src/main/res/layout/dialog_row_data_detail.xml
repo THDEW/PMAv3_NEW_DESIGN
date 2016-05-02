@@ -3,4 +3,173 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Device Type"
+            android:id="@+id/textView28"
+            android:gravity="center"
+            android:textSize="20dp" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:id="@+id/editText21"
+            android:textSize="20dp"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/textView28"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Brand           "
+            android:id="@+id/textView29"
+            android:gravity="center"
+            android:textSize="20dp" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:id="@+id/editText22"
+            android:textSize="20dp"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/textView29"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Model          "
+            android:id="@+id/textView30"
+            android:gravity="center"
+            android:textSize="20dp" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:id="@+id/editText23"
+            android:textSize="20dp"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/textView30"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Power_Watt"
+            android:id="@+id/textView31"
+            android:gravity="center"
+            android:textSize="20dp" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:id="@+id/editText24"
+            android:textSize="20dp"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/textView31"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="BTN              "
+            android:id="@+id/textView32"
+            android:gravity="center"
+            android:textSize="20dp" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:id="@+id/editText25"
+            android:textSize="20dp"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/textView32"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Description "
+            android:id="@+id/textView33"
+            android:gravity="center"
+            android:textSize="20dp" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:id="@+id/editText26"
+            android:textSize="20dp"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/textView33"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add"
+            android:id="@+id/addBt_2"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:id="@+id/cancelBt_2"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete"
+            android:id="@+id/deleteBt_2"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/addBt_2"
+            android:layout_toEndOf="@+id/addBt_2" />
+    </RelativeLayout>
 </LinearLayout>
