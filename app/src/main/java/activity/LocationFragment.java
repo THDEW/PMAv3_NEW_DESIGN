@@ -21,11 +21,14 @@ import com.jjoe64.graphview.GraphView;
 import com.example.senoir.newpmatry1.R;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 
 
 import java.util.ArrayList;
 
+import adapter.DividerItemDecoration;
 import adapter.RecyclerViewDataAdapter;
+import dialog.GraphSelection;
 import dialog.TimeSelectionDialog;
 import model.GraphSeriesModel;
 import model.SectionDataModel;
@@ -44,9 +47,13 @@ public class LocationFragment extends Fragment{
     public static ArrayList<GraphSeriesModel> data = new ArrayList<>();
     public static ArrayList<Double> data2 = new ArrayList<>();
 
+    public static boolean isBarGraph = true;
+
     BarGraphSeries<DataPoint> series;
 
-    GraphView graph;
+    ArrayList<LineGraphSeries<DataPoint>> lineSeries;
+
+    static GraphView graph;
 
     static TextView tv;
 
@@ -78,22 +85,30 @@ public class LocationFragment extends Fragment{
 
         my_recycler_view.setLayoutManager(new LinearLayoutManager(myContext, LinearLayoutManager.VERTICAL, false));
 
+        my_recycler_view.addItemDecoration(new DividerItemDecoration(myContext, LinearLayoutManager.VERTICAL));
+
         my_recycler_view.setAdapter(adapter);
 
         //graph view section
         graph = (GraphView) rootView.findViewById(R.id.graph);
 
-        series = new BarGraphSeries<>();
+        lineSeries = new ArrayList<>();
 
-        graph.addSeries(series);
+        if (isBarGraph) {
+            series = new BarGraphSeries<>();
 
-        series.setSpacing(20);
+            graph.addSeries(series);
+
+            series.setSpacing(20);
+        }
 
         // draw values on top
         series.setDrawValuesOnTop(true);
         series.setValuesOnTopColor(Color.RED);
 
         graph.getGridLabelRenderer().setNumHorizontalLabels(5);
+        graph.getGridLabelRenderer().setVerticalAxisTitle("Energy Consumption (WATT)");
+        graph.getGridLabelRenderer().setVerticalLabelsVisible(false);
         graph.getViewport().setMinX(0);
         graph.getViewport().setMaxX(4);
         graph.getViewport().setXAxisBoundsManual(true);
@@ -101,26 +116,37 @@ public class LocationFragment extends Fragment{
         graph.getViewport().setScrollable(true);
         graph.getViewport().setScalable(true);
 
+        lineSeries.add(new LineGraphSeries<DataPoint>());
+
+        graph.addSeries(lineSeries.get(0));
 
         final Handler mHandler = new Handler();
 
         Runnable mTimer1 = new Runnable() {
             @Override
             public void run() {
+                if(isBarGraph) {
+                    setDataPoint();
+                    if (dataPoint != null) {
+                        series.resetData(dataPoint);
+                    }
+                    graph.getViewport().setMinY(0);
+                    graph.getViewport().setMaxY(getMax() + 5);
 
-                setDataPoint();
-                if(dataPoint != null) {
-                    series.resetData(dataPoint);
-                }
-                graph.getViewport().setMinY(0);
-                graph.getViewport().setMaxY(getMax() + 5);
+                    //                    for (int i = 0; i < data.size(); i++) {
+                    //                        if (data.get(i).getSumValue() > data2.get(i)) {
+                    //                            data2.set(i, data2.get(i) + (data.get(i).getSumValue() / 100) * 3);
+                    //                        }
+                    //                    }
+                } else {
 
-                for(int i = 0; i < data.size(); i++){
-                    if(data.get(i).getValue() > data2.get(i)) {
-                        data2.set(i, data2.get(i) + (data.get(i).getValue()/100)*3);
+                    for(int i  = 0; i < data.size(); i++){
+                        if(data.get(i).getValue(0) != -1d) {
+                            lineSeries.add(new LineGraphSeries<DataPoint>());
+                            lineSeries.get(i).resetData(getDataPoint(i));
+                        }
                     }
                 }
-
                 mHandler.postDelayed(this, 1);
             }
         };
@@ -129,7 +155,7 @@ public class LocationFragment extends Fragment{
         // Time selection
         tv = (TextView) rootView.findViewById(R.id.periodOfTime);
 
-        Button timeSelection = (Button) rootView.findViewById(R.id.timeTv);
+        Button timeSelection = (Button) rootView.findViewById(R.id.time_button);
         timeSelection.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -137,6 +163,18 @@ public class LocationFragment extends Fragment{
 
                 TimeSelectionDialog dialog = new TimeSelectionDialog(rootView);
                 dialog.show(fm, "Time Selection");
+
+            }
+        });
+
+        Button graphSelection = (Button) rootView.findViewById(R.id.graph_button);
+        graphSelection.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                GraphSelection dialog = new GraphSelection();
+                dialog.show(fm, "Graph Type Selection");
 
             }
         });
@@ -175,21 +213,34 @@ public class LocationFragment extends Fragment{
         int count = 0;
 
         for(int i = 0; i < data.size(); i++){
-            if(data.get(i).getValue() != -1d){
+            if(data.get(i).getValue(0) != -1d){
                 count++;
             }
         }
+        if(isBarGraph) {
+            dataPoint = new DataPoint[count];
 
-        dataPoint = new DataPoint[count];
+            count = 0;
 
-        count = 0;
-
-        for(int i = 0; i < data.size(); i++){
-            if(data.get(i).getValue() != -1d){
-                dataPoint[count] = new DataPoint(count,data2.get(i));
-                count++;
+            for (int i = 0; i < data.size(); i++) {
+                if (data.get(i).getValue(0) != -1d) {
+                    dataPoint[count] = new DataPoint(count, data.get(i).getSumValue());
+                    count++;
+                }
             }
         }
+    }
+
+    public DataPoint[] getDataPoint(int index){
+
+        if(data.get(index).getValue(0) != -1d){
+            int size = data.get(index).getSize();
+            dataPoint = new DataPoint[size];
+            for(int i = 0; i < size; i++){
+                dataPoint[i] = new DataPoint(i, data.get(0).getValue(i));
+            }
+        }
+        return dataPoint;
     }
 
     public double getMax(){
@@ -197,18 +248,13 @@ public class LocationFragment extends Fragment{
         double max = 0;
 
         for(int i = 0; i < data.size(); i++){
-            if(data.get(i).getValue() > max){
-                max = data.get(i).getValue();
+            if(data.get(i).getValue(0) > max){
+                max = data.get(i).getValue(0);
             }
         }
 
         return max;
     }
-
-    public void setPeriodOfTime(String str){
-        tv.setText(str);
-    }
-
 
     @Override
     public void onAttach(final Activity activity) {

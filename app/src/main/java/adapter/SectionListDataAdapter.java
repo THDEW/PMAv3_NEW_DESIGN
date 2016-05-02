@@ -29,12 +29,21 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
     private Context mContext;
     private FragmentManager fm;
     private String location;
+    private boolean onOff;
 
     public SectionListDataAdapter(Context context, ArrayList<SingleItemModel> itemsList, FragmentManager fm, String location) {
         this.itemsList = itemsList;
         this.mContext = context;
         this.fm = fm;
         this.location = location;
+    }
+
+    public SectionListDataAdapter(Context context, ArrayList<SingleItemModel> itemsList, FragmentManager fm, String location, boolean onOff) {
+        this.itemsList = itemsList;
+        this.mContext = context;
+        this.fm = fm;
+        this.location = location;
+        this.onOff = onOff;
     }
 
     @Override
@@ -64,7 +73,7 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
 
             if (LocationFragment.data.get(j).getDevice().equals(holder.tvTitle.getText().toString()) &&
                     LocationFragment.data.get(j).getLocation().equals(location) &&
-                    LocationFragment.data.get(j).getValue() != -1d) {
+                    LocationFragment.data.get(j).getValue(0) != -1d) {
 
                 holder.index = j;
                 holder.itemImage.setAlpha(0.2f);
@@ -113,20 +122,31 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                         String hour = " Hr.    ";
                         String baht = " BAHT.    ";
 
-                        EachDeviceDialog dialogFragment = new EachDeviceDialog (tvTitle.getText().toString() , location,"80" + unit ,"20" + hour,"500" + baht, false);
+                        EachDeviceDialog dialogFragment = new EachDeviceDialog (tvTitle.getText().toString() , location,"80" + unit ,
+                                "20" + hour,"500" + baht, onOff);
                         dialogFragment.show(fm, tvTitle.getText().toString() );
 
 
                     } else if (Home.page == 1) {
                         if (selected) {
-                            LocationFragment.data.get(index).setValue(-1d);
+                            LocationFragment.data.get(index).setValue(0);
                             selected = false;
                             itemImage.setAlpha(1f);
                             //itemImage.setBackgroundResource(R.drawable.ic_brightness_7_black_36dp);
                         } else {
                             index = LocationFragment.data.size();
 
-                            LocationFragment.data.add(new GraphSeriesModel(tvTitle.getText().toString(),location ,(index + 1) * 2d,false));
+                            ArrayList<Double> dataFromDataBase = new ArrayList<>();
+                            dataFromDataBase.add(2d + index);
+                            dataFromDataBase.add(5d + index);
+                            dataFromDataBase.add(3d + index);
+                            dataFromDataBase.add(3d + index);
+                            dataFromDataBase.add(6d + index);
+                            dataFromDataBase.add(7d + index);
+                            dataFromDataBase.add(1d + index);
+
+                            LocationFragment.data.add(new GraphSeriesModel(tvTitle.getText().toString(),location
+                                    ,dataFromDataBase,false));
                             LocationFragment.data2.add(0d);
                             itemImage.setAlpha(0.2f);
                             selected = true;

@@ -18,6 +18,7 @@ import com.example.senoir.newpmatry1.R;
 
 import java.util.ArrayList;
 
+import adapter.DividerItemDecoration;
 import adapter.RecyclerViewDataAdapter;
 import model.SectionDataModel;
 import model.SingleItemModel;
@@ -52,9 +53,11 @@ public class OffFragment extends Fragment{
 
         my_recycler_view.setHasFixedSize(true);
 
-        RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(myContext, allSampleData, fm);
+        RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(myContext, allSampleData, fm, false);
 
         my_recycler_view.setLayoutManager(new LinearLayoutManager(myContext, LinearLayoutManager.VERTICAL, false));
+
+        my_recycler_view.addItemDecoration(new DividerItemDecoration(myContext, LinearLayoutManager.VERTICAL));
 
         my_recycler_view.setAdapter(adapter);
 

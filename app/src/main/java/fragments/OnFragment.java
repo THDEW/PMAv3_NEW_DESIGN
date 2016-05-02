@@ -23,6 +23,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
+
+import adapter.DividerItemDecoration;
 import adapter.RecyclerViewDataAdapter;
 import model.SectionDataModel;
 import model.SingleItemModel;
@@ -60,9 +62,11 @@ public class OnFragment extends Fragment{
 
         my_recycler_view.setHasFixedSize(true);
 
-        RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(myContext, allSampleData, fm);
+        RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(myContext, allSampleData, fm, true);
 
         my_recycler_view.setLayoutManager(new LinearLayoutManager(myContext, LinearLayoutManager.VERTICAL, false));
+
+        my_recycler_view.addItemDecoration(new DividerItemDecoration(myContext, LinearLayoutManager.VERTICAL));
 
         my_recycler_view.setAdapter(adapter);
 
