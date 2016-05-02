@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.senoir.newpmatry1.R;
@@ -37,7 +38,12 @@ public class DailyFragment extends Fragment implements AdapterView.OnItemSelecte
     private ArrayList<ApplianceModel> applianceModelListeList = new ArrayList<ApplianceModel>();
     private RecyclerView recyclerView;
     private ApplianceAdapter mAdapter;
+    private int onspinnerselected;
+
+    TextView buttonToChange;
+
     public DailyFragment() {
+
         // Required empty public constructor
     }
 
@@ -55,8 +61,10 @@ public class DailyFragment extends Fragment implements AdapterView.OnItemSelecte
         spinner.setOnItemSelectedListener(this);
         ArrayAdapter<CharSequence> SpinnerAdapter = ArrayAdapter.createFromResource(myContext, R.array.sort_by_array, android.R.layout.simple_spinner_item);
         SpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(SpinnerAdapter);
 
+        buttonToChange = (TextView) rootView.findViewById(R.id.telling_location_device_daily);
+
+        spinner.setAdapter(SpinnerAdapter);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_daily);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(myContext);
@@ -70,6 +78,11 @@ public class DailyFragment extends Fragment implements AdapterView.OnItemSelecte
             applianceModelListeList.clear();
         }
         prepareApplianceData(20);
+        if(Home.menu_statistic==0){
+            buttonToChange.setText("Devices");
+        } else if(Home.menu_statistic==1){
+            buttonToChange.setText("Locations");
+        }
         return rootView;
     }
     @Override
@@ -78,31 +91,73 @@ public class DailyFragment extends Fragment implements AdapterView.OnItemSelecte
         super.onAttach(activity);
     }
     private void prepareApplianceData(int numSize) {
-        int start;
+        int start, start0;
         long elecusages = 0;
-        for(start = 0; start<numSize; start++){
-            ApplianceModel appliances = new ApplianceModel("Name: Air-Conditioner "+ start,  elecusages++, "03/02/2016", "Electricity's Usage: ");
-            applianceModelListeList.add(appliances);
+        long elecusageLocation = 0;
+        if (Home.menu_statistic==0) {
+            for (start = 0; start < numSize; start++) {
+                ApplianceModel appliances = new ApplianceModel("Name: Air-Conditioner " + start, elecusages++, "03/02/2016", "Electricity's Usage: ");
+                applianceModelListeList.add(appliances);
+            }
+        } else if (Home.menu_statistic==1) {
+            for (start0 = 0; start0 < numSize - 15; start0++) {
+                ApplianceModel locationapp = new ApplianceModel("Name: Location " + start0, elecusageLocation++, "05/12/2016", "Electricity's Usage: ");
+                applianceModelListeList.add(locationapp);
+            }
         }
         mAdapter.notifyDataSetChanged();
 
     }
 
+    public void changeDialy(int numSize){
+        if(recyclerView!=null) {
+            applianceModelListeList.clear();
+            int start, start0;
+            long elecusages = 0;
+            long elecusageLocation = 0;
+            if (Home.menu_statistic == 0) {
+                for (start = 0; start < numSize; start++) {
+                    ApplianceModel appliances = new ApplianceModel("Name: Air-Conditioner " + start, elecusages++, "03/02/2016", "Electricity's Usage: ");
+                    applianceModelListeList.add(appliances);
+                }
+                buttonToChange.setText("Devices");
+            } else if (Home.menu_statistic == 1) {
+                for (start0 = 0; start0 < numSize - 15; start0++) {
+                    ApplianceModel locationapp = new ApplianceModel("Name: Location " + start0, elecusageLocation++, "05/12/2016", "Electricity's Usage: ");
+                    applianceModelListeList.add(locationapp);
+                }
+                buttonToChange.setText("Locations");
+            }
+            if (onspinnerselected == 0) {
+                Collections.sort(applianceModelListeList, ApplianceModel.electusageMaxComparator);
+            } else {
+                Collections.sort(applianceModelListeList, ApplianceModel.electusageMinComparator);
+            }
+            //mAdapter = new ApplianceAdapter(applianceModelListeList);
+
+            recyclerView.setAdapter(mAdapter);
+        }
+
+    }
+
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // On selecting a spinner item
         String item = parent.getItemAtPosition(position).toString();
-        switch (position){
-            case 0:
+        switch (item){
+            case "Max Power usage":
                 Collections.sort(applianceModelListeList, ApplianceModel.electusageMaxComparator);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
                 recyclerView.setAdapter(mAdapter);
+                onspinnerselected=0;
                 //Toast.makeText(parent.getContext(), "Selected 0: " + item, Toast.LENGTH_LONG).show();
                 break;
-            case 1:
+            case "Min Power usage":
                 Collections.sort(applianceModelListeList, ApplianceModel.electusageMinComparator);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
                 recyclerView.setAdapter(mAdapter);
+                onspinnerselected=1;
                 //Toast.makeText(parent.getContext(), "Selected 1: " + item, Toast.LENGTH_LONG).show();
                 break;
             /*case 2:
@@ -111,7 +166,7 @@ public class DailyFragment extends Fragment implements AdapterView.OnItemSelecte
         }
 
         // Showing selected spinner item
-        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+        //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
     }
 
     @Override
