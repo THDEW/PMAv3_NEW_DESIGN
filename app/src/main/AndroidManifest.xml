@@ -9,6 +9,8 @@
         android:supportsRtl="true"
         android:theme="@style/MyMaterialTheme">
         <activity android:name="activity.Home">
+        </activity>
+        <activity android:name=".IntroductionPage">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
