@@ -18,8 +18,8 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:id="@+id/editText13"
-            android:textSize="20dp"
+            android:id="@+id/data_location_1"
+            android:textSize="15dp"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/textView20"
             android:layout_alignParentRight="true"
@@ -41,8 +41,8 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:id="@+id/editText15"
-            android:textSize="20dp"
+            android:id="@+id/data_location_2"
+            android:textSize="15dp"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/textView22"
             android:layout_alignParentRight="true"

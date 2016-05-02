@@ -18,8 +18,8 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:id="@+id/editText3"
-            android:textSize="20dp"
+            android:id="@+id/data_device_1"
+            android:textSize="15dp"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/textView12"
             android:layout_alignParentRight="true"
@@ -38,15 +38,13 @@
             android:gravity="center|left"
             android:textSize="20dp" />
 
-        <EditText
+        <Spinner
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:id="@+id/editText4"
-            android:textSize="20dp"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/textView13"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_height="wrap_content"
+            android:id="@+id/detail_spinner"
+            android:layout_toEndOf="@+id/textView13"
+            android:layout_toRightOf="@+id/textView13" />
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -61,15 +59,12 @@
             android:gravity="center"
             android:textSize="20dp" />
 
-        <EditText
+        <Spinner
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:id="@+id/editText5"
-            android:textSize="20dp"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/textView14"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_height="wrap_content"
+            android:id="@+id/group_spinner"
+            android:layout_toEndOf="@+id/textView14"
+            android:layout_toRightOf="@+id/textView14" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -87,8 +82,8 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:id="@+id/editText8"
-            android:textSize="20dp"
+            android:id="@+id/data_device_2"
+            android:textSize="15dp"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/textView17"
             android:layout_alignParentRight="true"

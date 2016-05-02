@@ -15,15 +15,13 @@
             android:gravity="center"
             android:textSize="20dp" />
 
-        <EditText
+        <Spinner
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:id="@+id/editText21"
-            android:textSize="20dp"
-            android:layout_alignParentTop="true"
+            android:layout_height="wrap_content"
+            android:id="@+id/data_type_spinner"
             android:layout_toRightOf="@+id/textView28"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_toEndOf="@+id/textView28" />
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -41,8 +39,8 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:id="@+id/editText22"
-            android:textSize="20dp"
+            android:id="@+id/data_detail_1"
+            android:textSize="15dp"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/textView29"
             android:layout_alignParentRight="true"
@@ -64,8 +62,8 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:id="@+id/editText23"
-            android:textSize="20dp"
+            android:id="@+id/data_detail_2"
+            android:textSize="15dp"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/textView30"
             android:layout_alignParentRight="true"
@@ -87,8 +85,8 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:id="@+id/editText24"
-            android:textSize="20dp"
+            android:id="@+id/data_detail_3"
+            android:textSize="15dp"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/textView31"
             android:layout_alignParentRight="true"
@@ -110,8 +108,8 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:id="@+id/editText25"
-            android:textSize="20dp"
+            android:id="@+id/data_detail_4"
+            android:textSize="15dp"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/textView32"
             android:layout_alignParentRight="true"
@@ -133,8 +131,8 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:id="@+id/editText26"
-            android:textSize="20dp"
+            android:id="@+id/data_detail_5"
+            android:textSize="15dp"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/textView33"
             android:layout_alignParentRight="true"

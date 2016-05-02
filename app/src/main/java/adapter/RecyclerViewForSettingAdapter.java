@@ -17,7 +17,8 @@ import com.example.senoir.newpmatry1.R;
 import java.util.ArrayList;
 
 import dialog.RowDataDialog;
-import model.SectionDataModel;
+import model.ItemDataModel;
+import model.TableDataModel;
 
 /**
  * Created by Toshiba on 5/1/2016.
@@ -25,11 +26,11 @@ import model.SectionDataModel;
 public class RecyclerViewForSettingAdapter extends RecyclerView.Adapter<RecyclerViewForSettingAdapter.ItemRowHolder> {
 
 
-    private ArrayList<SectionDataModel> dataList;
+    private ArrayList<TableDataModel> dataList;
     private Context mContext;
     private FragmentManager fm;
 
-    public RecyclerViewForSettingAdapter(Context context, ArrayList<SectionDataModel> dataList, FragmentManager fm) {
+    public RecyclerViewForSettingAdapter(Context context, ArrayList<TableDataModel> dataList, FragmentManager fm) {
         this.dataList = dataList;
         this.mContext = context;
         this.fm = fm;
@@ -48,7 +49,7 @@ public class RecyclerViewForSettingAdapter extends RecyclerView.Adapter<Recycler
 
         ArrayList singleSectionItems = dataList.get(i).getAllItemsInSection();
 
-        SectionListForSettingAdapter itemListDataAdapter = new SectionListForSettingAdapter(mContext, singleSectionItems, fm, sectionName, i);
+        SectionListForSettingAdapter itemListDataAdapter = new SectionListForSettingAdapter(mContext, itemRowHolder.groupOfData ,singleSectionItems, fm, sectionName, i);
 
         itemRowHolder.backUp = itemListDataAdapter;
 
@@ -82,6 +83,8 @@ public class RecyclerViewForSettingAdapter extends RecyclerView.Adapter<Recycler
 
         boolean open = false;
 
+        ArrayList<ItemDataModel>[] groupOfData;
+
         SectionListForSettingAdapter backUp;
 
             public ItemRowHolder(View view){
@@ -91,6 +94,11 @@ public class RecyclerViewForSettingAdapter extends RecyclerView.Adapter<Recycler
                 this.recycler_view_list = (RecyclerView) view.findViewById(R.id.recycler_view_list2);
                 this.img = (ImageView) view.findViewById(R.id.expandSignal2);
                 this.addBt = (Button) view.findViewById(R.id.addBt);
+
+                groupOfData = new ArrayList[6];
+                for(int i = 0; i < dataList.size(); i++){
+                    groupOfData[i] = dataList.get(i).getAllItemsInSection();
+                }
 
                 columnTitle.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -110,8 +118,9 @@ public class RecyclerViewForSettingAdapter extends RecyclerView.Adapter<Recycler
                 addBt.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        RowDataDialog dialog = new RowDataDialog(columnTitle.getText().toString(), condition, true, fm);
+                        RowDataDialog dialog = new RowDataDialog(columnTitle.getText().toString(), condition, true, fm, groupOfData);
                         dialog.show(fm, "Tag");
+                        dialog.setCancelable(false);
                     }
                 });
 

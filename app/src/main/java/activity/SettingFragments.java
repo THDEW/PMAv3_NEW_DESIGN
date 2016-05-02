@@ -19,14 +19,16 @@ import java.util.ArrayList;
 
 import adapter.RecyclerViewForSettingAdapter;
 import dialog.LoginDialog;
+import model.ItemDataModel;
 import model.SectionDataModel;
 import model.SingleItemModel;
+import model.TableDataModel;
 
 
 public class SettingFragments extends Fragment{
 
     private FragmentActivity myContext;
-    ArrayList<SectionDataModel> allSampleData;
+    ArrayList<TableDataModel> allSampleData;
     FragmentManager fm;
     String[] type;
 
@@ -47,11 +49,18 @@ public class SettingFragments extends Fragment{
         View rootView = inflater.inflate(R.layout.fragment_setting, container, false);
 
         type = new String[]{"Data Type", "Data Detail", "Power Node"
-        ,"Location" ,"Group of Device", "Device" };
+        ,"Location" ,"Group", "Device" };
 
         FragmentManager fm = getFragmentManager();
-        LoginDialog dialog = new LoginDialog();
-        dialog.show(fm, "Login");
+
+        if(!Home.login){
+
+            LoginDialog dialog = new LoginDialog();
+            dialog.show(fm, "Login");
+            dialog.setCancelable(false);
+
+            Home.login = true;
+        }
 
         allSampleData = new ArrayList<>();
         createDummyData();
@@ -71,13 +80,53 @@ public class SettingFragments extends Fragment{
     public void createDummyData() {
         for (int i = 0; i < 6; i++) {
 
-            SectionDataModel dm = new SectionDataModel();
+            TableDataModel dm = new TableDataModel();
 
             dm.setHeaderTitle(type[i]);
 
-            ArrayList<SingleItemModel> singleItem = new ArrayList<>();
+            ArrayList<ItemDataModel> singleItem = new ArrayList<>();
             for (int j = 0; j < 10; j++) {
-                singleItem.add(new SingleItemModel("Item " + j, "a"+j));
+                singleItem.add(new ItemDataModel(type[i] + " " + j, type[i]));
+
+                switch (i){
+                    case 0:
+                        singleItem.get(j).addData("Data Type Name");
+                        singleItem.get(j).addData("Description");
+                        break;
+                    case 1:
+                        singleItem.get(j).addData("Data Type 5");
+                        singleItem.get(j).addData("Brand");
+                        singleItem.get(j).addData("Model");
+                        singleItem.get(j).addData("Power_Watt");
+                        singleItem.get(j).addData("BTN");
+                        singleItem.get(j).addData("Description");
+                        break;
+                    case 2:
+                        singleItem.get(j).addData("MAC Address");
+                        singleItem.get(j).addData("IP Address");
+                        singleItem.get(j).addData("Power Node name");
+                        singleItem.get(j).addData("Description");
+                        singleItem.get(j).addData("Location 4");
+                        break;
+                    case 3:
+                        singleItem.get(j).addData("Location Name");
+                        singleItem.get(j).addData("Description");
+                        break;
+                    case 4:
+                        singleItem.get(j).addData("Pin");
+                        singleItem.get(j).addData("Power Node 7");
+                        singleItem.get(j).addData("Location 4");
+                        singleItem.get(j).addData("Status");
+                        singleItem.get(j).addData("Description");
+                        break;
+                    case 5:
+                        singleItem.get(j).addData("Device Name");
+                        singleItem.get(j).addData("Data Detail 4");
+                        singleItem.get(j).addData("Group 5");
+                        singleItem.get(j).addData("Description");
+                        break;
+                }
+
             }
 
             dm.setAllItemsInSection(singleItem);

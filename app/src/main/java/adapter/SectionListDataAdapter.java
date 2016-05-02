@@ -53,6 +53,25 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
 
         //if(singleItem.getUrl().equals("a2")){
         holder.itemImage.setBackgroundResource(R.drawable.ic_brightness_7_black_36dp);
+
+        if(LocationFragment.data.size() != 0) {
+            Log.d("aaa", LocationFragment.data.get(0).getDevice() + "\n" +
+                    LocationFragment.data.get(0).getLocation() + "\n" +
+                    holder.tvTitle.getText().toString() + "\n" +
+                    location + "\n");
+        }
+        for (int j = 0; j < LocationFragment.data.size(); j++) {
+
+            if (LocationFragment.data.get(j).getDevice().equals(holder.tvTitle.getText().toString()) &&
+                    LocationFragment.data.get(j).getLocation().equals(location) &&
+                    LocationFragment.data.get(j).getValue() != -1d) {
+
+                holder.index = j;
+                holder.itemImage.setAlpha(0.2f);
+                holder.selected = true;
+                break;
+            }
+        }
         /*}
         else{
             holder.itemImage.setBackgroundResource(R.drawable.ic_action_search);
@@ -85,7 +104,6 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
 
             this.tvTitle = (TextView) view.findViewById(R.id.tvTitle);
             this.itemImage = (ImageView) view.findViewById(R.id.itemImage);
-
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
