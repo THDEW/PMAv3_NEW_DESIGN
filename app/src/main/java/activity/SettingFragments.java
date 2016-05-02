@@ -12,6 +12,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.senoir.newpmatry1.R;
 
@@ -32,6 +34,8 @@ public class SettingFragments extends Fragment{
     FragmentManager fm;
     String[] type;
 
+    View rootView;
+
     public SettingFragments() {
         // Required empty public constructor
     }
@@ -46,26 +50,46 @@ public class SettingFragments extends Fragment{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         //Log.d("MonthlyFragment", "Monthly was created again");
-        View rootView = inflater.inflate(R.layout.fragment_setting, container, false);
+        rootView = inflater.inflate(R.layout.fragment_setting, container, false);
+
+        Button reloginbt = (Button) rootView.findViewById(R.id.reloginbt);
+        Button logout = (Button) rootView.findViewById(R.id.logout);
+
+        fm = getFragmentManager();
+
+        reloginbt.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                LoginDialog dialog = new LoginDialog(rootView);
+                dialog.show(fm, "Login");
+                dialog.setCancelable(false);
+
+            }
+        });
 
         type = new String[]{"Data Type", "Data Detail", "Power Node"
         ,"Location" ,"Group", "Device" };
 
-        FragmentManager fm = getFragmentManager();
-
         if(!Home.login){
 
-            LoginDialog dialog = new LoginDialog();
+            LoginDialog dialog = new LoginDialog(rootView);
             dialog.show(fm, "Login");
             dialog.setCancelable(false);
 
-            Home.login = true;
+        } else {
+            RecyclerView my_recycler_view = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
+            my_recycler_view.setVisibility(View.VISIBLE);
+
+            logout.setVisibility(View.VISIBLE);
         }
+
 
         allSampleData = new ArrayList<>();
         createDummyData();
 
         RecyclerView my_recycler_view = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
+
         my_recycler_view.setHasFixedSize(true);
 
         RecyclerViewForSettingAdapter adapter = new RecyclerViewForSettingAdapter(myContext, allSampleData, fm);
@@ -73,6 +97,27 @@ public class SettingFragments extends Fragment{
         my_recycler_view.setLayoutManager(new LinearLayoutManager(myContext, LinearLayoutManager.VERTICAL, false));
 
         my_recycler_view.setAdapter(adapter);
+        logout.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                RecyclerView my_recycler_view = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
+                my_recycler_view.setVisibility(View.INVISIBLE);
+                Button logoutinside = (Button) rootView.findViewById(R.id.logout);
+                logoutinside.setVisibility(View.INVISIBLE);
+
+
+                Button relogin = (Button) rootView.findViewById(R.id.reloginbt);
+                relogin.setVisibility(View.VISIBLE);
+                TextView plslogin = (TextView) rootView.findViewById(R.id.plsLogin);
+                plslogin.setVisibility(View.VISIBLE);
+
+                Home.login = false;
+
+            }
+        });
+
+
 
         return rootView;
     }

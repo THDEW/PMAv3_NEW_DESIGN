@@ -31,7 +31,7 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
     StatisticFragment fragment1 = null;
     ElectricityBillFragment fragment2 = null;
     SettingFragments fragment3 = null;
-
+    public static FragmentManager fragmentManagerCancel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +42,7 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        fragmentManagerCancel = getSupportFragmentManager();
         drawerFragment = (FragmentDrawer)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
         drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mToolbar);
@@ -52,6 +53,7 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
         fragment1 = new StatisticFragment();
         fragment2 = new ElectricityBillFragment();
         fragment3 = new SettingFragments();
+
         displayView(1);
     }
     @Override
