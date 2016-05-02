@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
     android:background="?android:selectableItemBackground"
-    android:orientation="vertical"
-    android:padding="5dp">
+    android:orientation="vertical">
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:padding="2dp">
+        android:padding="2dp"
+        android:id="@+id/expandBt_2"
+        android:background="#FFECB3">
 
 
         <ImageView
@@ -40,10 +40,10 @@
             android:layout_height="wrap_content"
             android:text="All"
             android:id="@+id/allBt"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/expandSignal"
-            android:layout_toEndOf="@+id/expandSignal"
-            android:background="#FFC107" />
+            android:background="#FFC107"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
 
     </RelativeLayout>

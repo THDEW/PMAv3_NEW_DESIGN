@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.senoir.newpmatry1.R;
@@ -75,6 +76,8 @@ public class RecyclerViewForSettingAdapter extends RecyclerView.Adapter<Recycler
 
         protected RecyclerView recycler_view_list;
 
+        protected RelativeLayout expandableButton;
+
         protected ImageView img;
 
         protected Button addBt;
@@ -94,13 +97,14 @@ public class RecyclerViewForSettingAdapter extends RecyclerView.Adapter<Recycler
                 this.recycler_view_list = (RecyclerView) view.findViewById(R.id.recycler_view_list2);
                 this.img = (ImageView) view.findViewById(R.id.expandSignal2);
                 this.addBt = (Button) view.findViewById(R.id.addBt);
+                expandableButton = (RelativeLayout) view.findViewById(R.id.expandBt);
 
                 groupOfData = new ArrayList[6];
                 for(int i = 0; i < dataList.size(); i++){
                     groupOfData[i] = dataList.get(i).getAllItemsInSection();
                 }
 
-                columnTitle.setOnClickListener(new View.OnClickListener() {
+                expandableButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (open) {

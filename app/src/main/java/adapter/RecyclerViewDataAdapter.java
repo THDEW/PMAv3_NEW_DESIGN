@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.senoir.newpmatry1.R;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 
 public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDataAdapter.ItemRowHolder> {
 
+    private boolean onOff;
     private ArrayList<SectionDataModel> dataList;
     private Context mContext;
     private FragmentManager fm;
@@ -33,6 +35,13 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
         this.dataList = dataList;
         this.mContext = context;
         this.fm = fm;
+    }
+
+    public RecyclerViewDataAdapter(Context context, ArrayList<SectionDataModel> dataList, FragmentManager fm, boolean onOff) {
+        this.dataList = dataList;
+        this.mContext = context;
+        this.fm = fm;
+        this.onOff = onOff;
     }
 
     @Override
@@ -51,7 +60,12 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
 
         itemRowHolder.itemTitle.setText(sectionName);
 
-        SectionListDataAdapter itemListDataAdapter = new SectionListDataAdapter(mContext, singleSectionItems, fm, sectionName);
+        SectionListDataAdapter itemListDataAdapter;
+        if(Home.page == 0){
+            itemListDataAdapter = new SectionListDataAdapter(mContext, singleSectionItems, fm, sectionName, onOff);
+        }else{
+            itemListDataAdapter = new SectionListDataAdapter(mContext, singleSectionItems, fm, sectionName);
+        }
 
         itemRowHolder.backUp = itemListDataAdapter;
 
@@ -81,6 +95,8 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
 
         protected RecyclerView recycler_view_list;
 
+        protected RelativeLayout expandableButton;
+
         protected ImageView img;
 
         protected Button allBt;
@@ -100,6 +116,7 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
             this.recycler_view_list = (RecyclerView) view.findViewById(R.id.recycler_view_list);
             this.img = (ImageView) view.findViewById(R.id.expandSignal);
             this.allBt = (Button) view.findViewById(R.id.allBt);
+            expandableButton = (RelativeLayout) view.findViewById(R.id.expandBt_2);
 
             if(Home.page == 1) {
 
@@ -114,15 +131,24 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
 
                                 if (!LocationFragment.data.get(i).getIsLocation() &&
                                         LocationFragment.data.get(i).getLocation().equals(itemTitle.getText().toString())) {
-                                    LocationFragment.data.get(i).setValue(-1d);
+                                    LocationFragment.data.get(i).setValue(0);
                                 }
                             }
 
-                            LocationFragment.data.add(new GraphSeriesModel("", itemTitle.getText().toString(), 50d, true));
+                            ArrayList<Double> dataFromDataBase = new ArrayList<>();
+                            dataFromDataBase.add(2d + index);
+                            dataFromDataBase.add(5d + index);
+                            dataFromDataBase.add(3d + index);
+                            dataFromDataBase.add(3d + index);
+                            dataFromDataBase.add(6d + index);
+                            dataFromDataBase.add(7d + index);
+                            dataFromDataBase.add(1d + index);
+
+                            LocationFragment.data.add(new GraphSeriesModel("", itemTitle.getText().toString(), dataFromDataBase, true));
                             LocationFragment.data2.add(0d);
                             allBt.setAlpha(0.5f);
                         } else {
-                            LocationFragment.data.get(index).setValue(-1d);
+                            LocationFragment.data.get(index).setValue(0);
                             allBt.setAlpha(1f);
                             selectAll = false;
                         }
@@ -133,21 +159,18 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
                 allBt.setVisibility(View.INVISIBLE);
             }
 
-            itemTitle.setOnClickListener(new View.OnClickListener() {
+            expandableButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     for (int i = 0; i < index; i++) {
 
                         if (!LocationFragment.data.get(i).getIsLocation() &&
                                 LocationFragment.data.get(i).getLocation().equals(itemTitle.getText().toString())) {
-                            LocationFragment.data.get(i).setValue(-1d);
+                            LocationFragment.data.get(i).setValue(0);
                         }
                     }
-
-
                     if(selectAll) {
-                        LocationFragment.data.get(index).setValue(-1d);
+                        LocationFragment.data.get(index).setValue(0);
                         selectAll = false;
                         allBt.setAlpha(1f);
                     }
@@ -168,7 +191,6 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
                 }
 
             });
-
 
         }
 

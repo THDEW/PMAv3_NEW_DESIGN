@@ -10,8 +10,9 @@
         android:layout_gravity="center_horizontal" />
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_width="298dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
 
         <TextView
             android:layout_width="wrap_content"
@@ -24,48 +25,52 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/endTv"
+            android:textSize="15dp"
+            android:hint="XX/XX/XXXX"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:textSize="15dp"
-            android:hint="XX/XX/XXXX" />
+            android:layout_alignParentEnd="true" />
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Set Start Date"
             android:id="@+id/startBt"
-            android:textSize="10dp" />
+            android:textSize="10dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Set End Date"
             android:id="@+id/endBt"
+            android:textSize="10dp"
             android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:textSize="10dp" />
+            android:layout_toRightOf="@+id/selectedDay"
+            android:layout_toEndOf="@+id/selectedDay" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="set as \na selected day"
+            android:text="Set this Day"
             android:id="@+id/selectedDay"
             android:textSize="10dp"
             android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/endBt"
-            android:layout_toStartOf="@+id/endBt" />
+            android:layout_toRightOf="@+id/startBt"
+            android:layout_toEndOf="@+id/startBt" />
 
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal">
 
@@ -75,20 +80,20 @@
             android:text="Ok"
             android:id="@+id/okBt"
             android:layout_gravity="center_horizontal"
+            android:textSize="10dp"
             android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/cancelBt"
-            android:layout_toStartOf="@+id/cancelBt"
-            android:textSize="10dp" />
+            android:layout_toRightOf="@+id/currentDay"
+            android:layout_toEndOf="@+id/currentDay" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Cancel"
             android:id="@+id/cancelBt"
+            android:textSize="10dp"
             android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:textSize="10dp" />
+            android:layout_toRightOf="@+id/okBt"
+            android:layout_toEndOf="@+id/okBt" />
 
         <Button
             android:layout_width="wrap_content"
@@ -97,8 +102,8 @@
             android:id="@+id/currentDay"
             android:textSize="10dp"
             android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/okBt"
-            android:layout_toStartOf="@+id/okBt" />
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
     </RelativeLayout>
 

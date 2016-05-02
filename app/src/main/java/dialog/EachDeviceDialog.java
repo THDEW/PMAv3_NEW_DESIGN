@@ -66,7 +66,7 @@ public class EachDeviceDialog extends DialogFragment {
 
         whereTv = (TextView) rootView.findViewById(R.id.whereTv);
         energyTv = (TextView) rootView.findViewById(R.id.energyTv);
-        timeTv = (TextView) rootView.findViewById(R.id.timeTv);
+        timeTv = (TextView) rootView.findViewById(R.id.time_button);
         billTv = (TextView) rootView.findViewById(R.id.billTv);
         statusTv = (TextView) rootView.findViewById(R.id.statusTv);
 
@@ -106,41 +106,41 @@ public class EachDeviceDialog extends DialogFragment {
         increase = true;
 
         deviceSelected = true;
+        if(status) {
+            final Handler mHandler = new Handler();
 
-        final Handler mHandler = new Handler();
+            Runnable mTimer1 = new Runnable() {
+                @Override
+                public void run() {
+                    if (deviceSelected) {
+                        if (increase) {
+                            realValue += 2d;
+                            if (realValue > 20d) {
+                                increase = false;
+                            }
+                        } else {
+                            realValue -= 2d;
+                            if (realValue < 2d) {
+                                increase = true;
+                            }
+                        }
 
-        Runnable mTimer1 = new Runnable() {
-            @Override
-            public void run() {
-                if (deviceSelected){
-                    if(increase){
-                        realValue += 2d;
-                        if(realValue > 20d){
-                            increase = false;
-                        }
-                    } else {
-                        realValue -= 2d;
-                        if (realValue < 2d) {
-                            increase = true;
-                        }
+                        appendDataPoint(realValue);
+
+                        setDataPoint(energyConsumption);
+
+                        series.resetData(dataPoint);
+
+                        graph.getViewport().setMinY(0);
+                        graph.getViewport().setMaxY(getMax() + 5);
+
+                        mHandler.postDelayed(this, 100);
                     }
-
-                    appendDataPoint(realValue);
-
-                    setDataPoint(energyConsumption);
-
-                    series.resetData(dataPoint);
-
-                    graph.getViewport().setMinY(0);
-                    graph.getViewport().setMaxY(getMax() + 5);
-
-                    mHandler.postDelayed(this, 100);
                 }
-            }
-        };
+            };
 
-        mHandler.postDelayed(mTimer1, 200);
-
+            mHandler.postDelayed(mTimer1, 200);
+        }
         Button dismiss = (Button) rootView.findViewById(R.id.dismiss);
         dismiss.setOnClickListener(new View.OnClickListener() {
 

@@ -3,6 +3,7 @@ package activity;
 /**
  * Created by my131 on 1/5/2559.
  */
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -17,6 +18,7 @@ import com.example.senoir.newpmatry1.R;
 
 import java.util.ArrayList;
 
+import adapter.DividerItemDecoration;
 import adapter.RecyclerViewForSettingAdapter;
 import dialog.LoginDialog;
 import model.ItemDataModel;
@@ -71,6 +73,8 @@ public class SettingFragments extends Fragment{
         RecyclerViewForSettingAdapter adapter = new RecyclerViewForSettingAdapter(myContext, allSampleData, fm);
 
         my_recycler_view.setLayoutManager(new LinearLayoutManager(myContext, LinearLayoutManager.VERTICAL, false));
+
+        my_recycler_view.addItemDecoration(new DividerItemDecoration(myContext, LinearLayoutManager.VERTICAL));
 
         my_recycler_view.setAdapter(adapter);
 
@@ -136,4 +140,9 @@ public class SettingFragments extends Fragment{
         }
     }
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        myContext = (FragmentActivity) activity;
+    }
 }
