@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.senoir.newpmatry1.R;
+import com.jjoe64.graphview.LegendRenderer;
 
 import activity.LocationFragment;
 

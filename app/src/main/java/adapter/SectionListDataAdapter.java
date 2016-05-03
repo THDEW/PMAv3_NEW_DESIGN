@@ -143,8 +143,6 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                             dataFromDataBase.add(3d + index);
                             dataFromDataBase.add(3d + index);
                             dataFromDataBase.add(6d + index);
-                            dataFromDataBase.add(7d + index);
-                            dataFromDataBase.add(1d + index);
 
                             LocationFragment.data.add(new GraphSeriesModel(tvTitle.getText().toString(),location
                                     ,dataFromDataBase,false));

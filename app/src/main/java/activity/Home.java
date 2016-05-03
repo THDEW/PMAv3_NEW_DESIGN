@@ -104,6 +104,7 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
 
         displayView(position);
     }
+
     private void displayView(int position) {
 
         String title = getString(R.string.app_name);

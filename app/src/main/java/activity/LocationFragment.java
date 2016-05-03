@@ -15,13 +15,19 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jjoe64.graphview.GraphView;
 
 import com.example.senoir.newpmatry1.R;
+import com.jjoe64.graphview.LegendRenderer;
+import com.jjoe64.graphview.ValueDependentColor;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.DataPointInterface;
 import com.jjoe64.graphview.series.LineGraphSeries;
+import com.jjoe64.graphview.series.OnDataPointTapListener;
+import com.jjoe64.graphview.series.Series;
 
 
 import java.util.ArrayList;
@@ -44,6 +50,7 @@ public class LocationFragment extends Fragment{
     FragmentManager fm;
 
     public static DataPoint[] dataPoint;
+    public static String[] dataPointName;
     public static ArrayList<GraphSeriesModel> data = new ArrayList<>();
     public static ArrayList<Double> data2 = new ArrayList<>();
 
@@ -108,6 +115,23 @@ public class LocationFragment extends Fragment{
             series.setSpacing(20);
 
             isBarGraphSet = true;
+
+            series.setTitle("Location XXX");
+
+            // styling
+            series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
+                @Override
+                public int get(DataPoint data) {
+                    return Color.rgb((int) data.getX()*255/4, (int) Math.abs(data.getY()*255/6), 100);
+                }
+            });
+            
+            series.setOnDataPointTapListener(new OnDataPointTapListener() {
+                @Override
+                public void onTap(Series series, DataPointInterface dataPoint) {
+                    Toast.makeText(getActivity(), "Series1: On Data Point clicked: " + dataPoint, Toast.LENGTH_SHORT).show();
+                }
+            });
         }
 
         // draw values on top
@@ -136,6 +160,8 @@ public class LocationFragment extends Fragment{
                         graph.addSeries(series);
 
                         isBarGraphSet = true;
+
+                        graph.getLegendRenderer().setVisible(false);
                     }
 
                     setDataPoint();
@@ -146,18 +172,33 @@ public class LocationFragment extends Fragment{
                     graph.getViewport().setMinY(0);
                     graph.getViewport().setMaxY(getMax() + 5);
 
+                    graph.getSecondScale().setMinY(0);
+                    graph.getSecondScale().setMaxY(getMax() + 5);
+
+
                     for (int i = 0; i < data.size(); i++) {
                         if (data.get(i).getSumValue() > data2.get(i)) {
                             data2.set(i, data2.get(i) + (data.get(i).getSumValue() / 100) * 3);
                         }
                     }
+
+
                 } else {
                     if(addNew){
-                        setLineSeries();
-                        addNew = false;
+                        if(data.size() != 0){
+                            setLineSeries();
+                            addNew = false;
+
+                            graph.getLegendRenderer().setVisible(true);
+                            graph.getLegendRenderer().setFixedPosition(0, 0);
+                        }
                     }
                     graph.getViewport().setMinY(0);
                     graph.getViewport().setMaxY(getMaxLine() + 5);
+
+                    graph.getSecondScale().setMinY(0);
+                    graph.getSecondScale().setMaxY(getMaxLine() + 5);
+
                 }
                 mHandler.postDelayed(this, 1);
             }
@@ -231,12 +272,18 @@ public class LocationFragment extends Fragment{
         }
         if(isBarGraph) {
             dataPoint = new DataPoint[count];
+            dataPointName = new String[count];
 
             count = 0;
 
             for (int i = 0; i < data.size(); i++) {
                 if (data.get(i).getValue(0) != -1d) {
-                    dataPoint[count] = new DataPoint(count, data2.get(i));
+                    dataPoint[count] = new DataPoint(count, data.get(count).getSumValue());
+                    if(data.get(i).getIsLocation())
+                        dataPointName[count] =  data.get(i).getLocation();
+                    else
+                        dataPointName[count] =  data.get(i).getDevice();
+
                     count++;
                 }
             }
@@ -262,6 +309,14 @@ public class LocationFragment extends Fragment{
                 lineSeries.add(new LineGraphSeries<>(tempData));
 
                 graph.addSeries(lineSeries.get(count));
+                if(data.get(i).getIsLocation()) {
+                    lineSeries.get(count).setTitle(data.get(i).getLocation());
+                }else{
+                    lineSeries.get(count).setTitle(data.get(i).getDevice());
+                }
+
+                lineSeries.get(count).setColor(Color.rgb(count*255/4, (int) Math.abs(data.get(count).getSumValue()*255/6), 100));
+
                 count++;
             }
         }
@@ -274,7 +329,7 @@ public class LocationFragment extends Fragment{
         for(int i = 0; i < data.size(); i++){
             for(int j = 0; j < data.get(i).getSize(); j++){
                 if(data.get(i).getValue(j) > max){
-                    max = data.get(i).getValue(i);
+                    max = data.get(i).getValue(j);
                 }
             }
         }
