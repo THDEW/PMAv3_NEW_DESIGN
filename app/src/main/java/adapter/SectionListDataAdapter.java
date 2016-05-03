@@ -132,6 +132,7 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                             LocationFragment.data.get(index).setValue(0);
                             selected = false;
                             itemImage.setAlpha(1f);
+                            LocationFragment.addNew = true;
                             //itemImage.setBackgroundResource(R.drawable.ic_brightness_7_black_36dp);
                         } else {
                             index = LocationFragment.data.size();
@@ -150,6 +151,8 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                             LocationFragment.data2.add(0d);
                             itemImage.setAlpha(0.2f);
                             selected = true;
+                            LocationFragment.addNew = true;
+
                             //itemImage.setBackgroundResource(R.drawable.ic_action_search);
                         }
                     }

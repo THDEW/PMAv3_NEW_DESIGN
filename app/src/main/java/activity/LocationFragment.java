@@ -49,9 +49,13 @@ public class LocationFragment extends Fragment{
 
     public static boolean isBarGraph = true;
 
+    public static boolean isBarGraphSet;
+
     BarGraphSeries<DataPoint> series;
 
     ArrayList<LineGraphSeries<DataPoint>> lineSeries;
+
+    public static boolean addNew;
 
     static GraphView graph;
 
@@ -77,6 +81,8 @@ public class LocationFragment extends Fragment{
 
         fm = getFragmentManager();
 
+        addNew = false;
+
         RecyclerView my_recycler_view = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
 
         my_recycler_view.setHasFixedSize(true);
@@ -100,6 +106,8 @@ public class LocationFragment extends Fragment{
             graph.addSeries(series);
 
             series.setSpacing(20);
+
+            isBarGraphSet = true;
         }
 
         // draw values on top
@@ -116,36 +124,40 @@ public class LocationFragment extends Fragment{
         graph.getViewport().setScrollable(true);
         graph.getViewport().setScalable(true);
 
-        lineSeries.add(new LineGraphSeries<DataPoint>());
-
-        graph.addSeries(lineSeries.get(0));
-
         final Handler mHandler = new Handler();
 
         Runnable mTimer1 = new Runnable() {
             @Override
             public void run() {
                 if(isBarGraph) {
+                    if(!isBarGraphSet) {
+                        graph.removeAllSeries();
+
+                        graph.addSeries(series);
+
+                        isBarGraphSet = true;
+                    }
+
                     setDataPoint();
+
                     if (dataPoint != null) {
                         series.resetData(dataPoint);
                     }
                     graph.getViewport().setMinY(0);
                     graph.getViewport().setMaxY(getMax() + 5);
 
-                    //                    for (int i = 0; i < data.size(); i++) {
-                    //                        if (data.get(i).getSumValue() > data2.get(i)) {
-                    //                            data2.set(i, data2.get(i) + (data.get(i).getSumValue() / 100) * 3);
-                    //                        }
-                    //                    }
-                } else {
-
-                    for(int i  = 0; i < data.size(); i++){
-                        if(data.get(i).getValue(0) != -1d) {
-                            lineSeries.add(new LineGraphSeries<DataPoint>());
-                            lineSeries.get(i).resetData(getDataPoint(i));
+                    for (int i = 0; i < data.size(); i++) {
+                        if (data.get(i).getSumValue() > data2.get(i)) {
+                            data2.set(i, data2.get(i) + (data.get(i).getSumValue() / 100) * 3);
                         }
                     }
+                } else {
+                    if(addNew){
+                        setLineSeries();
+                        addNew = false;
+                    }
+                    graph.getViewport().setMinY(0);
+                    graph.getViewport().setMaxY(getMaxLine() + 5);
                 }
                 mHandler.postDelayed(this, 1);
             }
@@ -224,23 +236,50 @@ public class LocationFragment extends Fragment{
 
             for (int i = 0; i < data.size(); i++) {
                 if (data.get(i).getValue(0) != -1d) {
-                    dataPoint[count] = new DataPoint(count, data.get(i).getSumValue());
+                    dataPoint[count] = new DataPoint(count, data2.get(i));
                     count++;
                 }
             }
         }
     }
 
-    public DataPoint[] getDataPoint(int index){
+    public void setLineSeries(){
 
-        if(data.get(index).getValue(0) != -1d){
-            int size = data.get(index).getSize();
-            dataPoint = new DataPoint[size];
-            for(int i = 0; i < size; i++){
-                dataPoint[i] = new DataPoint(i, data.get(0).getValue(i));
+        lineSeries.clear();
+        graph.removeAllSeries();
+
+        int count = 0;
+
+        for(int i = 0; i < data.size(); i++) {
+
+            int size = data.get(i).getSize();
+
+            if(data.get(i).getValue(0) != -1d) {
+                DataPoint[] tempData = new DataPoint[size];
+                for(int j = 0; j < size; j++) {
+                    tempData[j] = new DataPoint(j, data.get(i).getValue(j));
+                }
+                lineSeries.add(new LineGraphSeries<>(tempData));
+
+                graph.addSeries(lineSeries.get(count));
+                count++;
             }
         }
-        return dataPoint;
+    }
+
+    public double getMaxLine(){
+
+        double max = 0;
+
+        for(int i = 0; i < data.size(); i++){
+            for(int j = 0; j < data.get(i).getSize(); j++){
+                if(data.get(i).getValue(j) > max){
+                    max = data.get(i).getValue(i);
+                }
+            }
+        }
+
+        return max;
     }
 
     public double getMax(){
@@ -248,8 +287,8 @@ public class LocationFragment extends Fragment{
         double max = 0;
 
         for(int i = 0; i < data.size(); i++){
-            if(data.get(i).getValue(0) > max){
-                max = data.get(i).getValue(0);
+            if(data.get(i).getSumValue() > max){
+                max = data.get(i).getSumValue();
             }
         }
 

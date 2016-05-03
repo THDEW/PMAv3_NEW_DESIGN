@@ -40,6 +40,8 @@ public class GraphSelection extends DialogFragment{
             @Override
             public void onClick(View v) {
                 LocationFragment.isBarGraph = false;
+                LocationFragment.isBarGraphSet = false;
+                LocationFragment.addNew = true;
                 dismiss();
             }
         });

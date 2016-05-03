@@ -147,10 +147,12 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
                             LocationFragment.data.add(new GraphSeriesModel("", itemTitle.getText().toString(), dataFromDataBase, true));
                             LocationFragment.data2.add(0d);
                             allBt.setAlpha(0.5f);
+                            LocationFragment.addNew = true;
                         } else {
                             LocationFragment.data.get(index).setValue(0);
                             allBt.setAlpha(1f);
                             selectAll = false;
+                            LocationFragment.addNew = true;
                         }
                     }
 

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /**
  * Created by Toshiba on 4/30/2016.
  */
-public class GraphSeriesModel extends DialogFragment {
+public class GraphSeriesModel {
 
     String device;
     String location;
@@ -36,7 +36,7 @@ public class GraphSeriesModel extends DialogFragment {
     }
 
     public double getValue(int i) {
-        return value.get(0);
+        return value.get(i);
     }
 
     public int getSize() {
