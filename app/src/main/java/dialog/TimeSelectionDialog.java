@@ -32,6 +32,7 @@ public class TimeSelectionDialog extends DialogFragment {
     private String currentDate;
     private String startDate;
     private String endDate;
+    private boolean endDateIsSet;
 
     public TimeSelectionDialog(View view){
         this.view = view;
@@ -60,7 +61,7 @@ public class TimeSelectionDialog extends DialogFragment {
 
                 startTv.setText(datePicker.getDayOfMonth() + "/" + (datePicker.getMonth()+1) + "/" + datePicker.getYear());
 
-                startDate = datePicker.getDayOfMonth() + "/" + datePicker.getMonth() + "/" + datePicker.getYear();
+                startDate = datePicker.getDayOfMonth() + "/" + (datePicker.getMonth()+1) + "/" + datePicker.getYear();
                 startIsSet = true;
             }
         });
@@ -77,13 +78,14 @@ public class TimeSelectionDialog extends DialogFragment {
                     if(compareDate()) {
 
                         endTv.setText(datePicker.getDayOfMonth() + "/" + (datePicker.getMonth()+1) + "/" + datePicker.getYear());
-                        endDate = datePicker.getDayOfMonth() + "/" + datePicker.getMonth() + "/" + datePicker.getYear();
+                        endDate = datePicker.getDayOfMonth() + "/" + (datePicker.getMonth()+1) + "/" + datePicker.getYear();
+                        endDateIsSet = true;
 
                     } else {
-                        Toast.makeText(getContext(), "Can't set date", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "A second date is before a first date", Toast.LENGTH_LONG).show();
                     }
                 } else {
-                    Toast.makeText(getContext(), "Please set start date", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Please set a first date", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -94,8 +96,15 @@ public class TimeSelectionDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
                 TextView tv = (TextView) view.findViewById(R.id.periodOfTime);
-                tv.setText(startDate+"\nto "+endDate);
-                dismiss();
+                if(startIsSet && endDateIsSet) {
+                    if (!startDate.equals(endDate))
+                        tv.setText(startDate + "\nto " + endDate);
+                    else
+                        tv.setText(startDate);
+                    dismiss();
+                } else {
+                    Toast.makeText(getContext(), "Please set your date completely", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -127,7 +136,7 @@ public class TimeSelectionDialog extends DialogFragment {
             public void onClick(View v) {
                 TextView tv = (TextView) view.findViewById(R.id.periodOfTime);
 
-                tv.setText(datePicker.getDayOfMonth() +"/"+ datePicker.getMonth()+1 +"/"+ datePicker.getYear());
+                tv.setText(datePicker.getDayOfMonth() +"/"+ (datePicker.getMonth()+1) +"/"+ datePicker.getYear());
                 dismiss();
             }
         });

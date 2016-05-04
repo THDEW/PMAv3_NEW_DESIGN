@@ -65,7 +65,8 @@
             android:textSize="10dp"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/startBt"
-            android:layout_toEndOf="@+id/startBt" />
+            android:layout_toEndOf="@+id/startBt"
+            android:visibility="invisible" />
 
     </RelativeLayout>
 
@@ -103,7 +104,8 @@
             android:textSize="10dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:visibility="invisible" />
 
     </RelativeLayout>
 

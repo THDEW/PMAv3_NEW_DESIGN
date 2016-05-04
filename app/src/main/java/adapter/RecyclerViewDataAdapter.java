@@ -58,7 +58,7 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
 
         ArrayList singleSectionItems = dataList.get(i).getAllItemsInSection();
 
-        itemRowHolder.itemTitle.setText(sectionName);
+        itemRowHolder.locationTitle.setText(sectionName);
 
         SectionListDataAdapter itemListDataAdapter;
         if(Home.page == 0){
@@ -91,7 +91,7 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
 
     public class ItemRowHolder extends RecyclerView.ViewHolder {
 
-        protected TextView itemTitle;
+        protected TextView locationTitle;
 
         protected RecyclerView recycler_view_list;
 
@@ -112,7 +112,7 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
         public ItemRowHolder(View view) {
             super(view);
 
-            this.itemTitle = (TextView) view.findViewById(R.id.itemTitle);
+            this.locationTitle = (TextView) view.findViewById(R.id.itemTitle);
             this.recycler_view_list = (RecyclerView) view.findViewById(R.id.recycler_view_list);
             this.img = (ImageView) view.findViewById(R.id.expandSignal);
             this.allBt = (Button) view.findViewById(R.id.allBt);
@@ -130,7 +130,7 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
                             for (int i = 0; i < index; i++) {
 
                                 if (!LocationFragment.data.get(i).getIsLocation() &&
-                                        LocationFragment.data.get(i).getLocation().equals(itemTitle.getText().toString())) {
+                                        LocationFragment.data.get(i).getLocation().equals(locationTitle.getText().toString())) {
                                     LocationFragment.data.get(i).setValue(0);
                                 }
                             }
@@ -141,10 +141,8 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
                             dataFromDataBase.add(3d + index);
                             dataFromDataBase.add(3d + index);
                             dataFromDataBase.add(6d + index);
-                            dataFromDataBase.add(7d + index);
-                            dataFromDataBase.add(1d + index);
 
-                            LocationFragment.data.add(new GraphSeriesModel("", itemTitle.getText().toString(), dataFromDataBase, true));
+                            LocationFragment.data.add(new GraphSeriesModel("", locationTitle.getText().toString(), dataFromDataBase, true));
                             LocationFragment.data2.add(0d);
                             allBt.setAlpha(0.5f);
                             LocationFragment.addNew = true;
@@ -167,7 +165,7 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
                     for (int i = 0; i < index; i++) {
 
                         if (!LocationFragment.data.get(i).getIsLocation() &&
-                                LocationFragment.data.get(i).getLocation().equals(itemTitle.getText().toString())) {
+                                LocationFragment.data.get(i).getLocation().equals(locationTitle.getText().toString())) {
                             LocationFragment.data.get(i).setValue(0);
                         }
                     }

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.senoir.newpmatry1.R;
+import com.jjoe64.graphview.LegendRenderer;
 
 import activity.LocationFragment;
 
@@ -31,6 +32,8 @@ public class GraphSelection extends DialogFragment{
             @Override
             public void onClick(View v) {
                 LocationFragment.isBarGraph = true;
+
+                LocationFragment.legendView.setVisibility(View.VISIBLE);
                 dismiss();
             }
         });
@@ -42,6 +45,7 @@ public class GraphSelection extends DialogFragment{
                 LocationFragment.isBarGraph = false;
                 LocationFragment.isBarGraphSet = false;
                 LocationFragment.addNew = true;
+                LocationFragment.legendView.setVisibility(View.INVISIBLE);
                 dismiss();
             }
         });

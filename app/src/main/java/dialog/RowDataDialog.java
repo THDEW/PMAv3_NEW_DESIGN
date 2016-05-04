@@ -102,7 +102,7 @@ public class RowDataDialog extends DialogFragment  {
                         }
                     }
                 }
-                dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, item);
+                dataAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, item);
                 spinner.setAdapter(dataAdapter);
                 spinner.setSelection(oldData);
 
