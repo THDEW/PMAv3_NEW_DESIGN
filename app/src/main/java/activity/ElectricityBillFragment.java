@@ -86,6 +86,7 @@ public class ElectricityBillFragment extends Fragment {
         for (int start = 0; start < 3; start++) {
             ArrayList<String> devicesname = new ArrayList<String>();
             ArrayList<Integer> costdevice = new ArrayList<Integer>();
+
             for (int insides = 0; insides < 3; insides++) {
 
                 devicesname.add(insides, "Devices: " + insides);
