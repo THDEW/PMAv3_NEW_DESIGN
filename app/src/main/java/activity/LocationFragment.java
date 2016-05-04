@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,8 +33,10 @@ import com.jjoe64.graphview.series.Series;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 import adapter.DividerItemDecoration;
+import adapter.LegendAdapter;
 import adapter.RecyclerViewDataAdapter;
 import dialog.GraphSelection;
 import dialog.TimeSelectionDialog;
@@ -43,7 +47,7 @@ import model.SingleItemModel;
 /**
  * Created by my131 on 26/4/2559.
  */
-public class LocationFragment extends Fragment{
+public class LocationFragment extends Fragment {
 
     private FragmentActivity myContext;
     ArrayList<SectionDataModel> allSampleData;
@@ -51,6 +55,7 @@ public class LocationFragment extends Fragment{
 
     public static DataPoint[] dataPoint;
     public static String[] dataPointName;
+    public static int[] dataColor;
     public static ArrayList<GraphSeriesModel> data = new ArrayList<>();
     public static ArrayList<Double> data2 = new ArrayList<>();
 
@@ -67,6 +72,11 @@ public class LocationFragment extends Fragment{
     static GraphView graph;
 
     static TextView tv;
+
+    LegendAdapter legendAdapter;
+
+    public static RecyclerView legendView;
+
 
     public LocationFragment() {
         // Required empty public constructor
@@ -102,6 +112,11 @@ public class LocationFragment extends Fragment{
 
         my_recycler_view.setAdapter(adapter);
 
+        legendView = (RecyclerView) rootView.findViewById(R.id.legend);
+        legendView.setLayoutManager(new LinearLayoutManager(myContext, LinearLayoutManager.VERTICAL, false));
+        legendAdapter = new LegendAdapter(dataPointName, dataColor);
+        legendView.setAdapter(legendAdapter);
+
         //graph view section
         graph = (GraphView) rootView.findViewById(R.id.graph);
 
@@ -123,13 +138,6 @@ public class LocationFragment extends Fragment{
                 @Override
                 public int get(DataPoint data) {
                     return Color.rgb((int) data.getX()*255/4, (int) Math.abs(data.getY()*255/6), 100);
-                }
-            });
-            
-            series.setOnDataPointTapListener(new OnDataPointTapListener() {
-                @Override
-                public void onTap(Series series, DataPointInterface dataPoint) {
-                    Toast.makeText(getActivity(), "Series1: On Data Point clicked: " + dataPoint, Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -162,9 +170,14 @@ public class LocationFragment extends Fragment{
                         isBarGraphSet = true;
 
                         graph.getLegendRenderer().setVisible(false);
-                    }
 
-                    setDataPoint();
+                    }
+                    if(addNew) {
+                        setDataPoint();
+
+                        legendAdapter = new LegendAdapter(dataPointName, dataColor);
+                        legendView.setAdapter(legendAdapter);
+                    }
 
                     if (dataPoint != null) {
                         series.resetData(dataPoint);
@@ -273,7 +286,7 @@ public class LocationFragment extends Fragment{
         if(isBarGraph) {
             dataPoint = new DataPoint[count];
             dataPointName = new String[count];
-
+            dataColor = new int[count];
             count = 0;
 
             for (int i = 0; i < data.size(); i++) {
@@ -283,6 +296,8 @@ public class LocationFragment extends Fragment{
                         dataPointName[count] =  data.get(i).getLocation();
                     else
                         dataPointName[count] =  data.get(i).getDevice();
+
+                    dataColor[count] = Color.rgb(count*255/4, (int) Math.abs(data.get(count).getSumValue()*255/6), 100);
 
                     count++;
                 }
@@ -315,7 +330,7 @@ public class LocationFragment extends Fragment{
                     lineSeries.get(count).setTitle(data.get(i).getDevice());
                 }
 
-                lineSeries.get(count).setColor(Color.rgb(count*255/4, (int) Math.abs(data.get(count).getSumValue()*255/6), 100));
+                lineSeries.get(count).setColor(Color.rgb(count * 255 / 4, (int) Math.abs(data.get(count).getSumValue() * 255 / 6), 100));
 
                 count++;
             }
@@ -360,4 +375,5 @@ public class LocationFragment extends Fragment{
     public void onDetach() {
         super.onDetach();
     }
+
 }
