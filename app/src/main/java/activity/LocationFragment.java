@@ -14,26 +14,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jjoe64.graphview.GraphView;
 
 import com.example.senoir.newpmatry1.R;
-import com.jjoe64.graphview.LegendRenderer;
 import com.jjoe64.graphview.ValueDependentColor;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.DataPointInterface;
 import com.jjoe64.graphview.series.LineGraphSeries;
-import com.jjoe64.graphview.series.OnDataPointTapListener;
-import com.jjoe64.graphview.series.Series;
 
 
 import java.util.ArrayList;
-import java.util.List;
 
 import adapter.DividerItemDecoration;
 import adapter.LegendAdapter;
@@ -55,7 +47,7 @@ public class LocationFragment extends Fragment {
 
     public static DataPoint[] dataPoint;
     public static String[] dataPointName;
-    public static int[] dataColor;
+    public static int[] dataPointColor;
     public static ArrayList<GraphSeriesModel> data = new ArrayList<>();
     public static ArrayList<Double> data2 = new ArrayList<>();
 
@@ -114,7 +106,7 @@ public class LocationFragment extends Fragment {
 
         legendView = (RecyclerView) rootView.findViewById(R.id.legend);
         legendView.setLayoutManager(new LinearLayoutManager(myContext, LinearLayoutManager.VERTICAL, false));
-        legendAdapter = new LegendAdapter(dataPointName, dataColor);
+        legendAdapter = new LegendAdapter(dataPointName, dataPointColor);
         legendView.setAdapter(legendAdapter);
 
         //graph view section
@@ -169,13 +161,13 @@ public class LocationFragment extends Fragment {
 
                         isBarGraphSet = true;
 
-                        graph.getLegendRenderer().setVisible(false);
+//                        graph.getLegendRenderer().setVisible(false);
 
                     }
                     if(addNew) {
                         setDataPoint();
 
-                        legendAdapter = new LegendAdapter(dataPointName, dataColor);
+                        legendAdapter = new LegendAdapter(dataPointName, dataPointColor);
                         legendView.setAdapter(legendAdapter);
                     }
 
@@ -202,8 +194,10 @@ public class LocationFragment extends Fragment {
                             setLineSeries();
                             addNew = false;
 
-                            graph.getLegendRenderer().setVisible(true);
-                            graph.getLegendRenderer().setFixedPosition(0, 0);
+                            legendAdapter = new LegendAdapter(dataPointName, dataPointColor);
+                            legendView.setAdapter(legendAdapter);
+//                            graph.getLegendRenderer().setVisible(true);
+//                            graph.getLegendRenderer().setFixedPosition(0, 0);
                         }
                     }
                     graph.getViewport().setMinY(0);
@@ -286,7 +280,7 @@ public class LocationFragment extends Fragment {
         if(isBarGraph) {
             dataPoint = new DataPoint[count];
             dataPointName = new String[count];
-            dataColor = new int[count];
+            dataPointColor = new int[count];
             count = 0;
 
             for (int i = 0; i < data.size(); i++) {
@@ -297,7 +291,7 @@ public class LocationFragment extends Fragment {
                     else
                         dataPointName[count] =  data.get(i).getDevice();
 
-                    dataColor[count] = Color.rgb(count*255/4, (int) Math.abs(data.get(count).getSumValue()*255/6), 100);
+                    dataPointColor[count] = Color.rgb(count*255/4, (int) Math.abs(data.get(count).getSumValue()*255/6), 100);
 
                     count++;
                 }
@@ -335,6 +329,14 @@ public class LocationFragment extends Fragment {
                 count++;
             }
         }
+
+        dataPointName = new String[count];
+        dataPointColor = new int[count];
+        for(int i = 0; i < count; i++){
+            dataPointName[i] = lineSeries.get(i).getTitle();
+            dataPointColor[i] = lineSeries.get(i).getColor();
+        }
+
     }
 
     public double getMaxLine(){

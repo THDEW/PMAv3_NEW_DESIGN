@@ -32,8 +32,7 @@ public class GraphSelection extends DialogFragment{
             @Override
             public void onClick(View v) {
                 LocationFragment.isBarGraph = true;
-
-                LocationFragment.legendView.setVisibility(View.VISIBLE);
+                LocationFragment.addNew = true;
                 dismiss();
             }
         });
@@ -45,7 +44,6 @@ public class GraphSelection extends DialogFragment{
                 LocationFragment.isBarGraph = false;
                 LocationFragment.isBarGraphSet = false;
                 LocationFragment.addNew = true;
-                LocationFragment.legendView.setVisibility(View.INVISIBLE);
                 dismiss();
             }
         });
