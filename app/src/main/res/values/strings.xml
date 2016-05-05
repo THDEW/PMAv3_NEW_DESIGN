@@ -6,13 +6,20 @@
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
 
-    <string name="nav_item_home">On/Off</string>
-    <string name="nav_item_Location">Location</string>
+    <string name="nav_item_home">Current Status</string>
+    <string name="nav_item_Location">History</string>
     <string name="nav_item_statistic">Statistic</string>
     <string name="nav_item_electricitybill">Electricity Bill</string>
     <string name="nav_item_setting">Setting</string>
+    <string name="nav_item_about">About</string>
+
     <string name="spinner_item_max">Max Power usage</string>
     <string name="spinner_item_min">Min Power usage</string>
+
+    <string name="spinner_elecbill_1.1">Less than 150 Units/Month</string>
+    <string name="spinner_elecbill_1.2">More than 150 Units/Month</string>
+    <string name="spinner_elecbill_1.31">Time of Use Tariff(Voltage:12-24KV)</string>
+    <string name="spinner_elecbill_1.32">Time of Use Tariff(Voltage:less than 12KV)</string>
     <!--<string name="spinner_item_date">Date and Time</string>-->
     <!-- navigation drawer item labels  -->
     <string-array name="nav_drawer_labels">
@@ -21,18 +28,30 @@
         <item>@string/nav_item_statistic</item>
         <item>@string/nav_item_electricitybill</item>
         <item>@string/nav_item_setting</item>
+        <item>@string/nav_item_about</item>
+
     </string-array>
 
-    <string name="title_Location">Location</string>
+    <string name="title_Location">History</string>
     <string name="title_statistic">Statistic</string>
     <string name="title_electricitybill">Electricity Bill</string>
-    <string name="title_home">On/Off</string>
+    <string name="title_home">Current Status</string>
     <string name="title_Setting">Settings</string>
+    <string name="title_About">About</string>
 
     <!-- spinner sort by choices -->
     <string-array name="sort_by_array">
         <item>@string/spinner_item_max</item>
         <item>@string/spinner_item_min</item>
+        <!--<item>@string/spinner_item_date</item>-->
+    </string-array>
+
+    <!-- selected type of calculated in electricityview-->
+    <string-array name="selected_type_calculate_electricitybill">
+        <item>@string/spinner_elecbill_1.1</item>
+        <item>@string/spinner_elecbill_1.2</item>
+        <item>@string/spinner_elecbill_1.31</item>
+        <item>@string/spinner_elecbill_1.32</item>
         <!--<item>@string/spinner_item_date</item>-->
     </string-array>
 

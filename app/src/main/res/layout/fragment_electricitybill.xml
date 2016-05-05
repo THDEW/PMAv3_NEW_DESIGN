@@ -4,11 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="activity.ElectricityBillFragment">
-
+    <Spinner
+        android:id="@+id/residential_spinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
     <ExpandableListView
         android:id="@+id/lvExp"
         android:layout_height="458dp"
-        android:layout_width="match_parent"/>
+        android:layout_width="match_parent"
+        android:layout_below="@id/residential_spinner"/>
 
     <TextView
         android:layout_width="397dp"

@@ -31,6 +31,7 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
     StatisticFragment fragment1 = null;
     ElectricityBillFragment fragment2 = null;
     SettingFragments fragment3 = null;
+    AboutFragment fragment4 = null;
     public static FragmentManager fragmentManagerCancel;
 
     @Override
@@ -53,8 +54,9 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
         fragment1 = new StatisticFragment();
         fragment2 = new ElectricityBillFragment();
         fragment3 = new SettingFragments();
+        fragment4 = new AboutFragment();
 
-        displayView(1);
+        displayView(5);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -134,6 +136,13 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
             case 4:
                 fragmentTransaction.replace(R.id.container_body, fragment3);
                 title = "Setting";
+                page = 4;
+                break;
+            case 5:
+                fragmentTransaction.replace(R.id.container_body, fragment4);
+                title = "About";
+                page = 5;
+                break;
             default:
                 break;
         }

@@ -102,6 +102,12 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
+//    public void setNewItems(List<String> listDataHeader,HashMap<String, List<String>> listChildData) {
+//        this._listDataHeader = listDataHeader;
+//        this._listDataChild = listChildData;
+//        notifyDataSetChanged();
+//    }
+
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;

@@ -4,12 +4,17 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.senoir.newpmatry1.R;
 
@@ -17,10 +22,12 @@ import org.w3c.dom.Text;
 
 import adapter.ExpandableListAdapter;
 import billcalculate.BillCalculate;
+import model.ApplianceModel;
 import model.ElectricityBillModel;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -35,7 +42,8 @@ public class ElectricityBillFragment extends Fragment {
     ArrayList<ElectricityBillModel> electricitybillList;
     HashMap<String, List<String>> listDataChild;
     private FragmentActivity myContext;
-    float electricityType = 1.31f;
+    float electricityType = 0.00f;
+    private int onspinnerselected = 0;
 
     public ElectricityBillFragment() {
         // Required empty public constructor
@@ -57,15 +65,75 @@ public class ElectricityBillFragment extends Fragment {
         // get the listview
 
         expListView = (ExpandableListView) rootView.findViewById(R.id.lvExp);
-
+        if(electricitybillList!=null){
+            electricitybillList.clear();
+        }
         // preparing list data
 
+
+        Spinner spinner = (Spinner) rootView.findViewById(R.id.residential_spinner);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int pos, long id) {
+                // TODO Auto-generated method stub
+                String item = parent.getItemAtPosition(pos).toString();
+                switch (item) {
+                    case "Less than 150 Units/Month":
+                        onspinnerselected = 0;
+                        prepareListData();
+                        listAdapter = new ExpandableListAdapter(myContext, listDataHeader, listDataChild);
+                        listAdapter.notifyDataSetChanged();
+                        expListView.setAdapter(listAdapter);
+
+                        Toast.makeText(parent.getContext(), "Selected 0: " + item, Toast.LENGTH_LONG).show();
+                        break;
+                    case "More than 150 Units/Month":
+                        onspinnerselected = 1;
+                        prepareListData();
+                        listAdapter = new ExpandableListAdapter(myContext, listDataHeader, listDataChild);
+                        listAdapter.notifyDataSetChanged();
+                        expListView.setAdapter(listAdapter);
+
+                        Toast.makeText(parent.getContext(), "Selected 1: " + item, Toast.LENGTH_LONG).show();
+                        break;
+                    case "Time of Use Tariff(Voltage:12-24KV)":
+                        onspinnerselected = 2;
+                        prepareListData();
+                        listAdapter = new ExpandableListAdapter(myContext, listDataHeader, listDataChild);
+                        listAdapter.notifyDataSetChanged();
+                        expListView.setAdapter(listAdapter);
+                        Toast.makeText(parent.getContext(), "Selected : 2" + item, Toast.LENGTH_LONG).show();
+                        break;
+                    case "Time of Use Tariff(Voltage:less than 12KV)":
+                        onspinnerselected = 3;
+                        prepareListData();
+                        listAdapter = new ExpandableListAdapter(myContext, listDataHeader, listDataChild);
+                        listAdapter.notifyDataSetChanged();
+                        expListView.setAdapter(listAdapter);
+                        Toast.makeText(parent.getContext(), "Selected : 3" + item, Toast.LENGTH_LONG).show();
+                        break;
+
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // TODO Auto-generated method stub
+
+            }
+            });
+
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(myContext, R.array.selected_type_calculate_electricitybill, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
         prepareListData();
-
         listAdapter = new ExpandableListAdapter(myContext, listDataHeader, listDataChild);
-
-        // setting list adapter
         expListView.setAdapter(listAdapter);
+
 
 
         return rootView;
@@ -84,9 +152,9 @@ public class ElectricityBillFragment extends Fragment {
         double sumOffPeakUnit = 0d;
 
         for(int i =0; i<electricitybillList.size(); i++){
-            if (electricityType == 1.31f || electricityType == 1.32f){
-                sumOnPeakUnit += electricitybillList.get(i).getUnitLocation();
-                sumOffPeakUnit += electricitybillList.get(i).getUnitLocation();
+            if (onspinnerselected == 2||onspinnerselected == 3){
+                sumOnPeakUnit += electricitybillList.get(i).getOnPeakLocation();
+                sumOffPeakUnit += electricitybillList.get(i).getOffPeakLocation();
             } else {
                 sumUnitOfLocation += electricitybillList.get(i).getUnitLocation();
             }
@@ -98,14 +166,14 @@ public class ElectricityBillFragment extends Fragment {
 
         double costOfLocation = 0d;
 
-        if(electricityType == 1.1f) {
+        if(onspinnerselected == 0) {
             costOfLocation = bill.getBillOfType1_1(sumUnitOfLocation);
-        } else if (electricityType == 1.2f){
+        } else if (onspinnerselected == 1){
             costOfLocation = bill.getBillOfType1_2(sumUnitOfLocation);
-        } else if (electricityType == 1.31f) {
+        } else if (onspinnerselected == 2) {
             costOfLocation = bill.getBillOfType1_3(sumOnPeakUnit, sumOffPeakUnit, 0); // แรงดันอันที่ 1
             sumUnitOfLocation = sumOffPeakUnit + sumOnPeakUnit;
-        } else if (electricityType == 1.32f) {
+        } else if (onspinnerselected == 3) {
             costOfLocation = bill.getBillOfType1_3(sumOnPeakUnit, sumOffPeakUnit, 1); // แรงดันอันที่ 2
             sumUnitOfLocation = sumOffPeakUnit + sumOnPeakUnit;
         }
@@ -116,9 +184,12 @@ public class ElectricityBillFragment extends Fragment {
             expandevices = new ArrayList<String>();
             double eachCostLocation = costOfLocation * (electricitybillList.get(start).getUnitLocation()/sumUnitOfLocation);
 
-            if (electricityType == 1.31f || electricityType == 1.32f){
-                double percentOfTypeWatt = sumOffPeakUnit/sumOnPeakUnit;
-                electricitybillList.get(start).setAllCost(eachCostLocation, eachCostLocation*percentOfTypeWatt);
+            if (onspinnerselected == 2||onspinnerselected == 3){
+                double percentOfOffPeak =
+                        electricitybillList.get(start).getOffPeakLocation()/electricitybillList.get(start).getUnitLocation();
+                double percentOfOnPeak  =
+                        electricitybillList.get(start).getOnPeakLocation()/electricitybillList.get(start).getUnitLocation();
+                electricitybillList.get(start).setAllCost(eachCostLocation*percentOfOnPeak, eachCostLocation*percentOfOffPeak);
             } else {
                 electricitybillList.get(start).setAllCost(eachCostLocation);
             }
@@ -147,15 +218,21 @@ public class ElectricityBillFragment extends Fragment {
 
             }
             listDataChild.put(listDataHeader.get(start), expandevices);
+            //listAdapter.notifyDataSetChanged();
             //expandevices.clear();
             Log.d("Size", expandevices.size()+"");
         }
 
 
     }
-    public void putdataToelectricityBill() {
 
-        if (electricityType == 1.31f || electricityType == 1.32f){
+
+
+
+
+    public void putdataToelectricityBill() {
+        //electricityType == 1.31f || electricityType == 1.32f ||
+        if (onspinnerselected == 2||onspinnerselected == 3){
             for (int start = 1; start <= 3; start++) {
                 ArrayList<String> devicesname = new ArrayList<String>();
                 ArrayList<Double> unitOnDevice = new ArrayList<Double>();
@@ -186,9 +263,24 @@ public class ElectricityBillFragment extends Fragment {
             }
         }
     }
+
+
+
     @Override
     public void onAttach(final Activity activity) {
         myContext = (FragmentActivity) activity;
         super.onAttach(activity);
     }
+
+//    public void onItemSelected(AdapterView<?> parent, View view,
+//                               int pos, long id) {
+
+//    }
+//
+//    public void onNothingSelected(AdapterView<?> parent) {
+//        // Another interface callback
+//    }
+
+
+
 }
