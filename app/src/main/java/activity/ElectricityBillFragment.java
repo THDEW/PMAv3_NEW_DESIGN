@@ -87,7 +87,7 @@ public class ElectricityBillFragment extends Fragment {
                         listAdapter.notifyDataSetChanged();
                         expListView.setAdapter(listAdapter);
 
-                        Toast.makeText(parent.getContext(), "Selected 0: " + item, Toast.LENGTH_LONG).show();
+                        //Toast.makeText(parent.getContext(), "Selected 0: " + item, Toast.LENGTH_LONG).show();
                         break;
                     case "More than 150 Units/Month":
                         onspinnerselected = 1;
@@ -96,7 +96,7 @@ public class ElectricityBillFragment extends Fragment {
                         listAdapter.notifyDataSetChanged();
                         expListView.setAdapter(listAdapter);
 
-                        Toast.makeText(parent.getContext(), "Selected 1: " + item, Toast.LENGTH_LONG).show();
+                        //Toast.makeText(parent.getContext(), "Selected 1: " + item, Toast.LENGTH_LONG).show();
                         break;
                     case "Time of Use Tariff(Voltage:12-24KV)":
                         onspinnerselected = 2;
@@ -104,7 +104,7 @@ public class ElectricityBillFragment extends Fragment {
                         listAdapter = new ExpandableListAdapter(myContext, listDataHeader, listDataChild);
                         listAdapter.notifyDataSetChanged();
                         expListView.setAdapter(listAdapter);
-                        Toast.makeText(parent.getContext(), "Selected : 2" + item, Toast.LENGTH_LONG).show();
+                        //Toast.makeText(parent.getContext(), "Selected : 2" + item, Toast.LENGTH_LONG).show();
                         break;
                     case "Time of Use Tariff(Voltage:less than 12KV)":
                         onspinnerselected = 3;
@@ -112,7 +112,7 @@ public class ElectricityBillFragment extends Fragment {
                         listAdapter = new ExpandableListAdapter(myContext, listDataHeader, listDataChild);
                         listAdapter.notifyDataSetChanged();
                         expListView.setAdapter(listAdapter);
-                        Toast.makeText(parent.getContext(), "Selected : 3" + item, Toast.LENGTH_LONG).show();
+                        //Toast.makeText(parent.getContext(), "Selected : 3" + item, Toast.LENGTH_LONG).show();
                         break;
 
                 }

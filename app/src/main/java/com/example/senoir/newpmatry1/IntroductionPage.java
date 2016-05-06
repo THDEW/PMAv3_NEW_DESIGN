@@ -3,6 +3,7 @@ package com.example.senoir.newpmatry1;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,31 +12,32 @@ import android.widget.Toast;
 import activity.Home;
 import billcalculate.BillCalculate;
 
-public class IntroductionPage extends AppCompatActivity {
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
 
+public class IntroductionPage extends Activity {
+
+    /** Duration of wait **/
+    private final int SPLASH_DISPLAY_LENGTH = 1000;
+
+    /** Called when the activity is first created. */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreate(Bundle icicle) {
+        super.onCreate(icicle);
         setContentView(R.layout.activity_introduction_page);
-        Button gogo = (Button) findViewById(R.id.Go);
-        gogo.setOnClickListener(new View.OnClickListener() {
 
+        /* New Handler to start the Menu-Activity
+         * and close this Splash-Screen after some seconds.*/
+        new Handler().postDelayed(new Runnable(){
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), Home.class);
-
-                startActivity(intent);
-
+            public void run() {
+                /* Create an Intent that will start the Menu-Activity. */
+                Intent mainIntent = new Intent(IntroductionPage.this,Home.class);
+                IntroductionPage.this.startActivity(mainIntent);
+                IntroductionPage.this.finish();
             }
-        });
-
-
-    }
-
-    public void checkBill(View view) {
-        EditText temp = (EditText) findViewById(R.id.editText);
-        BillCalculate bill = new BillCalculate();
-        String str = (String) temp.getText().toString();
-        Toast.makeText(this, bill.getBillOfType1_3(389, 457, 1) + "", Toast.LENGTH_LONG).show();
+        }, SPLASH_DISPLAY_LENGTH);
     }
 }
