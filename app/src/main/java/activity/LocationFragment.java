@@ -132,6 +132,9 @@ public class LocationFragment extends Fragment {
                     return Color.rgb((int) data.getX()*255/4, (int) Math.abs(data.getY()*255/6), 100);
                 }
             });
+
+            graph.getSecondScale().setMinY(0);
+            graph.getSecondScale().setMaxY(getMax() + 5);
         }
 
         // draw values on top

@@ -109,38 +109,6 @@ public class DailyFragment extends Fragment implements AdapterView.OnItemSelecte
 
     }
 
-    public void changeDialy(int numSize){
-        if(recyclerView!=null) {
-            applianceModelListeList.clear();
-            int start, start0;
-            long elecusages = 0;
-            long elecusageLocation = 0;
-            if (Home.menu_statistic == 0) {
-                for (start = 0; start < numSize; start++) {
-                    ApplianceModel appliances = new ApplianceModel("Name: Air-Conditioner " + start, elecusages++, "03/02/2016", "Electricity's Usage: ");
-                    applianceModelListeList.add(appliances);
-                }
-                buttonToChange.setText("Devices");
-            } else if (Home.menu_statistic == 1) {
-                for (start0 = 0; start0 < numSize - 15; start0++) {
-                    ApplianceModel locationapp = new ApplianceModel("Name: Location " + start0, elecusageLocation++, "05/12/2016", "Electricity's Usage: ");
-                    applianceModelListeList.add(locationapp);
-                }
-                buttonToChange.setText("Locations");
-            }
-            if (onspinnerselected == 0) {
-                Collections.sort(applianceModelListeList, ApplianceModel.electusageMaxComparator);
-            } else {
-                Collections.sort(applianceModelListeList, ApplianceModel.electusageMinComparator);
-            }
-            //mAdapter = new ApplianceAdapter(applianceModelListeList);
-
-            recyclerView.setAdapter(mAdapter);
-        }
-
-    }
-
-
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // On selecting a spinner item

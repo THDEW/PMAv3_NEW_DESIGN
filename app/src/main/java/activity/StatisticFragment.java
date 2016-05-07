@@ -16,6 +16,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +39,7 @@ public class StatisticFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public void updateStatistic(Activity context){
+    public void updateStatistic(Activity context, int index){
         if(viewPager != null) {
             FragmentActivity contextTemp = (FragmentActivity) context;
             FragmentManager fragManager = contextTemp.getSupportFragmentManager();
@@ -47,7 +48,12 @@ public class StatisticFragment extends Fragment {
             viewPagerAdapter.addFragment(new MonthlyFragment(), "Monthly");
             viewPagerAdapter.addFragment(new YearlyFragment(), "Yearly");
             viewPager.setAdapter(viewPagerAdapter);
+            viewPager.setCurrentItem(index);
         }
+    }
+
+    public int getCurrentPosition(){
+        return viewPager.getCurrentItem();
     }
 
     @Override
@@ -63,12 +69,6 @@ public class StatisticFragment extends Fragment {
 
 
         return rootView;
-    }
-
-    public void changeStatisticData(){
-        viewPagerAdapter.updateChangeDaily();
-        viewPagerAdapter.updateChangeMonthly();
-        viewPagerAdapter.updateChangYearly();
     }
 
 
@@ -105,19 +105,6 @@ public class StatisticFragment extends Fragment {
         public void addFragment(Fragment fragment, String title) {
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
-        }
-
-        public void updateChangeDaily(){
-                DailyFragment DailyChange = (DailyFragment) mFragmentList.get(0);
-                DailyChange.changeDialy(20);
-        }
-        public void updateChangeMonthly(){
-            MonthlyFragment MonthlyChange = (MonthlyFragment) mFragmentList.get(1);
-            MonthlyChange.changeMonthly(20);
-        }
-        public void updateChangYearly(){
-            YearlyFragment YearlyChange = (YearlyFragment) mFragmentList.get(2);
-            YearlyChange.changeYearly(20);
         }
 
         @Override
