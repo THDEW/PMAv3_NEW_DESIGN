@@ -77,19 +77,23 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
         itemRowHolder.recycler_view_list.setLayoutManager(new GridLayoutManager(mContext, 3));
         itemRowHolder.recycler_view_list.setAdapter(null);
 
-        if (LocationFragment.open[i]) {
-            itemRowHolder.recycler_view_list.setAdapter(itemListDataAdapter);
-            itemRowHolder.img.setBackgroundResource(R.drawable.up_arrow);
-            itemRowHolder.allBt.setVisibility(View.INVISIBLE);
-            //LocationFragment.open[i] = false;
-        } else {
-            itemRowHolder.img.setBackgroundResource(R.drawable.down_arrow);
-            if(Home.page == 1){
-                itemRowHolder.allBt.setVisibility(View.VISIBLE);
-            }
-            //LocationFragment.open[i] = true;
-        }
+        itemRowHolder.open = false;
 
+
+        if(Home.page == 1) {
+            if (LocationFragment.open[i]) {
+                itemRowHolder.recycler_view_list.setAdapter(itemListDataAdapter);
+                itemRowHolder.img.setBackgroundResource(R.drawable.up_arrow);
+                itemRowHolder.allBt.setVisibility(View.INVISIBLE);
+                //LocationFragment.open[i] = false;
+            } else {
+                itemRowHolder.img.setBackgroundResource(R.drawable.down_arrow);
+                if (Home.page == 1) {
+                    itemRowHolder.allBt.setVisibility(View.VISIBLE);
+                }
+                //LocationFragment.open[i] = true;
+            }
+        }
        /* Glide.with(mContext)
                 .load(feedItem.getImageURL())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -119,6 +123,8 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
 
         int index;
 
+        boolean open;
+
         protected int parentIndex;
 
         SectionListDataAdapter backUp;
@@ -131,6 +137,7 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
             this.img = (ImageView) view.findViewById(R.id.expandSignal);
             this.allBt = (Button) view.findViewById(R.id.allBt);
             expandableButton = (RelativeLayout) view.findViewById(R.id.expandBt_2);
+
 
             if(Home.page == 1) {
 
@@ -190,19 +197,29 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
                         selectAll = false;
                         allBt.setAlpha(1f);
                     }
-
-                    if (LocationFragment.open[parentIndex]) {
-                        recycler_view_list.setAdapter(null);
-                        img.setBackgroundResource(R.drawable.down_arrow);
-                        LocationFragment.open[parentIndex] = false;
-                        if(Home.page == 1){
+                    if(Home.page == 1) {
+                        if (LocationFragment.open[parentIndex]) {
+                            recycler_view_list.setAdapter(null);
+                            img.setBackgroundResource(R.drawable.down_arrow);
+                            LocationFragment.open[parentIndex] = false;
                             allBt.setVisibility(View.VISIBLE);
+                        } else {
+                            recycler_view_list.setAdapter(backUp);
+                            img.setBackgroundResource(R.drawable.up_arrow);
+                            LocationFragment.open[parentIndex] = true;
+                            allBt.setVisibility(View.INVISIBLE);
                         }
                     } else {
-                        recycler_view_list.setAdapter(backUp);
-                        img.setBackgroundResource(R.drawable.up_arrow);
-                        LocationFragment.open[parentIndex] = true;
-                        allBt.setVisibility(View.INVISIBLE);
+                        if (open) {
+                            recycler_view_list.setAdapter(null);
+                            img.setBackgroundResource(R.drawable.down_arrow);
+                            open = false;
+                        } else {
+                            recycler_view_list.setAdapter(backUp);
+                            img.setBackgroundResource(R.drawable.up_arrow);
+                            open = true;
+
+                        }
                     }
                 }
 
