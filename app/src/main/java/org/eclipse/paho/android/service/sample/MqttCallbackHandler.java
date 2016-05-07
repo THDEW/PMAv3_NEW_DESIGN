@@ -13,31 +13,14 @@
 package org.eclipse.paho.android.service.sample;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 
-import com.example.senoir.newpmatry1.IntroductionPage;
-import com.example.senoir.newpmatry1.R;
-
-import org.eclipse.paho.android.service.sample.Connection.ConnectionStatus;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
-import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.json.*;
-
-import activity.AboutFragment;
-import activity.Home;
-import activity.OnOffFragment;
-
-import static android.support.v4.app.ActivityCompat.startActivity;
 
 
 /**

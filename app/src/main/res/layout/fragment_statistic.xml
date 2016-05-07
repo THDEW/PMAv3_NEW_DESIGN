@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context="activity.StatisticFragment">
+    tools:context="Statistic.StatisticFragment">
     <android.support.design.widget.TabLayout
         android:id="@+id/statistic_tabs"
         android:layout_width="match_parent"

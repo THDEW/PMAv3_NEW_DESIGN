@@ -1,38 +1,33 @@
 package activity;
 
-import android.app.Fragment;
 import android.app.ListActivity;
-import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.senoir.newpmatry1.IntroductionPage;
 import com.example.senoir.newpmatry1.R;
 
-import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.android.service.sample.ActionListener;
-import org.eclipse.paho.android.service.sample.ActivityConstants;
 import org.eclipse.paho.android.service.sample.Connection;
 import org.eclipse.paho.android.service.sample.Connections;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.android.service.sample.MqttCallbackHandler;
-import org.eclipse.paho.android.service.sample.MqttTraceCallback;
-import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
-import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.eclipse.paho.client.mqttv3.MqttSecurityException;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
+import ElectricityCost.ElectricityBillFragment;
+import History_OnOff.fragments.LocationFragment;
+import History_OnOff.fragments.OnOffFragment;
+import Setting.SettingFragments;
+import Statistic.StatisticFragment;
 
 
 public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentDrawerListener{
