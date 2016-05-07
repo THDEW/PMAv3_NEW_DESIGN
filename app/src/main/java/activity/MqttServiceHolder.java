@@ -1,23 +1,10 @@
-package com.example.senoir.newpmatry1;
+package activity;
 
+import android.app.Service;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
-import android.view.Menu;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
-
-import activity.Home;
-import activity.MqttServiceHolder;
-import billcalculate.BillCalculate;
-
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.android.service.sample.ActionListener;
@@ -29,49 +16,45 @@ import org.eclipse.paho.android.service.sample.MqttTraceCallback;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
-import java.security.Provider;
-import android.app.Service;
-
-public class IntroductionPage extends Activity {
-
-    /** Duration of wait **/
-    private final int SPLASH_DISPLAY_LENGTH = 5000;
-
-    private Connection connection = null;
+/**
+ * Created by EZ3 on 07/05/2016.
+ */
+public class MqttServiceHolder extends Service {
 
     private String clientHandle = null;
+    private Connection connection = null;
 
-
-    /** Called when the activity is first created. */
-    @Override
-    public void onCreate(Bundle icicle) {
-
-        super.onCreate(icicle);
-        setContentView(R.layout.activity_introduction_page);
-
-        if(connection == null) connectAction();
-
-
-        /* New Handler to start the Menu-Activity
-         * and close this Splash-Screen after some seconds.*/
-            new Handler().postDelayed(new Runnable(){
-            @Override
-            public void run() {
-
-
-                Intent mainIntent = new Intent();
-                mainIntent.setClassName(IntroductionPage.this.getApplicationContext().getPackageName(), "activity.Home");
-                mainIntent.putExtra("handle", clientHandle);
-                IntroductionPage.this.startActivity(mainIntent);
-                //IntroductionPage.this.finish();
-
-
-
-            }
-        }, SPLASH_DISPLAY_LENGTH);
+    public MqttServiceHolder()
+    {
+        connectAction();
+        Intent homeIntent = new Intent(this, Home.class);
+        homeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        homeIntent.putExtra("handle",clientHandle);
+        startActivity(homeIntent);
     }
 
+    @Override
+    public IBinder onBind(Intent arg0) {
+        return null;
+    }
 
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        // Let it continue running until it is stopped.
+        Toast.makeText(this, "Service Started", Toast.LENGTH_LONG).show();
+        //Intent intent2 = new Intent(this,MainActivity.class);
+        //startActivity(intent2);
+
+        return START_STICKY;
+
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Toast.makeText(this, "Service Destroyed", Toast.LENGTH_LONG).show();
+    }
 
     /**
      * Process data from the connect action
