@@ -78,12 +78,16 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_statistic_devices){
             menu_statistic = 0;
-            fragment1.changeStatisticData();
+            fragment1.updateStatistic(this,
+                    fragment1.getCurrentPosition());
+            //fragment1.changeStatisticData();
             return true;
         }
         if (id == R.id.action_statistic_location){
             menu_statistic = 1;
-            fragment1.changeStatisticData();
+            fragment1.updateStatistic(this,
+                    fragment1.getCurrentPosition());
+            //fragment1.changeStatisticData();
             return true;
         }
 
@@ -94,11 +98,11 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
     @Override
     public void onDrawerItemSelected(View view, int position) {
 
-        if(position == 0){
+        if(position == 0 && page != 0){
             fragment.update(this);
         }
-        if(position == 2){
-            fragment1.updateStatistic(this);
+        if(position == 2 && page != 2){
+            fragment1.updateStatistic(this, 0);
         }
         if(position != 0 && position != 1) {
             LocationFragment.data.clear();
