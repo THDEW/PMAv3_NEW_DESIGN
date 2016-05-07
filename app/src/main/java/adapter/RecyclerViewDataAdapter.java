@@ -135,6 +135,7 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
                                 }
                             }
 
+                            // data for location ตามจุด เวลา ตามต้องการ
                             ArrayList<Double> dataFromDataBase = new ArrayList<>();
                             dataFromDataBase.add(2d + index);
                             dataFromDataBase.add(5d + index);
@@ -143,7 +144,7 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
                             dataFromDataBase.add(6d + index);
 
                             LocationFragment.data.add(new GraphSeriesModel("", locationTitle.getText().toString(), dataFromDataBase, true));
-                            LocationFragment.data2.add(0d);
+                            LocationFragment.data2.add(0d); // ไม่เกี่ยว
                             allBt.setAlpha(0.5f);
                             LocationFragment.addNew = true;
                         } else {

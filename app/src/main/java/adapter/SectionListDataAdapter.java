@@ -122,8 +122,10 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                         String hour = " Hr.    ";
                         String baht = " BAHT.    ";
 
+                        // หน้า On และ Off parameter (ชื่อ device, location of device, power consumption of device (unit), cost, timing usage, status)
+
                         EachDeviceDialog dialogFragment = new EachDeviceDialog (tvTitle.getText().toString() , location,"80" + unit ,
-                                "20" + hour,"500" + baht, onOff);
+                                "500" + baht,"20" + hour, onOff);
                         dialogFragment.show(fm, tvTitle.getText().toString() );
 
 
@@ -137,6 +139,7 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                         } else {
                             index = LocationFragment.data.size();
 
+                            // data for device ตามจุด เวลา ตามต้องการ
                             ArrayList<Double> dataFromDataBase = new ArrayList<>();
                             dataFromDataBase.add(2d + index);
                             dataFromDataBase.add(5d + index);

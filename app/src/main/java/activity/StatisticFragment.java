@@ -53,7 +53,11 @@ public class StatisticFragment extends Fragment {
     }
 
     public int getCurrentPosition(){
-        return viewPager.getCurrentItem();
+        if(viewPager != null) {
+            return viewPager.getCurrentItem();
+        } else {
+            return 0;
+        }
     }
 
     @Override

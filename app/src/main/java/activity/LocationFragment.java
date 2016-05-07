@@ -123,7 +123,7 @@ public class LocationFragment extends Fragment {
 
             isBarGraphSet = true;
 
-            series.setTitle("Location XXX");
+            series.setTitle("Location XXX"); // ไม่เกี่ยว
 
             // styling
             series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
@@ -257,11 +257,11 @@ public class LocationFragment extends Fragment {
 
             SectionDataModel dm = new SectionDataModel();
 
-            dm.setHeaderTitle("Location " + i);
+            dm.setHeaderTitle("Location " + i); // ชื่อ โลเคชัน
 
             ArrayList<SingleItemModel> singleItem = new ArrayList<>();
             for (int j = 0; j <= 5; j++) {
-                singleItem.add(new SingleItemModel("Item " + j, "a"+j));
+                singleItem.add(new SingleItemModel("Item " + j, "a"+j)); // ชื่อ parameter 1 device, parameter 2 ไม่เกี่ยว
             }
 
             dm.setAllItemsInSection(singleItem);
@@ -288,7 +288,7 @@ public class LocationFragment extends Fragment {
 
             for (int i = 0; i < data.size(); i++) {
                 if (data.get(i).getValue(0) != -1d) {
-                    dataPoint[count] = new DataPoint(count, data.get(count).getSumValue());
+                    dataPoint[count] = new DataPoint(count, data.get(i).getSumValue());
                     if(data.get(i).getIsLocation())
                         dataPointName[count] =  data.get(i).getLocation();
                     else

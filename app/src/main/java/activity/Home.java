@@ -141,12 +141,12 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_statistic_devices){
             menu_statistic = 0;
-            statisticFragment.changeStatisticData();
+            statisticFragment.updateStatistic(this, statisticFragment.getCurrentPosition());
             return true;
         }
         if (id == R.id.action_statistic_location){
             menu_statistic = 1;
-            statisticFragment.changeStatisticData();
+            statisticFragment.updateStatistic(this,statisticFragment.getCurrentPosition());
             return true;
         }
 
@@ -184,7 +184,9 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
                 page = 1;
                 break;
             case 2:
-                statisticFragment.updateStatistic(this);
+                if (page != 2){
+                    statisticFragment.updateStatistic(this, statisticFragment.getCurrentPosition());
+                }
                 fragmentTransaction.replace(R.id.container_body, statisticFragment);
                 title = getString(R.string.title_statistic);
                 page = 2;
