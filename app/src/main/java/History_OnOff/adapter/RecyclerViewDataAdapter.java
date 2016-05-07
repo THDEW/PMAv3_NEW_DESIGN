@@ -60,6 +60,8 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
 
         itemRowHolder.locationTitle.setText(sectionName);
 
+        itemRowHolder.parentIndex = i;
+
         SectionListDataAdapter itemListDataAdapter;
         if(Home.page == 0){
             itemListDataAdapter = new SectionListDataAdapter(mContext, singleSectionItems, fm, sectionName, onOff);
@@ -75,6 +77,18 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
         itemRowHolder.recycler_view_list.setLayoutManager(new GridLayoutManager(mContext, 3));
         itemRowHolder.recycler_view_list.setAdapter(null);
 
+        if (LocationFragment.open[i]) {
+            itemRowHolder.recycler_view_list.setAdapter(itemListDataAdapter);
+            itemRowHolder.img.setBackgroundResource(R.drawable.up_arrow);
+            itemRowHolder.allBt.setVisibility(View.INVISIBLE);
+            //LocationFragment.open[i] = false;
+        } else {
+            itemRowHolder.img.setBackgroundResource(R.drawable.down_arrow);
+            if(Home.page == 1){
+                itemRowHolder.allBt.setVisibility(View.VISIBLE);
+            }
+            //LocationFragment.open[i] = true;
+        }
 
        /* Glide.with(mContext)
                 .load(feedItem.getImageURL())
@@ -101,11 +115,11 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
 
         protected Button allBt;
 
-        boolean open = false;
-
         boolean selectAll = false;
 
         int index;
+
+        protected int parentIndex;
 
         SectionListDataAdapter backUp;
 
@@ -177,17 +191,17 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
                         allBt.setAlpha(1f);
                     }
 
-                    if (open) {
+                    if (LocationFragment.open[parentIndex]) {
                         recycler_view_list.setAdapter(null);
                         img.setBackgroundResource(R.drawable.down_arrow);
-                        open = false;
+                        LocationFragment.open[parentIndex] = false;
                         if(Home.page == 1){
                             allBt.setVisibility(View.VISIBLE);
                         }
                     } else {
                         recycler_view_list.setAdapter(backUp);
                         img.setBackgroundResource(R.drawable.up_arrow);
-                        open = true;
+                        LocationFragment.open[parentIndex] = true;
                         allBt.setVisibility(View.INVISIBLE);
                     }
                 }

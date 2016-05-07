@@ -51,6 +51,8 @@ public class LocationFragment extends Fragment {
     public static ArrayList<GraphSeriesModel> data = new ArrayList<>();
     public static ArrayList<Double> data2 = new ArrayList<>();
 
+    public static boolean[] open;
+
     public static boolean isBarGraph = true;
 
     public static boolean isBarGraphSet;
@@ -254,6 +256,10 @@ public class LocationFragment extends Fragment {
 
     public void createDummyData() {
         for (int i = 1; i <= 5; i++) {
+
+            //declare size == amount of location
+            open = new boolean[5];
+            open[i-1] = false;
 
             SectionDataModel dm = new SectionDataModel();
 
