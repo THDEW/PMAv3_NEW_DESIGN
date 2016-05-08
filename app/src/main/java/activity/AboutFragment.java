@@ -49,7 +49,7 @@ public class AboutFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_about, container, false);
 
-        if(show == 1) show();
+        //if(show == 1) show();
         // Inflate the layout for this fragment
         return rootView;
     }
@@ -64,14 +64,5 @@ public class AboutFragment extends Fragment {
         super.onDetach();
     }
 
-    public void show()
-    {
-        Toast.makeText(getActivity(),"show",Toast.LENGTH_SHORT).show();
 
-    }
-
-    public void setShow(int sh)
-    {
-        show = sh;
-    }
 }

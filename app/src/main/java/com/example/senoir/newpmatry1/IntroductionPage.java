@@ -35,7 +35,7 @@ import android.app.Service;
 public class IntroductionPage extends Activity {
 
     /** Duration of wait **/
-    private final int SPLASH_DISPLAY_LENGTH = 5000;
+    private final int SPLASH_DISPLAY_LENGTH = 1000;
 
     private Connection connection = null;
 
@@ -83,7 +83,7 @@ public class IntroductionPage extends Activity {
 
         // The basic client information
         String server = "192.168.1.35";
-        String clientId = "Android";
+        String clientId = "Android42";
         int port = 1883;
         boolean cleanSession = false;
 

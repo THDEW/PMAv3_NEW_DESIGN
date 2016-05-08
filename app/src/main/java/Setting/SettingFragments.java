@@ -8,23 +8,31 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.senoir.newpmatry1.R;
 
+import org.eclipse.paho.android.service.sample.Connection;
+import org.eclipse.paho.android.service.sample.Connections;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
 import activity.Home;
 import adapter.DividerItemDecoration;
 
 
-public class SettingFragments extends Fragment{
+public class SettingFragments extends Fragment {
 
     private FragmentActivity myContext;
     ArrayList<TableDataModel> allSampleData;
@@ -33,13 +41,33 @@ public class SettingFragments extends Fragment{
 
     View rootView;
 
+    RecyclerView my_recycler_view;
+    SettingFragments settingFragments = this;
+
+    private String clientHandle = null;
+    private Connection connection = null;
+    //private ChangeListener changeListener = new ChangeListener();
+
+
+    private Bundle temp = null;
+
+    int s = 0;
+
     public SettingFragments() {
         // Required empty public constructor
+
+    }
+
+    public SettingFragments(String clientHandle) {
+        this.clientHandle = clientHandle;
+
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        connection = Connections.getInstance(getActivity()).getConnection(clientHandle);
+        //connection.registerChangeListener(changeListener);
     }
 
     @Override
@@ -47,18 +75,26 @@ public class SettingFragments extends Fragment{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         //Log.d("MonthlyFragment", "Monthly was created again");
+
+
         rootView = inflater.inflate(R.layout.fragment_setting, container, false);
+
+
+        allSampleData = new ArrayList<>();
+        Log.v("setting", "create");
+
+        my_recycler_view = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
 
         Button reloginbt = (Button) rootView.findViewById(R.id.reloginbt);
         Button logout = (Button) rootView.findViewById(R.id.logout);
 
         fm = getFragmentManager();
 
-        reloginbt.setOnClickListener(new View.OnClickListener(){
+        reloginbt.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                LoginDialog dialog = new LoginDialog(rootView);
+                LoginDialog dialog = new LoginDialog(rootView, clientHandle);
                 dialog.show(fm, "Login");
                 dialog.setCancelable(false);
 
@@ -66,26 +102,23 @@ public class SettingFragments extends Fragment{
         });
 
         type = new String[]{"Data Type", "Data Detail", "Power Node"
-        ,"Location" ,"Group", "Device" };
+                , "Location", "Group", "Device"};
 
-        if(!Home.login){
+        if (!Home.login) {
 
-            LoginDialog dialog = new LoginDialog(rootView);
+            LoginDialog dialog = new LoginDialog(rootView, clientHandle);
             dialog.show(fm, "Login");
             dialog.setCancelable(false);
 
         } else {
-            RecyclerView my_recycler_view = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
+            my_recycler_view = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
             my_recycler_view.setVisibility(View.VISIBLE);
 
             logout.setVisibility(View.VISIBLE);
         }
 
 
-        allSampleData = new ArrayList<>();
-        createDummyData();
-
-        RecyclerView my_recycler_view = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
+//        createDummyData(0);
 
         my_recycler_view.setHasFixedSize(true);
 
@@ -96,7 +129,9 @@ public class SettingFragments extends Fragment{
         my_recycler_view.addItemDecoration(new DividerItemDecoration(myContext, LinearLayoutManager.VERTICAL));
 
         my_recycler_view.setAdapter(adapter);
-        logout.setOnClickListener(new View.OnClickListener(){
+
+
+        logout.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -116,13 +151,16 @@ public class SettingFragments extends Fragment{
             }
         });
 
-
-
         return rootView;
     }
 
-    public void createDummyData() {
-        for (int i = 0; i < 6; i++) {
+
+    public void createDummyData(int x) {
+        Log.v("settings", "createdummy");
+        allSampleData = new ArrayList<>();
+        allSampleData.clear();
+
+        for (int i = s; i < 6; i++) {
 
             TableDataModel dm = new TableDataModel();
 
@@ -132,7 +170,7 @@ public class SettingFragments extends Fragment{
             for (int j = 0; j < 10; j++) {
                 singleItem.add(new ItemDataModel(type[i] + " " + j, type[i]));
                 // ใส่ข้อมูลตาม ชื่อ column ตามเคส ไล่ตาม "Data Type", "Data Detail", "Power Node" ,"Location" ,"Group of Device", "Device"
-                switch (i){
+                switch (i) {
                     case 0:
                         singleItem.get(j).addData("Data Type Name");
                         singleItem.get(j).addData("Description");
@@ -178,6 +216,19 @@ public class SettingFragments extends Fragment{
             allSampleData.add(dm);
 
         }
+        RecyclerViewForSettingAdapter adapter = new RecyclerViewForSettingAdapter(myContext, allSampleData, fm);
+
+        my_recycler_view.setAdapter(adapter);
+
+    }
+
+    public void sertBundle(Bundle b) {
+        temp = b;
+    }
+
+    public View getView() {
+        Log.v("help", "me");
+        return rootView;
     }
 
     @Override
@@ -185,4 +236,6 @@ public class SettingFragments extends Fragment{
         super.onAttach(activity);
         myContext = (FragmentActivity) activity;
     }
+
 }
+

@@ -13,6 +13,7 @@
 package org.eclipse.paho.android.service.sample;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -83,24 +84,34 @@ public class MqttCallbackHandler implements MqttCallback  {
     //Toast.makeText(context,"success",Toast.LENGTH_LONG).show();
 
     String message2 = new String(message.getPayload());
-    /*
-    AboutFragment aboutFragment = new AboutFragment(clientHandle);
-
-    FragmentActivity contextTemp = (FragmentActivity) context;
-    FragmentManager fragManager = contextTemp.getSupportFragmentManager();
-    FragmentTransaction fragmentTransaction = fragManager.beginTransaction();
 
 
-    aboutFragment = new AboutFragment(clientHandle);
-    aboutFragment.setShow(0);
-    fragmentTransaction.replace(R.id.container_body, aboutFragment);
+    Bundle bundle = new Bundle();
+
+    //c.setTest(message2);
 
 
-    fragmentTransaction.commit();
-    */
-    c.setTest(message2);
-    Log.v("messagearr","1");
-    c.changePage("testing");
+
+    if(topic.equals("server/authenticate"))
+    {
+
+
+      bundle = new Bundle();
+      bundle.putString("authenticate",message2);
+      c.insertBundle(bundle);
+      Log.v("authenticatehandler","handle");
+
+      c.changePage("authenticate");
+    }
+    else if(topic.equals("server/settings"))
+    {
+
+
+
+      Log.v("settingshandler","handle");
+
+      c.changePage("settings");
+    }
 
 
 

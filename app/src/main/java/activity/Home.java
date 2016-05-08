@@ -5,11 +5,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.senoir.newpmatry1.R;
@@ -19,6 +23,9 @@ import org.eclipse.paho.android.service.sample.Connection;
 import org.eclipse.paho.android.service.sample.Connections;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.android.service.sample.MqttCallbackHandler;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -104,17 +111,10 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
         locationFragment = new LocationFragment();
         statisticFragment = new StatisticFragment();
         electricityBillFragment = new ElectricityBillFragment();
-        settingFragments = new SettingFragments();
-        aboutFragment = new AboutFragment(clientHandle);
+        settingFragments = new SettingFragments(clientHandle);
+        aboutFragment = new AboutFragment();
 
-
-
-
-
-
-
-
-        //displayView(5);
+        displayView(5);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -193,7 +193,7 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
                 break;
             case 4:
                 String topic = "android/settings";
-                String message = "test";
+                String message = "getSettings";
                 int qos = 0;
                 boolean retained = false;
 
@@ -213,24 +213,16 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
                 break;
             case 5:
                 aboutFragment = new AboutFragment(clientHandle);
-                aboutFragment.setShow(1);
                 fragmentTransaction.replace(R.id.container_body, aboutFragment);
                 title = "About";
                 page = 5;
-                //Toast.makeText(this,""+show,Toast.LENGTH_SHORT).show();
-                /*
-                if(show == 0) show =1;
-                else if(show == 1) show =0;
-                */
-
-
                 break;
             default:
                 break;
         }
-        connection = Connections.getInstance(this).getConnection(clientHandle);
-        Toast.makeText(this,connection.getTest(),Toast.LENGTH_SHORT).show();
-        connection.setTest("shit");
+        //connection = Connections.getInstance(this).getConnection(clientHandle);
+        //Toast.makeText(this,connection.getTest(),Toast.LENGTH_SHORT).show();
+
         getSupportActionBar().setTitle(title);
         fragmentTransaction.commit();
     }
@@ -257,38 +249,65 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
 
     }
 
-    /**
-     * @see ListActivity#onDestroy()
-     */
 
-
-    /**
-     * This class ensures that the user interface is updated as the Connection objects change their states
-     *
-     *
-     */
     private class ChangeListener implements PropertyChangeListener {
 
-        /**
-         * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
-         */
-        //FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-
+        String title = null;
         @Override
         public void propertyChange(PropertyChangeEvent event) {
 
-            Toast.makeText(home,event.getPropertyName(),Toast.LENGTH_SHORT).show();
-            connection.setTest("event");
-            /*
-            aboutFragment.setShow(0);
-            fragmentTransaction.replace(R.id.container_body, aboutFragment);
-            title = "About";
-            page = 5;
-            home.getSupportActionBar().setTitle(title);
-            fragmentTransaction.commit();
-            */
-            //show=1;
+
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+
+            View view = null;
+
+            if(event.getPropertyName().equals("settings"))
+            {
+                Log.v("settings","settset");
+                fragmentTransaction.replace(R.id.container_body, settingFragments);
+                title = "Settings";
+                home.getSupportActionBar().setTitle(title);
+                fragmentTransaction.commit();
+                Log.v("authenticate", "before");
+                view = settingFragments.getView();
+
+                login = true;
+
+                if (Home.login) {
+                    Log.v("authenticate", "login");
+                    Toast.makeText(getApplicationContext(), "Login successfully", Toast.LENGTH_LONG).show();
+                    RecyclerView my_recycler_view = (RecyclerView) view.findViewById(R.id.my_recycler_view);
+                    my_recycler_view.setVisibility(View.VISIBLE);
+                    Button logout = (Button) view.findViewById(R.id.logout);
+                    logout.setVisibility(View.VISIBLE);
+
+
+                    Button relogin = (Button) view.findViewById(R.id.reloginbt);
+                    relogin.setVisibility(View.INVISIBLE);
+                    TextView plslogin = (TextView) view.findViewById(R.id.plsLogin);
+                    plslogin.setVisibility(View.INVISIBLE);
+
+
+                    settingFragments.createDummyData(3);
+
+                } else {
+                    //Toast.makeText(getApplicationContext(), "Login successfully", Toast.LENGTH_LONG).show();
+                    RecyclerView my_recycler_view = (RecyclerView) view.findViewById(R.id.my_recycler_view);
+                    my_recycler_view.setVisibility(View.INVISIBLE);
+                    Button logout = (Button) view.findViewById(R.id.logout);
+                    logout.setVisibility(View.INVISIBLE);
+
+
+                    Button relogin = (Button) view.findViewById(R.id.reloginbt);
+                    relogin.setVisibility(View.VISIBLE);
+                    TextView plslogin = (TextView) view.findViewById(R.id.plsLogin);
+                    plslogin.setVisibility(View.VISIBLE);
+                }
+            }
+
+
 
         }
 
