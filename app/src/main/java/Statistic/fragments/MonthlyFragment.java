@@ -36,7 +36,15 @@ public class MonthlyFragment extends Fragment implements AdapterView.OnItemSelec
     private ApplianceAdapter mAdapter;
     private int onspinnerselected;
     TextView buttonToChange;
+
+    private Bundle bundle = null;
+
     public MonthlyFragment() {
+        // Required empty public constructor
+    }
+
+    public MonthlyFragment(Bundle bundle) {
+        this.bundle = bundle;
         // Required empty public constructor
     }
 
@@ -66,7 +74,9 @@ public class MonthlyFragment extends Fragment implements AdapterView.OnItemSelec
         if(applianceModelListeList!=null){
             applianceModelListeList.clear();
         }
-        prepareApplianceData(20);
+
+        prepareApplianceData(bundle);
+
         if(Home.menu_statistic==0){
             buttonToChange.setText("Devices");
         } else if(Home.menu_statistic==1){
@@ -94,6 +104,45 @@ public class MonthlyFragment extends Fragment implements AdapterView.OnItemSelec
             for (start0 = 0; start0 < numSize - 15; start0++) {
                 //ตรงนี้นะสัสApplianceModel(location name, กำลังไฟฟ้าที่ใช้,วันที่เปนสตริงนะ,constant string)
                 ApplianceModel locationapp = new ApplianceModel("Name: Location " + start0, elecusageLocation++, "05/12/2016", "Electricity's Usage: ");
+                applianceModelListeList.add(locationapp);
+            }
+        }
+        mAdapter.notifyDataSetChanged();
+
+    }
+
+    private void prepareApplianceData(Bundle bundle) {
+
+        int numSize = Integer.parseInt(bundle.getString("size")); // size ของ ชุดข้อมูลของเมิง
+
+        // แล้วเมิง ก็เอาข้อมูล ของ location กับ device มา split บลาๆๆๆๆๆๆๆ
+
+        // Bundle ที่ส่งมา ก็ เอามาทั้ง Device กะ Location เลย
+
+        // แล้ว เอาไปใส่ตาม พารามิเตอร์ ใน ลูป ข้างล่าง
+
+
+        // อันนี้ กุ สมมุติ ก็ แแยกๆ ใส่เข้าไป
+        String[] deviceName = new String[1];
+        String[] devicePower = new String[1];
+        String[] deviceDate = new String[1];
+
+        String[] locationName = new String[1];
+        String[] locationPower = new String[1];
+        String[] locationDate = new String[1];
+
+
+        int start, start0;
+        if (Home.menu_statistic==0) {
+            for (start = 0; start < numSize; start++) {
+                //ตรงนี้นะสัสApplianceModel(device name, กำลังไฟฟ้าที่ใช้,วันที่เปนสตริงนะ,constant string)
+                ApplianceModel appliances = new ApplianceModel(deviceName[start], Double.parseDouble(devicePower[start]), deviceDate[start], "Electricity's Usage: ");
+                applianceModelListeList.add(appliances);
+            }
+        } else if (Home.menu_statistic==1) {
+            for (start0 = 0; start0 < numSize - 15; start0++) {
+                //ตรงนี้นะสัสApplianceModel(location name, กำลังไฟฟ้าที่ใช้,วันที่เปนสตริงนะ,constant string)
+                ApplianceModel locationapp = new ApplianceModel(locationName[start0], Double.parseDouble(locationPower[start0]), locationDate[start0], "Electricity's Usage: ");
                 applianceModelListeList.add(locationapp);
             }
         }

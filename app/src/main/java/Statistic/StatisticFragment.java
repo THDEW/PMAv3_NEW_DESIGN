@@ -50,6 +50,21 @@ public class StatisticFragment extends Fragment {
         }
     }
 
+
+    //Bundle ส่งมา ทั้ง location และ Device เลยนะ
+    public void updateStatistic(Activity context, int index, Bundle bundle){
+        if(viewPager != null) {
+            FragmentActivity contextTemp = (FragmentActivity) context;
+            FragmentManager fragManager = contextTemp.getSupportFragmentManager();
+            viewPagerAdapter = new ViewPagerAdapter(fragManager);
+            viewPagerAdapter.addFragment(new DailyFragment(bundle), "Daily");
+            viewPagerAdapter.addFragment(new MonthlyFragment(bundle), "Monthly");
+            viewPagerAdapter.addFragment(new YearlyFragment(bundle), "Yearly");
+            viewPager.setAdapter(viewPagerAdapter);
+            viewPager.setCurrentItem(index);
+        }
+    }
+
     public int getCurrentPosition(){
         if(viewPager != null) {
             return viewPager.getCurrentItem();

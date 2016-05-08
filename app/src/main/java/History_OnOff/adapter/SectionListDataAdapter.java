@@ -19,7 +19,9 @@ import History_OnOff.dialogs.EachDeviceDialog;
 import History_OnOff.model.GraphSeriesModel;
 import History_OnOff.fragments.LocationFragment;
 import History_OnOff.model.SingleItemModel;
+import Setting.ItemDataModel;
 import activity.Home;
+import billcalculate.BillCalculate;
 
 import java.util.ArrayList;
 
@@ -57,6 +59,8 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
     public void onBindViewHolder(SingleItemRowHolder holder, int i) {
 
         SingleItemModel singleItem = itemsList.get(i);
+
+        holder.item = itemsList.get(i);
 
         holder.tvTitle.setText(singleItem.getName());
 
@@ -108,6 +112,8 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
 
         boolean selected = false;
 
+        protected SingleItemModel item;
+
         int index;
 
         public SingleItemRowHolder(View view) {
@@ -124,10 +130,12 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                         String hour = " Hr.    ";
                         String baht = " BAHT.    ";
 
+                        BillCalculate bill = new BillCalculate();
+
                         // หน้า On และ Off parameter (ชื่อ device, location of device, power consumption of device (unit), cost, timing usage, status)
 
-                        EachDeviceDialog dialogFragment = new EachDeviceDialog (tvTitle.getText().toString() , location,"80" + unit ,
-                                "500" + baht,"20" + hour, onOff);
+                        EachDeviceDialog dialogFragment = new EachDeviceDialog (item.getName() , location,item.getSumPower() + unit ,
+                                bill.getBillOfType1_1(item.getSumPower()) + baht,item.getUsageTime() + hour, onOff);
                         dialogFragment.show(fm, tvTitle.getText().toString() );
 
 
@@ -142,12 +150,7 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                             index = LocationFragment.data.size();
 
                             // data for device ตามจุด เวลา ตามต้องการ
-                            ArrayList<Double> dataFromDataBase = new ArrayList<>();
-                            dataFromDataBase.add(2d + index);
-                            dataFromDataBase.add(5d + index);
-                            dataFromDataBase.add(3d + index);
-                            dataFromDataBase.add(3d + index);
-                            dataFromDataBase.add(6d + index);
+                            double[] dataFromDataBase = item.getAllPower();
 
                             LocationFragment.data.add(new GraphSeriesModel(tvTitle.getText().toString(),location
                                     ,dataFromDataBase,false));
