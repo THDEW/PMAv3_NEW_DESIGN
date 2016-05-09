@@ -51,7 +51,6 @@ public class SettingFragments extends Fragment {
 
     private Bundle temp = null;
 
-    int s = 0;
 
     public SettingFragments() {
         // Required empty public constructor
@@ -117,8 +116,7 @@ public class SettingFragments extends Fragment {
             logout.setVisibility(View.VISIBLE);
         }
 
-
-//        createDummyData(0);
+        //createDummyData(0);
 
         my_recycler_view.setHasFixedSize(true);
 
@@ -155,12 +153,12 @@ public class SettingFragments extends Fragment {
     }
 
 
-    public void createDummyData(int x) {
+    public void createDummyData() {
         Log.v("settings", "createdummy");
         allSampleData = new ArrayList<>();
         allSampleData.clear();
 
-        for (int i = s; i < 6; i++) {
+        for (int i = 0 ; i < 6; i++) {
 
             TableDataModel dm = new TableDataModel();
 
@@ -222,9 +220,7 @@ public class SettingFragments extends Fragment {
 
     }
 
-    public void sertBundle(Bundle b) {
-        temp = b;
-    }
+
 
     public View getView() {
         Log.v("help", "me");

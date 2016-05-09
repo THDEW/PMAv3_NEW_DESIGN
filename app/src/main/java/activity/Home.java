@@ -29,6 +29,7 @@ import org.json.JSONObject;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.regex.Pattern;
 
 import ElectricityCost.ElectricityBillFragment;
 import History_OnOff.fragments.LocationFragment;
@@ -263,52 +264,97 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
 
             View view = null;
 
-            if(event.getPropertyName().equals("settings"))
+            if(event.getPropertyName().equals("authenticate"))
             {
-                Log.v("settings","settset");
+                Bundle bundle = new Bundle();
+                String[] types = new String[]{"device_type","device_detail","power_node","location","group_of_device","device"};
+                String jall = connection.getBundle().getString("authenticate");
+                int checkLogin = 0;
+                /*
+                String[] split = jall.split(Pattern.quote("|"));
+
+                JSONArray jsonArray = null;
+                JSONObject jsonObject = null;
+
+
+                try {
+                     jsonArray  = new JSONArray(new String(split[0]));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    jsonObject = (JSONObject) jsonArray.get(0);
+                    String countid = jsonObject.getString("countid");
+
+                    checkLogin = Integer.parseInt(countid);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                for(int i =0; i < types.length ;i++)
+                {
+                    bundle.putString(types[i],split[i+1]);
+                    Toast.makeText(home,"asdfds"+i,Toast.LENGTH_SHORT).show();
+                }
+                */
+               checkLogin = Integer.parseInt(jall);
+
+
+
+                if(checkLogin==1) login = true;
+                else login = false;
+
+
                 fragmentTransaction.replace(R.id.container_body, settingFragments);
                 title = "Settings";
                 home.getSupportActionBar().setTitle(title);
                 fragmentTransaction.commit();
-                Log.v("authenticate", "before");
+
                 view = settingFragments.getView();
 
-                login = true;
+                //login = true;
 
                 if (Home.login) {
-                    Log.v("authenticate", "login");
-                    Toast.makeText(getApplicationContext(), "Login successfully", Toast.LENGTH_LONG).show();
-                    RecyclerView my_recycler_view = (RecyclerView) view.findViewById(R.id.my_recycler_view);
-                    my_recycler_view.setVisibility(View.VISIBLE);
-                    Button logout = (Button) view.findViewById(R.id.logout);
-                    logout.setVisibility(View.VISIBLE);
-
-
-                    Button relogin = (Button) view.findViewById(R.id.reloginbt);
-                    relogin.setVisibility(View.INVISIBLE);
-                    TextView plslogin = (TextView) view.findViewById(R.id.plsLogin);
-                    plslogin.setVisibility(View.INVISIBLE);
-
-
-                    settingFragments.createDummyData(3);
-
+                    loggedIn(view,bundle);
                 } else {
-                    //Toast.makeText(getApplicationContext(), "Login successfully", Toast.LENGTH_LONG).show();
-                    RecyclerView my_recycler_view = (RecyclerView) view.findViewById(R.id.my_recycler_view);
-                    my_recycler_view.setVisibility(View.INVISIBLE);
-                    Button logout = (Button) view.findViewById(R.id.logout);
-                    logout.setVisibility(View.INVISIBLE);
-
-
-                    Button relogin = (Button) view.findViewById(R.id.reloginbt);
-                    relogin.setVisibility(View.VISIBLE);
-                    TextView plslogin = (TextView) view.findViewById(R.id.plsLogin);
-                    plslogin.setVisibility(View.VISIBLE);
+                    notLoggedIn(view);
                 }
             }
 
 
 
+        }
+
+        public void loggedIn(View view, Bundle bundle)
+        {
+            Toast.makeText(getApplicationContext(), "Login successfully", Toast.LENGTH_LONG).show();
+            RecyclerView my_recycler_view = (RecyclerView) view.findViewById(R.id.my_recycler_view);
+            my_recycler_view.setVisibility(View.VISIBLE);
+            Button logout = (Button) view.findViewById(R.id.logout);
+            logout.setVisibility(View.VISIBLE);
+
+
+            Button relogin = (Button) view.findViewById(R.id.reloginbt);
+            relogin.setVisibility(View.INVISIBLE);
+            TextView plslogin = (TextView) view.findViewById(R.id.plsLogin);
+            plslogin.setVisibility(View.INVISIBLE);
+
+
+            settingFragments.createDummyData();
+        }
+        public void notLoggedIn(View view)
+        {
+            RecyclerView my_recycler_view = (RecyclerView) view.findViewById(R.id.my_recycler_view);
+            my_recycler_view.setVisibility(View.INVISIBLE);
+            Button logout = (Button) view.findViewById(R.id.logout);
+            logout.setVisibility(View.INVISIBLE);
+
+
+            Button relogin = (Button) view.findViewById(R.id.reloginbt);
+            relogin.setVisibility(View.VISIBLE);
+            TextView plslogin = (TextView) view.findViewById(R.id.plsLogin);
+            plslogin.setVisibility(View.VISIBLE);
         }
 
     }

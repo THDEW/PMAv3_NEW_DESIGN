@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.json.*;
 
@@ -56,8 +57,15 @@ public class MqttCallbackHandler implements MqttCallback  {
 //	  cause.printStackTrace();
     if (cause != null) {
       Connection c = Connections.getInstance(context).getConnection(clientHandle);
-
       Toast.makeText(context,"lost",Toast.LENGTH_LONG).show();
+
+
+      try {
+        c.getClient().connect();
+        Toast.makeText(context, "connect", Toast.LENGTH_LONG).show();
+      } catch (MqttException e) {
+        e.printStackTrace();
+      }
 
       //format string to use a notification text
       Object[] args = new Object[2];
