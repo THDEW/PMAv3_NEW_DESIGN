@@ -6,25 +6,36 @@ package activity;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import com.example.senoir.newpmatry1.R;
 
-import java.util.List;
-
-import adapter.RecyclerViewAboutAdapter;
-import model.PersonModel;
+import org.eclipse.paho.android.service.sample.Connection;
+import org.eclipse.paho.android.service.sample.Connections;
 
 
 public class AboutFragment extends Fragment {
-    private FragmentActivity myContext;
-    private PersonModel personModel;
+
+    private int show;
+
+    private String clientHandle = null;
+    private Connection connection = null;
+
     public AboutFragment() {
         // Required empty public constructor
+    }
+
+
+
+
+    public AboutFragment(String clientHandle)
+    {
+
+        this.clientHandle = clientHandle;
+        connection = Connections.getInstance(getActivity()).getConnection(clientHandle);
     }
 
     @Override
@@ -37,27 +48,21 @@ public class AboutFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_about, container, false);
-        RecyclerView rv = (RecyclerView) rootView.findViewById(R.id.rvAbout);
-        rv.setHasFixedSize(true);
-        LinearLayoutManager llm = new LinearLayoutManager(myContext);
-        rv.setLayoutManager(llm);
-        personModel = new PersonModel();
-        personModel.initializeData();
-        RecyclerViewAboutAdapter adapter = new RecyclerViewAboutAdapter(personModel.persons);
-        rv.setAdapter(adapter);
 
-
+        //if(show == 1) show();
         // Inflate the layout for this fragment
         return rootView;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
     }
-    @Override
-    public void onAttach(final Activity activity) {
-        myContext = (FragmentActivity) activity;
-        super.onAttach(activity);
-    }
+
+
 }

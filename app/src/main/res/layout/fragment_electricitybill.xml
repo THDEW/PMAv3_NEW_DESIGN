@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="activity.ElectricityBillFragment">
+    tools:context="ElectricityCost.ElectricityBillFragment">
     <Spinner
         android:id="@+id/residential_spinner"
         android:layout_width="fill_parent"
