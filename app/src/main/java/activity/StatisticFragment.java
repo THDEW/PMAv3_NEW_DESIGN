@@ -108,8 +108,8 @@ public class StatisticFragment extends Fragment {
         }
 
         public void updateChangeDaily(){
-                DailyFragment DailyChange = (DailyFragment) mFragmentList.get(0);
-                DailyChange.changeDialy(20);
+            DailyFragment DailyChange = (DailyFragment) mFragmentList.get(0);
+            DailyChange.changeDialy(20);
         }
         public void updateChangeMonthly(){
             MonthlyFragment MonthlyChange = (MonthlyFragment) mFragmentList.get(1);
