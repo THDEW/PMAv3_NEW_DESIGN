@@ -7,6 +7,7 @@ public class SectionDataModel {
 
     private String headerTitle;
     private ArrayList<SingleItemModel> allItemsInSection;
+    private double[] powerOfLocation;
 
     public SectionDataModel() {
 
@@ -32,4 +33,12 @@ public class SectionDataModel {
         this.allItemsInSection = allItemsInSection;
     }
 
+    public void setPowerOfLocation(double[] power) {
+        this.powerOfLocation = power;
+    }
+
+
+    public double[] getAllPower() {
+        return this.powerOfLocation;
+    }
 }

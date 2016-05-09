@@ -38,8 +38,15 @@ public class DailyFragment extends Fragment implements AdapterView.OnItemSelecte
 
     TextView buttonToChange;
 
+    private Bundle bundle = null;
+
     public DailyFragment() {
 
+        // Required empty public constructor
+    }
+
+    public DailyFragment(Bundle bundle) {
+        this.bundle = bundle;
         // Required empty public constructor
     }
 
@@ -73,7 +80,9 @@ public class DailyFragment extends Fragment implements AdapterView.OnItemSelecte
         if(applianceModelListeList!=null){
             applianceModelListeList.clear();
         }
-        prepareApplianceData(20);
+
+        prepareApplianceData(bundle);
+
         if(Home.menu_statistic==0){
             buttonToChange.setText("Devices");
         } else if(Home.menu_statistic==1){
@@ -107,6 +116,47 @@ public class DailyFragment extends Fragment implements AdapterView.OnItemSelecte
         mAdapter.notifyDataSetChanged();
 
     }
+
+    private void prepareApplianceData(Bundle bundle) {
+
+        int numSize = Integer.parseInt(bundle.getString("size")); // size ของ ชุดข้อมูลของเมิง
+
+        // แล้วเมิง ก็เอาข้อมูล ของ location กับ device มา split บลาๆๆๆๆๆๆๆ
+
+        // Bundle ที่ส่งมา ก็ เอามาทั้ง Device กะ Location เลย
+
+        // แล้ว เอาไปใส่ตาม พารามิเตอร์ ใน ลูป ข้างล่าง
+
+
+        // อันนี้ กุ สมมุติ ก็ แแยกๆ ใส่เข้าไป
+        String[] deviceName = new String[1];
+        String[] devicePower = new String[1];
+        String[] deviceDate = new String[1];
+
+        String[] locationName = new String[1];
+        String[] locationPower = new String[1];
+        String[] locationDate = new String[1];
+
+
+        int start, start0;
+        if (Home.menu_statistic==0) {
+            for (start = 0; start < numSize; start++) {
+                //ตรงนี้นะสัสApplianceModel(device name, กำลังไฟฟ้าที่ใช้,วันที่เปนสตริงนะ,constant string)
+                ApplianceModel appliances = new ApplianceModel(deviceName[start], Double.parseDouble(devicePower[start]), deviceDate[start], "Electricity's Usage: ");
+                applianceModelListeList.add(appliances);
+            }
+        } else if (Home.menu_statistic==1) {
+            for (start0 = 0; start0 < numSize - 15; start0++) {
+                //ตรงนี้นะสัสApplianceModel(location name, กำลังไฟฟ้าที่ใช้,วันที่เปนสตริงนะ,constant string)
+                ApplianceModel locationapp = new ApplianceModel(locationName[start0], Double.parseDouble(locationPower[start0]), locationDate[start0], "Electricity's Usage: ");
+                applianceModelListeList.add(locationapp);
+            }
+        }
+        mAdapter.notifyDataSetChanged();
+
+    }
+
+
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

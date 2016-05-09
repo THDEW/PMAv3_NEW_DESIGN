@@ -62,6 +62,8 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
 
         itemRowHolder.parentIndex = i;
 
+        itemRowHolder.locationItem = dataList.get(i);
+
         SectionListDataAdapter itemListDataAdapter;
         if(Home.page == 0){
             itemListDataAdapter = new SectionListDataAdapter(mContext, singleSectionItems, fm, sectionName, onOff);
@@ -119,6 +121,8 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
 
         protected Button allBt;
 
+        protected SectionDataModel locationItem;
+
         boolean selectAll = false;
 
         int index;
@@ -158,12 +162,14 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
 
                             // ปุ่ม all
                             // data for location ตามจุด เวลา ตามต้องการ
-                            ArrayList<Double> dataFromDataBase = new ArrayList<>();
-                            dataFromDataBase.add(2d + index);
-                            dataFromDataBase.add(5d + index);
-                            dataFromDataBase.add(3d + index);
-                            dataFromDataBase.add(3d + index);
-                            dataFromDataBase.add(6d + index);
+//                            ArrayList<Double> dataFromDataBase = new ArrayList<>();
+//                            dataFromDataBase.add(2d + index);
+//                            dataFromDataBase.add(5d + index);
+//                            dataFromDataBase.add(3d + index);
+//                            dataFromDataBase.add(3d + index);
+//                            dataFromDataBase.add(6d + index);
+
+                            double[] dataFromDataBase = locationItem.getAllPower();
 
                             LocationFragment.data.add(new GraphSeriesModel("", locationTitle.getText().toString(), dataFromDataBase, true));
                             LocationFragment.data2.add(0d); // ไม่เกี่ยว

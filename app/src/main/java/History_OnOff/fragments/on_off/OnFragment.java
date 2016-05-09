@@ -30,6 +30,8 @@ public class OnFragment extends Fragment{
     ArrayList<SectionDataModel> allSampleData;
     FragmentManager fm;
 
+    RecyclerView my_recycler_view;
+
     public OnFragment() {
         // Required empty public constructor
     }
@@ -51,7 +53,7 @@ public class OnFragment extends Fragment{
 
         fm = getFragmentManager();
 
-        RecyclerView my_recycler_view = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
+        my_recycler_view = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
 
         my_recycler_view.setHasFixedSize(true);
 
@@ -69,13 +71,15 @@ public class OnFragment extends Fragment{
     public void createDummyData() {
         for (int i = 1; i <= 5; i++) {
 
+            double[] test = new double[5];
+
             SectionDataModel dm = new SectionDataModel();
 
             dm.setHeaderTitle("Location " + i);
 
             ArrayList<SingleItemModel> singleItem = new ArrayList<>();
             for (int j = 0; j < 10; j++) {
-                singleItem.add(new SingleItemModel("Item " + j, "a"+j));
+                singleItem.add(new SingleItemModel("Item " + j, test, "a"));
             }
 
             dm.setAllItemsInSection(singleItem);
@@ -84,6 +88,71 @@ public class OnFragment extends Fragment{
 
         }
     }
+
+    public void createDummyData(Bundle bundle) {
+
+        int amountOfLocation = 3; // get size location มา
+        int[] amountOfDevice = new int[amountOfLocation];
+
+        for(int i = 0; i < amountOfLocation; i++){
+            amountOfDevice[i] = 5; // get size ของ device ในแต่ละ location มา
+        }
+
+        String[] locationName = new String[amountOfLocation]; // get location name มา
+
+        ArrayList<double[]> locationPower = new ArrayList<>();
+
+        ArrayList<String[]> deviceName = new ArrayList<>();
+        ArrayList<ArrayList<double[]>> devicePower = new ArrayList<>();
+        ArrayList<String[]> deviceUsageTime = new ArrayList<>();
+
+
+        for(int i = 0; i < amountOfLocation; i++){
+
+            double[] locationPowerTemp = new double[amountOfDevice[i]];// get location power  มา
+            String[] deviceNameTemp = new String[amountOfDevice[i]];// get device name in each location มา
+            String[] deviceUsageTimeTemp = new String[amountOfDevice[i]];// get device time  มา
+
+            devicePower.add(new ArrayList<double[]>());
+
+            for(int j = 0; j < amountOfDevice[i]; j++) {
+
+                int amountOfSeries = 0; // get device power size มา (จุดบน แกน X)
+
+                double[] devicePowerTemp = new double[amountOfSeries];// get device power   มา
+
+                devicePower.get(i).add(devicePowerTemp);
+            }
+
+            locationPower.add(locationPowerTemp);
+            deviceName.add(deviceNameTemp);
+            deviceUsageTime.add(deviceUsageTimeTemp);
+        }
+
+
+        for (int i = 1; i <= amountOfLocation; i++) {
+
+            SectionDataModel dm = new SectionDataModel();
+
+            dm.setHeaderTitle(locationName[i-1]);
+
+            dm.setPowerOfLocation(locationPower.get(i - 1));
+
+            ArrayList<SingleItemModel> singleItem = new ArrayList<>();
+            for (int j = 0; j < amountOfDevice[i]; j++) {
+                singleItem.add(new SingleItemModel(deviceName.get(i)[j], devicePower.get(i).get(j),  deviceUsageTime.get(i)[j]));
+            }
+
+            dm.setAllItemsInSection(singleItem);
+
+            allSampleData.add(dm);
+        }
+
+        RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(myContext, allSampleData, fm, true);
+
+        my_recycler_view.setAdapter(adapter);
+    }
+
     @Override
     public void onAttach(final Activity activity) {
         myContext = (FragmentActivity) activity;

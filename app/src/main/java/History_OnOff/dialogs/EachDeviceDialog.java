@@ -16,6 +16,9 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import ElectricityCost.ElectricityBillFragment;
+import billcalculate.BillCalculate;
+
 /**
  * Created by Toshiba on 4/29/2016.
  */
@@ -182,6 +185,34 @@ public class EachDeviceDialog extends DialogFragment {
         }
 
         energyConsumption[9] = newValue;
+
+    }
+
+    public void updateData(Bundle bundle){
+
+        double newValue = 5d; // current energy
+        double energy = Double.parseDouble(this.energy) + newValue;
+        this.energy = energy+"";
+
+        BillCalculate billCal = new BillCalculate();
+
+        this.bill = billCal.getBillOfType1_1(energy) + "";
+        this.time = " "; // current time usage
+        this.status = false; // get current status
+
+        energyTv.setText(this.energy);
+        timeTv.setText(this.time);
+        billTv.setText(this.bill);
+        if(this.status){
+            statusTv.setText("ON");
+            statusTv.setTextColor(Color.GREEN);
+        }
+        else {
+            statusTv.setText("OFF");
+            statusTv.setTextColor(Color.RED);
+        }
+
+        appendDataPoint(newValue);
 
     }
 

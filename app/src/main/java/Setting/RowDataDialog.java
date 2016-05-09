@@ -41,6 +41,8 @@ public class RowDataDialog extends DialogFragment  {
 
     private int oldData = 0;
 
+    private View rootView;
+
     public RowDataDialog(String typeOfData, int type, boolean isAdd, FragmentManager fm,
                          ArrayList<ItemDataModel>[] dataFromDatabase){
         this.typeOfData = typeOfData;
@@ -62,25 +64,28 @@ public class RowDataDialog extends DialogFragment  {
 
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 
-        View rootView = inflater.inflate(R.layout.dialog_row_data_type, container, false);
+        rootView = null;
         getDialog().setTitle(typeOfData);
 
-        addBt = (Button) rootView.findViewById(R.id.addBt_1);
-        deleteBt = (Button) rootView.findViewById(R.id.deleteBt_1);
-        cancelBt = (Button) rootView.findViewById(R.id.cancelBt_1);
-        EditText edit;
-        if(ownData != null) {
-            edit = (EditText) rootView.findViewById(R.id.data_type_1);
-            edit.setText(ownData.getData(0));
-            edit = (EditText) rootView.findViewById(R.id.data_type_2);
-            edit.setText(ownData.getData(1));
-        }
 
+        EditText edit;
         Spinner spinner;
         ArrayAdapter<String> dataAdapter;
         List<String> item;
 
         switch (type){
+            case 0:
+                rootView = inflater.inflate(R.layout.dialog_row_data_type, container, false);
+                addBt = (Button) rootView.findViewById(R.id.addBt_1);
+                deleteBt = (Button) rootView.findViewById(R.id.deleteBt_1);
+                cancelBt = (Button) rootView.findViewById(R.id.cancelBt_1);
+
+                if(ownData != null) {
+                    edit = (EditText) rootView.findViewById(R.id.data_type_1);
+                    edit.setText(ownData.getData(0));
+                    edit = (EditText) rootView.findViewById(R.id.data_type_2);
+                    edit.setText(ownData.getData(1));
+                }
             case 1:
                 rootView = inflater.inflate(R.layout.dialog_row_data_detail, container, false);
                 getDialog().setTitle(typeOfData);
@@ -285,9 +290,15 @@ public class RowDataDialog extends DialogFragment  {
             public void onClick(View v) {
                 if(isAdd){
                     Toast.makeText(getContext(), "Add data", Toast.LENGTH_SHORT).show();
+
+                    addData(type);
+
                     dismiss();
                 } else {
                     Toast.makeText(getContext(), "data updated", Toast.LENGTH_SHORT).show();
+
+                    editData(type);
+
                     dismiss();
                 }
             }
@@ -312,6 +323,231 @@ public class RowDataDialog extends DialogFragment  {
         });
 
         return rootView;
+    }
+
+
+    public void addData(int type){
+        EditText edit;
+
+        Spinner spinner;
+
+        String[] addData;
+
+        switch (type){
+            case 0:
+                    addData = new String[2];
+                    edit = (EditText) rootView.findViewById(R.id.data_type_1);
+                    addData[0] = edit.getText().toString();
+                    edit = (EditText) rootView.findViewById(R.id.data_type_2);
+                    addData[1] = edit.getText().toString();
+
+            case 1:
+                addData = new String[6];
+                // Spinner element type
+                spinner = (Spinner) rootView.findViewById(R.id.data_type_spinner);
+                addData[0] = spinner.getSelectedItem().toString();
+
+                if(ownData != null) {
+                    edit = (EditText) rootView.findViewById(R.id.data_detail_1);
+                    addData[1] = edit.getText().toString();
+                    edit = (EditText) rootView.findViewById(R.id.data_detail_2);
+                    addData[2] = edit.getText().toString();
+                    edit = (EditText) rootView.findViewById(R.id.data_detail_3);
+                    addData[3] = edit.getText().toString();
+                    edit = (EditText) rootView.findViewById(R.id.data_detail_4);
+                    addData[4] = edit.getText().toString();
+                    edit = (EditText) rootView.findViewById(R.id.data_detail_5);
+                    addData[5] = edit.getText().toString();
+                }
+
+                break;
+            case 2:
+                addData = new String[5];
+
+                spinner = (Spinner) rootView.findViewById(R.id.location_spinner);
+                addData[4] = spinner.getSelectedItem().toString();
+
+                //set edi text by old data
+                if(ownData != null) {
+                    edit = (EditText) rootView.findViewById(R.id.data_node_1);
+                    addData[0] = edit.getText().toString();
+                    edit = (EditText) rootView.findViewById(R.id.data_node_2);
+                    addData[1] = edit.getText().toString();
+                    edit = (EditText) rootView.findViewById(R.id.data_node_3);
+                    addData[2] = edit.getText().toString();
+                    edit = (EditText) rootView.findViewById(R.id.data_node_4);
+                    addData[3] = edit.getText().toString();
+                }
+
+                break;
+            case 3:
+                addData = new String[2];
+                //set edi text by old data
+                if(ownData != null) {
+                    edit = (EditText) rootView.findViewById(R.id.data_location_1);
+                    addData[0] = edit.getText().toString();
+                    edit = (EditText) rootView.findViewById(R.id.data_location_2);
+                    addData[1] = edit.getText().toString();
+                }
+                break;
+            case 4:
+                addData = new String[5];
+                // Spinner element node
+                spinner = (Spinner) rootView.findViewById(R.id.node_spinner);
+                addData[1] = spinner.getSelectedItem().toString();
+
+
+                // Spinner element location
+                spinner = (Spinner) rootView.findViewById(R.id.location_spinner_2);
+                addData[2] = spinner.getSelectedItem().toString();
+
+                //set edi text by old data
+                if(ownData != null) {
+                    edit = (EditText) rootView.findViewById(R.id.data_group_1);
+                    addData[0] = edit.getText().toString();
+                    edit = (EditText) rootView.findViewById(R.id.data_group_2);
+                    addData[3] = edit.getText().toString();
+                    edit = (EditText) rootView.findViewById(R.id.data_group_3);
+                    addData[4] = edit.getText().toString();
+                }
+
+                break;
+            case 5:
+                addData = new String[4];
+
+                // Spinner element detail
+                spinner = (Spinner) rootView.findViewById(R.id.detail_spinner);
+                addData[1] = spinner.getSelectedItem().toString();
+
+                // Spinner element group
+                spinner = (Spinner) rootView.findViewById(R.id.group_spinner);
+                addData[2] = spinner.getSelectedItem().toString();
+
+
+                if(ownData != null) {
+                    edit = (EditText) rootView.findViewById(R.id.data_device_1);
+                    addData[0] = edit.getText().toString();
+                    edit = (EditText) rootView.findViewById(R.id.data_device_2);
+                    addData[3] = edit.getText().toString();
+                }
+                break;
+        }
+
+        //addData[] store data follow attribute as String.
+
+
+    }
+
+    public void editData(int type){
+
+        EditText edit;
+
+        Spinner spinner;
+
+        String[] editData = null;
+
+        switch (type){
+            case 0:
+                editData = new String[2];
+                edit = (EditText) rootView.findViewById(R.id.data_type_1);
+                editData[0] = edit.getText().toString();
+                edit = (EditText) rootView.findViewById(R.id.data_type_2);
+                editData[1] = edit.getText().toString();
+
+            case 1:
+                editData = new String[6];
+                // Spinner element type
+                spinner = (Spinner) rootView.findViewById(R.id.data_type_spinner);
+                editData[0] = spinner.getSelectedItem().toString();
+
+                if(ownData != null) {
+                    edit = (EditText) rootView.findViewById(R.id.data_detail_1);
+                    editData[1] = edit.getText().toString();
+                    edit = (EditText) rootView.findViewById(R.id.data_detail_2);
+                    editData[2] = edit.getText().toString();
+                    edit = (EditText) rootView.findViewById(R.id.data_detail_3);
+                    editData[3] = edit.getText().toString();
+                    edit = (EditText) rootView.findViewById(R.id.data_detail_4);
+                    editData[4] = edit.getText().toString();
+                    edit = (EditText) rootView.findViewById(R.id.data_detail_5);
+                    editData[5] = edit.getText().toString();
+                }
+
+                break;
+            case 2:
+                editData = new String[5];
+
+                spinner = (Spinner) rootView.findViewById(R.id.location_spinner);
+                editData[4] = spinner.getSelectedItem().toString();
+
+                //set edi text by old data
+                if(ownData != null) {
+                    edit = (EditText) rootView.findViewById(R.id.data_node_1);
+                    editData[0] = edit.getText().toString();
+                    edit = (EditText) rootView.findViewById(R.id.data_node_2);
+                    editData[1] = edit.getText().toString();
+                    edit = (EditText) rootView.findViewById(R.id.data_node_3);
+                    editData[2] = edit.getText().toString();
+                    edit = (EditText) rootView.findViewById(R.id.data_node_4);
+                    editData[3] = edit.getText().toString();
+                }
+
+                break;
+            case 3:
+                editData = new String[2];
+                //set edi text by old data
+                if(ownData != null) {
+                    edit = (EditText) rootView.findViewById(R.id.data_location_1);
+                    editData[0] = edit.getText().toString();
+                    edit = (EditText) rootView.findViewById(R.id.data_location_2);
+                    editData[1] = edit.getText().toString();
+                }
+                break;
+            case 4:
+                editData = new String[5];
+                // Spinner element node
+                spinner = (Spinner) rootView.findViewById(R.id.node_spinner);
+                editData[1] = spinner.getSelectedItem().toString();
+
+
+                // Spinner element location
+                spinner = (Spinner) rootView.findViewById(R.id.location_spinner_2);
+                editData[2] = spinner.getSelectedItem().toString();
+
+                //set edi text by old data
+                if(ownData != null) {
+                    edit = (EditText) rootView.findViewById(R.id.data_group_1);
+                    editData[0] = edit.getText().toString();
+                    edit = (EditText) rootView.findViewById(R.id.data_group_2);
+                    editData[3] = edit.getText().toString();
+                    edit = (EditText) rootView.findViewById(R.id.data_group_3);
+                    editData[4] = edit.getText().toString();
+                }
+
+                break;
+            case 5:
+                editData = new String[4];
+
+                // Spinner element detail
+                spinner = (Spinner) rootView.findViewById(R.id.detail_spinner);
+                editData[1] = spinner.getSelectedItem().toString();
+
+                // Spinner element group
+                spinner = (Spinner) rootView.findViewById(R.id.group_spinner);
+                editData[2] = spinner.getSelectedItem().toString();
+
+
+                if(ownData != null) {
+                    edit = (EditText) rootView.findViewById(R.id.data_device_1);
+                    editData[0] = edit.getText().toString();
+                    edit = (EditText) rootView.findViewById(R.id.data_device_2);
+                    editData[3] = edit.getText().toString();
+                }
+                break;
+        }
+
+        //addData[] store data follow attribute as String.
+
     }
 
 

@@ -28,7 +28,10 @@ public class DeleteConfirmDialog extends DialogFragment{
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
+                delete();
+
                 Toast.makeText(getContext(), "data deleted", Toast.LENGTH_SHORT).show();
+
                 dismiss();
             }
         });
@@ -41,5 +44,10 @@ public class DeleteConfirmDialog extends DialogFragment{
         });
 
         return builder.create();
+    }
+
+    public void delete(){
+
+
     }
 }

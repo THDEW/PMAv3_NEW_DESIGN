@@ -7,25 +7,29 @@ public class SingleItemModel {
 
 
     private String name;
-    private String url;
+    private double[] power;
+    private String usageTime;
     private String description;
 
 
     public SingleItemModel() {
     }
 
-    public SingleItemModel(String name, String url) {
+    public SingleItemModel(String name, double[] power, String usageTime) {
         this.name = name;
-        this.url = url;
+        this.power = power;
+        this.usageTime = usageTime;
     }
 
 
-    public String getUrl() {
-        return url;
-    }
+    public double getSumPower() {
+        double temp = 0;
 
-    public void setUrl(String url) {
-        this.url = url;
+        for(int i = 0; i < power.length; i++){
+            temp += power[i];
+        }
+
+        return temp;
     }
 
     public String getName() {
@@ -45,4 +49,11 @@ public class SingleItemModel {
     }
 
 
+    public String getUsageTime() {
+        return usageTime;
+    }
+
+    public double[] getAllPower() {
+        return power;
+    }
 }
