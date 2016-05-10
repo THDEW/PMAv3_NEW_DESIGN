@@ -21,21 +21,21 @@ public class ApplianceAdapter extends RecyclerView.Adapter<ApplianceAdapter.MyVi
     public void onBindViewHolder(MyViewHolder holder, int position) {
         ApplianceModel appliancemodel = applianceList.get(position);
         holder.appliname.setText(appliancemodel.getTitle());
-        holder.genre.setText(Long.toString(appliancemodel.getElect()));
+        //holder.genre.setText(Integer.toString(appliancemodel.getElect()));
         holder.date.setText(appliancemodel.getDate());
         holder.frontelect.setText(appliancemodel.getFrontElect());
 
 
     }
-
+    /*
     @Override
-    public long getItemId(int position) {
+    public int getItemId(int position) {
         if (position < applianceList.size()) {
             return applianceList.get(position).getElect();
         }
         return RecyclerView.NO_ID;
     }
-
+    */
     @Override
     public int getItemCount() {
         return applianceList.size();

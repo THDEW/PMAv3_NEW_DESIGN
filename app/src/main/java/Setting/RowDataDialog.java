@@ -86,6 +86,7 @@ public class RowDataDialog extends DialogFragment  {
                     edit = (EditText) rootView.findViewById(R.id.data_type_2);
                     edit.setText(ownData.getData(1));
                 }
+                break;
             case 1:
                 rootView = inflater.inflate(R.layout.dialog_row_data_detail, container, false);
                 getDialog().setTitle(typeOfData);
@@ -138,7 +139,7 @@ public class RowDataDialog extends DialogFragment  {
                 for(int i = 0; i < dataFromDatabase[3].size(); i++){
                     item.add(dataFromDatabase[3].get(i).getName());
                     if(ownData != null) {
-                        if (ownData.getData(4).equals(dataFromDatabase[3].get(i).getName())) {
+                        if (ownData.getData(2).equals(dataFromDatabase[3].get(i).getName())) {
                             oldData = i;
                         }
                     }
@@ -149,12 +150,10 @@ public class RowDataDialog extends DialogFragment  {
 
                 //set edi text by old data
                 if(ownData != null) {
-                    edit = (EditText) rootView.findViewById(R.id.data_node_1);
-                    edit.setText(ownData.getData(0));
                     edit = (EditText) rootView.findViewById(R.id.data_node_2);
-                    edit.setText(ownData.getData(1));
+                    edit.setText(ownData.getData(0));
                     edit = (EditText) rootView.findViewById(R.id.data_node_3);
-                    edit.setText(ownData.getData(2));
+                    edit.setText(ownData.getData(1));
                     edit = (EditText) rootView.findViewById(R.id.data_node_4);
                     edit.setText(ownData.getData(3));
                 }
@@ -308,7 +307,7 @@ public class RowDataDialog extends DialogFragment  {
         deleteBt.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                DeleteConfirmDialog dialog = new DeleteConfirmDialog(typeOfData);
+                DeleteConfirmDialog dialog = new DeleteConfirmDialog(typeOfData,ownData.getId());
                 dialog.show(fm, "deleteItem");
                 dismiss();
             }
@@ -369,8 +368,6 @@ public class RowDataDialog extends DialogFragment  {
 
                 //set edi text by old data
                 if(ownData != null) {
-                    edit = (EditText) rootView.findViewById(R.id.data_node_1);
-                    addData[0] = edit.getText().toString();
                     edit = (EditText) rootView.findViewById(R.id.data_node_2);
                     addData[1] = edit.getText().toString();
                     edit = (EditText) rootView.findViewById(R.id.data_node_3);
@@ -482,8 +479,6 @@ public class RowDataDialog extends DialogFragment  {
 
                 //set edi text by old data
                 if(ownData != null) {
-                    edit = (EditText) rootView.findViewById(R.id.data_node_1);
-                    editData[0] = edit.getText().toString();
                     edit = (EditText) rootView.findViewById(R.id.data_node_2);
                     editData[1] = edit.getText().toString();
                     edit = (EditText) rootView.findViewById(R.id.data_node_3);

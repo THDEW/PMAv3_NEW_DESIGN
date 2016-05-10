@@ -18,8 +18,8 @@
 
     <string name="spinner_elecbill_1.1">Less than 150 Units/Month</string>
     <string name="spinner_elecbill_1.2">More than 150 Units/Month</string>
-    <string name="spinner_elecbill_1.31">Time of Use Tariff(Voltage:12-24KV)</string>
-    <string name="spinner_elecbill_1.32">Time of Use Tariff(Voltage:less than 12KV)</string>
+    <!--<string name="spinner_elecbill_1.31">Time of Use Tariff(Voltage:12-24KV)</string>-->
+    <!--<string name="spinner_elecbill_1.32">Time of Use Tariff(Voltage:less than 12KV)</string>-->
     <!--<string name="spinner_item_date">Date and Time</string>-->
     <!-- navigation drawer item labels  -->
     <string-array name="nav_drawer_labels">
@@ -50,8 +50,8 @@
     <string-array name="selected_type_calculate_electricitybill">
         <item>@string/spinner_elecbill_1.1</item>
         <item>@string/spinner_elecbill_1.2</item>
-        <item>@string/spinner_elecbill_1.31</item>
-        <item>@string/spinner_elecbill_1.32</item>
+        <!--<item>@string/spinner_elecbill_1.31</item>-->
+        <!--<item>@string/spinner_elecbill_1.32</item>-->
         <!--<item>@string/spinner_item_date</item>-->
     </string-array>
 

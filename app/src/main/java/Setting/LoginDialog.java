@@ -66,8 +66,8 @@ public class LoginDialog extends DialogFragment {
             public void onClick(View v) {
 
 
-                String topic = "android/authenticate";
-                String message = "getAuthenticate";
+                String topic = "android/settings/authenticate";
+                String message = user.getText().toString()+","+pass.getText().toString();
                 int qos = 0;
                 boolean retained = false;
 

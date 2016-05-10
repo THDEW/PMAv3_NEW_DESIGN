@@ -75,7 +75,7 @@ public class YearlyFragment extends Fragment implements AdapterView.OnItemSelect
             applianceModelListeList.clear();
         }
 
-        prepareApplianceData(bundle);
+        prepareApplianceData(0);
 
         if(Home.menu_statistic==0){
             buttonToChange.setText("Devices");

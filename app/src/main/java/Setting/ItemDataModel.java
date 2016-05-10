@@ -6,12 +6,13 @@ import java.util.ArrayList;
  * Created by Toshiba on 5/2/2016.
  */
 public class ItemDataModel {
-    private String dataID;
+    private String dataName;
     private String type;
     private ArrayList<String> dataRow;
+    private int id;
 
-    public ItemDataModel(String dataID, String type){
-        this.dataID = dataID;
+    public ItemDataModel(String dataName, String type){
+        this.dataName = dataName;
         this.type = type;
         dataRow = new ArrayList<>();
     }
@@ -26,6 +27,14 @@ public class ItemDataModel {
 
 
     public String getName() {
-        return dataID;
+        return dataName;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

@@ -26,6 +26,8 @@ import org.eclipse.paho.android.service.sample.MqttCallbackHandler;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -167,17 +169,28 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
+        String topic = null;
+        String message = null;
+        int qos = 0;
+        boolean retained = false;
+
+        String[] args = new String[2];
+
         switch (position) {
             case 0:
                 onOffFragment.update(this);
                 fragmentTransaction.replace(R.id.container_body, onOffFragment);
                 title = getString(R.string.title_home);
+                getSupportActionBar().setTitle(title);
+                fragmentTransaction.commit();
                 page = 0;
                 break;
             case 1:
                 fragmentTransaction.replace(R.id.container_body, locationFragment);
                 title = getString(R.string.title_Location);
                 page = 1;
+                getSupportActionBar().setTitle(title);
+                fragmentTransaction.commit();
                 break;
             case 2:
                 if (page != 2){
@@ -186,21 +199,26 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
                 fragmentTransaction.replace(R.id.container_body, statisticFragment);
                 title = getString(R.string.title_statistic);
                 page = 2;
+                getSupportActionBar().setTitle(title);
+                fragmentTransaction.commit();
                 break;
             case 3:
+
+                topic = "android/electricityBill";
+                message = "getElectricityCost";
+                qos = 0;
+                retained = false;
+
+                args = new String[2];
+                args[0] = message;
+                args[1] = topic+";qos:"+qos+";retained:"+retained;
+
                 fragmentTransaction.replace(R.id.container_body, electricityBillFragment);
                 title = "Electricity Bill";
                 page = 3;
-                break;
-            case 4:
-                String topic = "android/settings";
-                String message = "getSettings";
-                int qos = 0;
-                boolean retained = false;
 
-                String[] args = new String[2];
-                args[0] = message;
-                args[1] = topic+";qos:"+qos+";retained:"+retained;
+                getSupportActionBar().setTitle(title);
+                fragmentTransaction.commit();
 
                 try {
                     connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(this, ActionListener.Action.PUBLISH, clientHandle, args));
@@ -208,12 +226,33 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
                     e.printStackTrace();
                 }
 
+                break;
+            case 4:
+                topic = "android/settings";
+                message = "getSettings";
+                qos = 0;
+                retained = false;
+
+                args = new String[2];
+                args[0] = message;
+                args[1] = topic+";qos:"+qos+";retained:"+retained;
+
                 fragmentTransaction.replace(R.id.container_body, settingFragments);
                 title = "Settings";
                 page = 4;
+
+                getSupportActionBar().setTitle(title);
+                fragmentTransaction.commit();
+
+                try {
+                    connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(this, ActionListener.Action.PUBLISH, clientHandle, args));
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
+
                 break;
+
             case 5:
-                aboutFragment = new AboutFragment(clientHandle);
                 fragmentTransaction.replace(R.id.container_body, aboutFragment);
                 title = "About";
                 page = 5;
@@ -221,11 +260,8 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
             default:
                 break;
         }
-        //connection = Connections.getInstance(this).getConnection(clientHandle);
-        //Toast.makeText(this,connection.getTest(),Toast.LENGTH_SHORT).show();
 
-        getSupportActionBar().setTitle(title);
-        fragmentTransaction.commit();
+
     }
 
     @Override
@@ -263,42 +299,48 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
 
 
             View view = null;
-
+            JSONArray jsonArray = null;
+            JSONObject jsonObject = null;
+            JSONParser parser = new JSONParser();
             if(event.getPropertyName().equals("authenticate"))
             {
+                //creates bundle to get bundle from connection
                 Bundle bundle = new Bundle();
                 String[] types = new String[]{"device_type","device_detail","power_node","location","group_of_device","device"};
-                String jall = connection.getBundle().getString("authenticate");
+                String jall = connection.getBundle().getString("settings/authenticate");
+                bundle = connection.getBundle();
                 int checkLogin = 0;
-                /*
-                String[] split = jall.split(Pattern.quote("|"));
 
-                JSONArray jsonArray = null;
-                JSONObject jsonObject = null;
+
+                    try {
+                        jsonObject = new JSONObject(jall);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        jsonArray =(JSONArray) jsonObject.get("countid");
+                        jsonObject = (JSONObject) jsonArray.get(0);
+                        checkLogin = Integer.parseInt(jsonObject.getString("countid"));
+                        Log.v(checkLogin+" asdf","working");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
 
                 try {
-                     jsonArray  = new JSONArray(new String(split[0]));
+                    jsonObject = new JSONObject(jall);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
                 try {
+                    jsonArray =(JSONArray) jsonObject.get("device_detail");
                     jsonObject = (JSONObject) jsonArray.get(0);
-                    String countid = jsonObject.getString("countid");
 
-                    checkLogin = Integer.parseInt(countid);
+                    Log.v(jsonObject.getString("brand"),"working222");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
-                for(int i =0; i < types.length ;i++)
-                {
-                    bundle.putString(types[i],split[i+1]);
-                    Toast.makeText(home,"asdfds"+i,Toast.LENGTH_SHORT).show();
-                }
-                */
-               checkLogin = Integer.parseInt(jall);
 
 
 
@@ -313,13 +355,44 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
 
                 view = settingFragments.getView();
 
-                //login = true;
+                if (Home.login) {
+                    loggedIn(view,bundle);
+                } else {
+                    notLoggedIn(view);
+                }
+
+            }
+
+            else if(event.getPropertyName().equals("settings"))
+            {
+
+                String[] types = new String[]{"device_type","device_detail","power_node","location","group_of_device","device"};
+                String jall = connection.getBundle().getString("settings/authenticate");
+                Bundle bundle = connection.getBundle();
+                fragmentTransaction.replace(R.id.container_body, settingFragments);
+                title = "Settings";
+                home.getSupportActionBar().setTitle(title);
+                fragmentTransaction.commit();
+
+                view = settingFragments.getView();
 
                 if (Home.login) {
                     loggedIn(view,bundle);
                 } else {
                     notLoggedIn(view);
                 }
+            }
+            else if(event.getPropertyName().equals("electricityBill"))
+            {
+                Bundle bundle = new Bundle();
+                bundle = connection.getBundle();
+
+                fragmentTransaction.replace(R.id.container_body, electricityBillFragment);
+                title = "ElectricBill";
+                home.getSupportActionBar().setTitle(title);
+                fragmentTransaction.commit();
+
+                electricityBillFragment.prepareListData(bundle);
             }
 
 
@@ -341,7 +414,11 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
             plslogin.setVisibility(View.INVISIBLE);
 
 
-            settingFragments.createDummyData();
+            try {
+                settingFragments.createDummyData(bundle);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
         public void notLoggedIn(View view)
         {

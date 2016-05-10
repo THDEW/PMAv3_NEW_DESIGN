@@ -81,7 +81,7 @@ public class DailyFragment extends Fragment implements AdapterView.OnItemSelecte
             applianceModelListeList.clear();
         }
 
-        prepareApplianceData(bundle);
+        prepareApplianceData(0);
 
         if(Home.menu_statistic==0){
             buttonToChange.setText("Devices");

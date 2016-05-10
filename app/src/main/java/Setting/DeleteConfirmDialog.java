@@ -12,17 +12,20 @@ import android.widget.Toast;
  */
 public class DeleteConfirmDialog extends DialogFragment{
 
-    private String item;
+    private String typeOfItem;
+    private int id;
 
-    public DeleteConfirmDialog(String item){
-        this.item = item;
+    public DeleteConfirmDialog(String typeOfItem, int id){
+        this.typeOfItem = typeOfItem;
+        this.id = id;
+
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Delete Confirmation");
-        builder.setMessage("Are you sure to delete " + item);
+        builder.setMessage("Are you sure to delete " + typeOfItem);
 
         builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
             @Override

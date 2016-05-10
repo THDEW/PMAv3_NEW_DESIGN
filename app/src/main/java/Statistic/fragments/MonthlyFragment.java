@@ -75,7 +75,7 @@ public class MonthlyFragment extends Fragment implements AdapterView.OnItemSelec
             applianceModelListeList.clear();
         }
 
-        prepareApplianceData(bundle);
+        prepareApplianceData(0);
 
         if(Home.menu_statistic==0){
             buttonToChange.setText("Devices");

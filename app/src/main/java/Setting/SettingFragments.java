@@ -23,6 +23,9 @@ import com.example.senoir.newpmatry1.R;
 
 import org.eclipse.paho.android.service.sample.Connection;
 import org.eclipse.paho.android.service.sample.Connections;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -100,8 +103,7 @@ public class SettingFragments extends Fragment {
             }
         });
 
-        type = new String[]{"Data Type", "Data Detail", "Power Node"
-                , "Location", "Group", "Device"};
+        type = new String[]{"device_type","device_detail","power_node","location","group_of_device","device"};
 
         if (!Home.login) {
 
@@ -116,7 +118,8 @@ public class SettingFragments extends Fragment {
             logout.setVisibility(View.VISIBLE);
         }
 
-        //createDummyData(0);
+
+        //createDummyData(this.getArguments());
 
         my_recycler_view.setHasFixedSize(true);
 
@@ -153,57 +156,104 @@ public class SettingFragments extends Fragment {
     }
 
 
-    public void createDummyData() {
-        Log.v("settings", "createdummy");
+    public void createDummyData(Bundle bundle) throws JSONException {
+        Log.v("settings/authenticate", "createdummy");
+
+        String[] types = new String[]{"device_type","device_detail","power_node","location","group_of_device","device"};
+        String jall = bundle.getString("settings/authenticate");
+        JSONArray jsonArray = null;
+        JSONObject jsonObject = null;
+
+        //Toast.makeText(getActivity(),jall,Toast.LENGTH_SHORT).show();
+
         allSampleData = new ArrayList<>();
         allSampleData.clear();
 
-        for (int i = 0 ; i < 6; i++) {
+        try {
+            jsonObject = new JSONObject(jall);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        for (int i = 0 ; i < types.length; i++) {
 
             TableDataModel dm = new TableDataModel();
 
-            dm.setHeaderTitle(type[i]);
+            dm.setHeaderTitle(types[i]);
 
             ArrayList<ItemDataModel> singleItem = new ArrayList<>();
-            for (int j = 0; j < 10; j++) {
-                singleItem.add(new ItemDataModel(type[i] + " " + j, type[i]));
+
+            //Toast.makeText(getActivity(),""+i,Toast.LENGTH_SHORT).show();
+
+            JSONArray jsonArray1 = null;
+            try {
+                jsonArray1 =(JSONArray) jsonObject.get(types[i]);
+
+                //Toast.makeText(getActivity(),""+jsonArray1.length(),Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(),jsonArray1.toString() +" "+ jsonObject.get(types[i]),Toast.LENGTH_LONG).show();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            for (int j = 0; j < jsonArray1.length(); j++) {
+                JSONObject jsonObject1 = null;
+                try {
+                    jsonObject1 =(JSONObject) jsonArray1.get(j);
+                    //Toast.makeText(getActivity(),jsonObject1.toString() +" "+ j,Toast.LENGTH_LONG).show();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
                 // ใส่ข้อมูลตาม ชื่อ column ตามเคส ไล่ตาม "Data Type", "Data Detail", "Power Node" ,"Location" ,"Group of Device", "Device"
                 switch (i) {
                     case 0:
-                        singleItem.get(j).addData("Data Type Name");
-                        singleItem.get(j).addData("Description");
+                        //Log.v(jsonObject.getString("device_type_id"),""+i);
+                        singleItem.add(new ItemDataModel(jsonObject1.getString("type_name"), type[i]));
+                        singleItem.get(j).setId(Integer.parseInt(jsonObject1.getString("device_type_id")));
+                        singleItem.get(j).addData(jsonObject1.getString("type_name"));
+                        singleItem.get(j).addData(jsonObject1.getString("descr"));
                         break;
                     case 1:
-                        singleItem.get(j).addData("Data Type 5");
-                        singleItem.get(j).addData("Brand");
-                        singleItem.get(j).addData("Model");
-                        singleItem.get(j).addData("Power_Watt");
-                        singleItem.get(j).addData("BTN");
-                        singleItem.get(j).addData("Description");
+                        singleItem.add(new ItemDataModel(jsonObject1.getString("brand")+" "+jsonObject1.getString("model"), type[i]));
+                        singleItem.get(j).setId(Integer.parseInt(jsonObject1.getString("device_detail_id")));
+                        singleItem.get(j).addData(jsonObject1.getString("type_name"));
+                        singleItem.get(j).addData(jsonObject1.getString("brand"));
+                        singleItem.get(j).addData(jsonObject1.getString("model"));
+                        singleItem.get(j).addData(jsonObject1.getString("power_watt"));
+                        singleItem.get(j).addData(jsonObject1.getString("btu"));
+                        singleItem.get(j).addData(jsonObject1.getString("descr"));
                         break;
                     case 2:
-                        singleItem.get(j).addData("MAC Address");
-                        singleItem.get(j).addData("IP Address");
-                        singleItem.get(j).addData("Power Node name");
-                        singleItem.get(j).addData("Description");
-                        singleItem.get(j).addData("Location 4");
+                        singleItem.add(new ItemDataModel(jsonObject1.getString("name") + ":" + jsonObject1.getString("ip_address"), type[i]));
+                        singleItem.get(j).setId(Integer.parseInt(jsonObject1.getString("power_node_id")));
+                        singleItem.get(j).addData(jsonObject1.getString("ip_address"));
+                        singleItem.get(j).addData(jsonObject1.getString("name"));
+                        singleItem.get(j).addData(jsonObject1.getString("location_name"));
+                        singleItem.get(j).addData(jsonObject1.getString("descr"));
                         break;
                     case 3:
-                        singleItem.get(j).addData("Location Name");
-                        singleItem.get(j).addData("Description");
+                        singleItem.add(new ItemDataModel(jsonObject1.getString("location_name"), type[i]));
+                        singleItem.get(j).setId(Integer.parseInt(jsonObject1.getString("location_id")));
+                        singleItem.get(j).addData(jsonObject1.getString("location_name"));
+                        singleItem.get(j).addData(jsonObject1.getString("descr"));
                         break;
                     case 4:
-                        singleItem.get(j).addData("Pin");
-                        singleItem.get(j).addData("Power Node 7");
-                        singleItem.get(j).addData("Location 4");
-                        singleItem.get(j).addData("Status");
-                        singleItem.get(j).addData("Description");
+                        singleItem.add(new ItemDataModel(jsonObject1.getString("name") + ":" + jsonObject1.getString("pin"), type[i]));
+                        singleItem.get(j).setId(Integer.parseInt(jsonObject1.getString("group_of_device_id")));
+                        singleItem.get(j).addData(jsonObject1.getString("pin"));
+                        singleItem.get(j).addData(jsonObject1.getString("name"));
+                        singleItem.get(j).addData(jsonObject1.getString("location_name"));
+                        singleItem.get(j).addData(jsonObject1.getString("status"));
+                        singleItem.get(j).addData(jsonObject1.getString("descr"));
                         break;
                     case 5:
-                        singleItem.get(j).addData("Device Name");
-                        singleItem.get(j).addData("Data Detail 4");
-                        singleItem.get(j).addData("Group 5");
-                        singleItem.get(j).addData("Description");
+                        singleItem.add(new ItemDataModel(jsonObject1.getString("device_name"), type[i]));
+                        singleItem.get(j).setId(Integer.parseInt(jsonObject1.getString("device_id")));
+                        singleItem.get(j).addData(jsonObject1.getString("device_name"));
+                        singleItem.get(j).addData(jsonObject1.getString("brand")+jsonObject1.getString("model"));
+                        singleItem.get(j).addData(jsonObject1.getString("pin"));
+                        singleItem.get(j).addData(jsonObject1.getString("descr"));
                         break;
                 }
 
@@ -221,9 +271,8 @@ public class SettingFragments extends Fragment {
     }
 
 
-
     public View getView() {
-        Log.v("help", "me");
+        //Log.v("help", "me");
         return rootView;
     }
 
