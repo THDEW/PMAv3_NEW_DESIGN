@@ -71,16 +71,16 @@ public class SectionListForSettingAdapter extends RecyclerView.Adapter<SectionLi
 
             rowNameTv = (TextView) view.findViewById(R.id.rowName);
 
-//            rl = (RelativeLayout) view.findViewById(R.id.rowItem);
-//
-//            rl.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    RowDataDialog dialog = new RowDataDialog(rowName, condition, false, fm, itemsListSupport, ownData);
-//                    dialog.show(fm, "Tag");
-//                    dialog.setCancelable(false);
-//                }
-//            });
+            rl = (RelativeLayout) view.findViewById(R.id.rowItem);
+
+            rl.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    RowDataDialog dialog = new RowDataDialog(rowName, condition, false, fm, itemsListSupport, ownData);
+                    dialog.show(fm, "Tag");
+                    dialog.setCancelable(false);
+                }
+            });
 
         }
 
