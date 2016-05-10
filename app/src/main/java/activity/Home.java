@@ -77,7 +77,7 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
         setContentView(R.layout.activity_home);
         changeListener = new ChangeListener();
         clientHandle = getIntent().getStringExtra("handle");
-        Toast.makeText(this,clientHandle,Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,clientHandle,Toast.LENGTH_SHORT).show();
         connection = Connections.getInstance(this).getConnection(clientHandle);
         //connection.getClient().setCallback(new MqttCallbackHandler(this,clientHandle));
         connection.registerChangeListener(changeListener);
@@ -87,7 +87,7 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
         try {
 
             connection.getClient().subscribe("server/#",1);
-            Toast.makeText(this,"subscribe",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this,"subscribe",Toast.LENGTH_SHORT).show();
         } catch (MqttException e) {
             e.printStackTrace();
         }

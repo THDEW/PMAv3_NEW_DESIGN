@@ -114,7 +114,7 @@ public class ActionListener implements IMqttActionListener {
     String actionTaken = context.getString(R.string.toast_pub_success,
         (Object[]) additionalArgs);
 
-    Notify.toast(context, actionTaken, Toast.LENGTH_SHORT);
+    //Notify.toast(context, actionTaken, Toast.LENGTH_SHORT);
   }
 
   /**
@@ -127,7 +127,7 @@ public class ActionListener implements IMqttActionListener {
     String actionTaken = context.getString(R.string.toast_sub_success,
         (Object[]) additionalArgs);
 
-    Notify.toast(context, actionTaken, Toast.LENGTH_SHORT);
+    //Notify.toast(context, actionTaken, Toast.LENGTH_SHORT);
 
   }
 
@@ -196,7 +196,7 @@ public class ActionListener implements IMqttActionListener {
     String action = context.getString(R.string.toast_pub_failed,
         (Object[]) additionalArgs);
 
-    Notify.toast(context, action, Toast.LENGTH_SHORT);
+    Notify.toast(context, "server disconnected", Toast.LENGTH_SHORT);
 
   }
 

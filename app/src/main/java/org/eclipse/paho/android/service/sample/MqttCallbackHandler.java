@@ -57,7 +57,7 @@ public class MqttCallbackHandler implements MqttCallback  {
 //	  cause.printStackTrace();
     if (cause != null) {
       Connection c = Connections.getInstance(context).getConnection(clientHandle);
-      Toast.makeText(context,"lost",Toast.LENGTH_LONG).show();
+      Toast.makeText(context,"connection lost",Toast.LENGTH_LONG).show();
 
 
       try {

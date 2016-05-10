@@ -37,6 +37,7 @@ public class ElectricityBillFragment extends Fragment {
     List<String> listDataHeader;
     TextView totalCost;
 
+    Bundle bundle = null;
 
     ArrayList<ElectricityBillModel> electricitybillList;
     HashMap<String, List<String>> listDataChild;
@@ -80,19 +81,11 @@ public class ElectricityBillFragment extends Fragment {
                 switch (item) {
                     case "Less than 150 Units/Month":
                         onspinnerselected = 0;
-                        prepareListData();
-                        listAdapter = new ExpandableListAdapter(myContext, listDataHeader, listDataChild);
-                        listAdapter.notifyDataSetChanged();
-                        expListView.setAdapter(listAdapter);
 
                         //Toast.makeText(parent.getContext(), "Selected 0: " + item, Toast.LENGTH_LONG).show();
                         break;
                     case "More than 150 Units/Month":
                         onspinnerselected = 1;
-                        prepareListData();
-                        listAdapter = new ExpandableListAdapter(myContext, listDataHeader, listDataChild);
-                        listAdapter.notifyDataSetChanged();
-                        expListView.setAdapter(listAdapter);
 
                         //Toast.makeText(parent.getContext(), "Selected 1: " + item, Toast.LENGTH_LONG).show();
                         break;
@@ -113,6 +106,10 @@ public class ElectricityBillFragment extends Fragment {
 //                        //Toast.makeText(parent.getContext(), "Selected : 3" + item, Toast.LENGTH_LONG).show();
 //                        break;
 
+                }
+
+                if(bundle != null){
+                    prepareListData(bundle);
                 }
 
             }
@@ -268,6 +265,9 @@ public class ElectricityBillFragment extends Fragment {
 
 
     public void prepareListData(Bundle bundle) {
+
+        this.bundle = bundle;
+
         ArrayList<String> expandevices = null;
 
         electricitybillList = new ArrayList<ElectricityBillModel>();
@@ -427,7 +427,7 @@ public class ElectricityBillFragment extends Fragment {
 
             try {
                 locationName[i] = jsonObject1.getString("location_name");
-                Toast.makeText(getActivity(),locationName[i],Toast.LENGTH_LONG).show();
+                //Toast.makeText(getActivity(),locationName[i],Toast.LENGTH_LONG).show();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
