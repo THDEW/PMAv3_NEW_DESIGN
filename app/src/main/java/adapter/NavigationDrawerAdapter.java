@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.senoir.newpmatry1.R;
 import java.util.Collections;
@@ -42,6 +43,26 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
     public void onBindViewHolder(MyViewHolder holder, int position) {
         NavDrawerItem current = data.get(position);
         holder.title.setText(current.getTitle());
+        switch (position) {
+            case 0:
+                holder.img.setBackgroundResource(R.drawable.icon_1_current_status);
+                break;
+            case 1:
+                    holder.img.setBackgroundResource(R.drawable.icon_2_history);
+                break;
+            case 2:
+                    holder.img.setBackgroundResource(R.drawable.icon_3_statistic);
+                break;
+            case 3:
+                    holder.img.setBackgroundResource(R.drawable.icon_4_electricity_bill);
+                break;
+            case 4:
+                    holder.img.setBackgroundResource(R.drawable.icon_5_setting);
+                break;
+            case 5:
+                    holder.img.setBackgroundResource(R.drawable.icon_6_about);
+                break;
+        }
     }
 
     @Override
@@ -52,9 +73,12 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
     class MyViewHolder extends RecyclerView.ViewHolder {
         TextView title;
 
+        ImageView img;
+
         public MyViewHolder(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.title);
+            img = (ImageView) itemView.findViewById(R.id.icon_drawer);
         }
     }
 }
