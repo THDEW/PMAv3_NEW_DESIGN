@@ -81,31 +81,11 @@ public class ElectricityBillFragment extends Fragment {
                 switch (item) {
                     case "Less than 150 Units/Month":
                         onspinnerselected = 0;
-
-                        //Toast.makeText(parent.getContext(), "Selected 0: " + item, Toast.LENGTH_LONG).show();
                         break;
                     case "More than 150 Units/Month":
                         onspinnerselected = 1;
-
-                        //Toast.makeText(parent.getContext(), "Selected 1: " + item, Toast.LENGTH_LONG).show();
                         break;
-//                    case "Time of Use Tariff(Voltage:12-24KV)":
-//                        onspinnerselected = 2;
-//                        prepareListData();
-//                        listAdapter = new ExpandableListAdapter(myContext, listDataHeader, listDataChild);
-//                        listAdapter.notifyDataSetChanged();
-//                        expListView.setAdapter(listAdapter);
-//                        //Toast.makeText(parent.getContext(), "Selected : 2" + item, Toast.LENGTH_LONG).show();
-//                        break;
-//                    case "Time of Use Tariff(Voltage:less than 12KV)":
-//                        onspinnerselected = 3;
-//                        prepareListData();
-//                        listAdapter = new ExpandableListAdapter(myContext, listDataHeader, listDataChild);
-//                        listAdapter.notifyDataSetChanged();
-//                        expListView.setAdapter(listAdapter);
-//                        //Toast.makeText(parent.getContext(), "Selected : 3" + item, Toast.LENGTH_LONG).show();
-//                        break;
-
+//
                 }
 
                 if(bundle != null){
@@ -140,8 +120,6 @@ public class ElectricityBillFragment extends Fragment {
         electricitybillList = new ArrayList<ElectricityBillModel>();
         listDataHeader = new ArrayList<String>();
         listDataChild = new HashMap<String, List<String>>();
-
-        putdataToelectricityBill();
 
         double sumUnitOfLocation = 0d;
         double sumOnPeakUnit = 0d;
@@ -194,28 +172,13 @@ public class ElectricityBillFragment extends Fragment {
                     df.format(electricitybillList.get(start).getCostLocation()) + "  Baht/ " +
                     df.format(electricitybillList.get(start).getUnitLocation()) + "  Units");
 
-//            listDataHeader.add(electricitybillList.get(start).getLocationName() +":\n"+
-//                    df.format(electricitybillList.get(start).getCostOnPeak()) + "  Baht/ " +
-//                    df.format(electricitybillList.get(start).getOnPeakLocation()) + "  Units\n" +
-//                    df.format(electricitybillList.get(start).getCostOffPeak()) + "  Baht/ " +
-//                    df.format(electricitybillList.get(start).getOffPeakLocation()) + "  Units");
-
             for (int begin = 0; begin < electricitybillList.get(start).getDevicesName().size(); begin++) {
 
                 expandevices.add(begin, electricitybillList.get(start).getDevicesNamestring(begin)+":\n"+
                         df.format(electricitybillList.get(start).getCostDevice(begin)) + "  Baht/ " +
                         df.format(electricitybillList.get(start).getUnitDevicesdou(begin)) + "  Units");
-//                expandevices.add(begin, electricitybillList.get(start).getDevicesNamestring(begin)+":\n"+
-//                        df.format(electricitybillList.get(start).getOnPeakDevice(begin)) + "  Baht/ " +
-//                        df.format(electricitybillList.get(start).getOnPeakCostDevice(begin))+"  Units\n" +
-//                        df.format(electricitybillList.get(start).getOffPeakDevice(begin)) + "  Baht/ " +
-//                        df.format(electricitybillList.get(start).getOffPeakCostDevice(begin)) + "  Units");
-
-
             }
             listDataChild.put(listDataHeader.get(start), expandevices);
-            //listAdapter.notifyDataSetChanged();
-            //expandevices.clear();
             Log.d("Size", expandevices.size()+"");
         }
 
@@ -227,7 +190,7 @@ public class ElectricityBillFragment extends Fragment {
 
     //ข้อมูลที่ใช้มี ชื่อดีไว้ ชื่อโลเคชั่น แล้วก็พลังงานที่ใช้แแต่ที่ใช้สูตรคิดมันเปนunitต้องแปลงก่อนเพราะเมิงดึงมาเปนwatt
     public void putdataToelectricityBill() {
-        //electricityType == 1.31f || electricityType == 1.32f ||
+
         if (onspinnerselected == 2||onspinnerselected == 3){
             for (int start = 1; start <= 3; start++) {
                 ArrayList<String> devicesname = new ArrayList<String>();
@@ -244,7 +207,7 @@ public class ElectricityBillFragment extends Fragment {
                 // ตรงนี้ก็ดูบรรทัดล่างนะมันมีชื่อโลเคชี่นที่ต้องดึงมา start คือกุรันลุปให้มันเปนเลขเฉยๆ
                 ElectricityBillModel electbill = new ElectricityBillModel("Location: " + start, devicesname, unitOnDevice, unitOffDevice);
                 electricitybillList.add(electbill);
-                //Log.d("TestLoop", electricitybillList.size()+"");
+
             }
         }else{
             for (int start = 1; start <= 3; start++) {
@@ -258,7 +221,7 @@ public class ElectricityBillFragment extends Fragment {
                 // ตรงนี้ก็ดูบรรทัดล่างนะมันมีชื่อโลเคชี่นที่ต้องดึงมา start คือกุรันลุปให้มันเปนเลขเฉยๆ
                 ElectricityBillModel electbill = new ElectricityBillModel("Location: " + start, devicesname, unitDevice);
                 electricitybillList.add(electbill);
-                //Log.d("TestLoop", electricitybillList.size()+"");
+
             }
         }
     }
@@ -327,28 +290,13 @@ public class ElectricityBillFragment extends Fragment {
                     df.format(electricitybillList.get(start).getCostLocation()) + "  Baht/ " +
                     df.format(electricitybillList.get(start).getUnitLocation()) + "  Units");
 
-//            listDataHeader.add(electricitybillList.get(start).getLocationName() +":\n"+
-//                    df.format(electricitybillList.get(start).getCostOnPeak()) + "  Baht/ " +
-//                    df.format(electricitybillList.get(start).getOnPeakLocation()) + "  Units\n" +
-//                    df.format(electricitybillList.get(start).getCostOffPeak()) + "  Baht/ " +
-//                    df.format(electricitybillList.get(start).getOffPeakLocation()) + "  Units");
-
             for (int begin = 0; begin < electricitybillList.get(start).getDevicesName().size(); begin++) {
 
                 expandevices.add(begin, electricitybillList.get(start).getDevicesNamestring(begin)+":\n"+
                         df.format(electricitybillList.get(start).getCostDevice(begin)) + "  Baht/ " +
                         df.format(electricitybillList.get(start).getUnitDevicesdou(begin)) + "  Units");
-//                expandevices.add(begin, electricitybillList.get(start).getDevicesNamestring(begin)+":\n"+
-//                        df.format(electricitybillList.get(start).getOnPeakDevice(begin)) + "  Baht/ " +
-//                        df.format(electricitybillList.get(start).getOnPeakCostDevice(begin))+"  Units\n" +
-//                        df.format(electricitybillList.get(start).getOffPeakDevice(begin)) + "  Baht/ " +
-//                        df.format(electricitybillList.get(start).getOffPeakCostDevice(begin)) + "  Units");
-
-
             }
             listDataChild.put(listDataHeader.get(start), expandevices);
-            //listAdapter.notifyDataSetChanged();
-            //expandevices.clear();
             Log.d("Size", expandevices.size()+"");
         }
 
@@ -364,19 +312,17 @@ public class ElectricityBillFragment extends Fragment {
         JSONObject jsonObject = null;
         JSONArray jsonArray = null;
         String jall = bundle.getString("electricityBill");
+
         try {
             jsonArray = new JSONArray(jall);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-
         JSONArray jsonArray1 = null;
-
 
         int amountOfLocation = jsonArray.length(); // get size location มา
         int[] amountOfDevice = new int[amountOfLocation];
-        //Toast.makeText(getActivity(),jsonArray.length()+"",Toast.LENGTH_LONG).show();
 
         String[] locationName = new String[amountOfLocation]; // get location name มา
 
@@ -384,10 +330,8 @@ public class ElectricityBillFragment extends Fragment {
 
             try {
                 JSONObject jsonObject1 = (JSONObject) jsonArray.get(i);
-                jsonArray1 = (JSONArray) jsonObject1.getJSONArray("value");
-                //Toast.makeText(getActivity(),jsonArray1.toString(),Toast.LENGTH_LONG).show();
-                //Toast.makeText(getActivity(),jsonArray1.toString(),Toast.LENGTH_LONG).show();
-                //Toast.makeText(getActivity(),jsonArray1.toString(),Toast.LENGTH_LONG).show();
+                jsonArray1 = jsonObject1.getJSONArray("value");
+
                 amountOfDevice[i] = jsonArray1.length(); // get size ของ device ในแต่ละ location มา
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -399,10 +343,6 @@ public class ElectricityBillFragment extends Fragment {
 
         ArrayList<String[]> deviceName = new ArrayList<>();
         ArrayList<double[]> deviceUnits = new ArrayList<>();
-        /*
-        ArrayList<double[]> deviceOnUnits = new ArrayList<>();
-        ArrayList<double[]> deviceOffUnits = new ArrayList<>();
-        */
 
 
         for(int i = 0; i < amountOfLocation; i++){
@@ -410,15 +350,12 @@ public class ElectricityBillFragment extends Fragment {
             jsonArray1 = null;
             String[] deviceNameTemp = new String[amountOfDevice[i]];// get device name in each location มา
             double[] deviceUnitsTemp = new double[amountOfDevice[i]];// get device unit  มา
-            JSONArray jsonArray0 = null;
-            JSONObject jsonObject0 = null;
+
 
             try {
                 jsonObject1 = (JSONObject) jsonArray.get(i);
-                jsonArray1 = (JSONArray) jsonObject1.getJSONArray("value");
-                //Toast.makeText(getActivity(),jsonArray1.toString(),Toast.LENGTH_LONG).show();
-                //Toast.makeText(getActivity(),jsonArray1.toString(),Toast.LENGTH_LONG).show();
-                //Toast.makeText(getActivity(),jsonArray1.toString(),Toast.LENGTH_LONG).show();
+                jsonArray1 = jsonObject1.getJSONArray("value");
+
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -427,7 +364,7 @@ public class ElectricityBillFragment extends Fragment {
 
             try {
                 locationName[i] = jsonObject1.getString("location_name");
-                //Toast.makeText(getActivity(),locationName[i],Toast.LENGTH_LONG).show();
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -438,37 +375,25 @@ public class ElectricityBillFragment extends Fragment {
                 JSONObject jsonObject2 = null;
                 try {
                     jsonObject2 = (JSONObject) jsonArray1.get(j);
-                    //Toast.makeText(getActivity(),jsonObject2.toString(),Toast.LENGTH_LONG).show();
-
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
                 try {
-                    deviceNameTemp[j] = jsonObject2.getString("ip_address")+" "+jsonObject2.getString("pin");
-                    //Toast.makeText(getActivity(),jsonObject2.getString("ip_address")+" "+jsonObject2.getString("pin"),Toast.LENGTH_LONG).show();
+                    deviceNameTemp[j] = jsonObject2.getString("oltp_ip_address")+" : "+jsonObject2.getString("oltp_pin");
                     deviceUnitsTemp[j] = (Double.parseDouble(jsonObject2.getString("sum_energy"))/1000)/3600;
-                    //Toast.makeText(getActivity(),deviceUnitsTemp[j]+"",Toast.LENGTH_LONG).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
             }
 
-            /*
-            double[] deviceOnUnitsTemp = new double[amountOfDevice[i]];// get device on peak unit มา
-            double[] deviceOffUnitsTemp = new double[amountOfDevice[i]];// get device off peak unit มา
-            */
-
             deviceName.add(deviceNameTemp);
             deviceUnits.add(deviceUnitsTemp);
-            /*
-            deviceOnUnits.add(deviceOnUnitsTemp);
-            deviceOffUnits.add(deviceOffUnitsTemp);
-            */
+
         }
 
-        //electricityType == 1.31f || electricityType == 1.32f ||
+
         if (onspinnerselected == 2||onspinnerselected == 3){
             for (int start = 1; start <= amountOfLocation; start++) {
                 ArrayList<String> devicesname = new ArrayList<String>();
@@ -478,15 +403,11 @@ public class ElectricityBillFragment extends Fragment {
                 for (int insides = 1; insides <= amountOfDevice[start-1]; insides++) {
 
                     devicesname.add(deviceName.get(start-1)[insides-1]);
-                    /*
-                    unitOnDevice.add(deviceOnUnits.get(start-1)[insides-1]);//เปนunitทีต้องดึงตามเวลาonpeak
-                    unitOffDevice.add(deviceOffUnits.get(start - 1)[insides-1]);//เปนunitทีต้องดึงตามเวลาoffpeak ลองดุในเวปไฟฟ้าที่ส่งให้นะแบบที่สาม
-                    */
+
                 }
                 // ตรงนี้ก็ดูบรรทัดล่างนะมันมีชื่อโลเคชี่นที่ต้องดึงมา start คือกุรันลุปให้มันเปนเลขเฉยๆ
                 ElectricityBillModel electbill = new ElectricityBillModel(locationName[start-1], devicesname, unitOnDevice, unitOffDevice);
                 electricitybillList.add(electbill);
-                //Log.d("TestLoop", electricitybillList.size()+"");
             }
         }else{
             for (int start = 1; start <= amountOfLocation; start++) {
@@ -500,7 +421,7 @@ public class ElectricityBillFragment extends Fragment {
                 // ตรงนี้ก็ดูบรรทัดล่างนะมันมีชื่อโลเคชี่นที่ต้องดึงมา start คือกุรันลุปให้มันเปนเลขเฉยๆ
                 ElectricityBillModel electbill = new ElectricityBillModel(locationName[start-1], devicesname, unitDevice);
                 electricitybillList.add(electbill);
-                //Log.d("TestLoop", electricitybillList.size()+"");
+
             }
         }
     }
@@ -511,16 +432,5 @@ public class ElectricityBillFragment extends Fragment {
         myContext = (FragmentActivity) activity;
         super.onAttach(activity);
     }
-
-//    public void onItemSelected(AdapterView<?> parent, View view,
-//                               int pos, long id) {
-
-//    }
-//
-//    public void onNothingSelected(AdapterView<?> parent) {
-//        // Another interface callback
-//    }
-
-
 
 }

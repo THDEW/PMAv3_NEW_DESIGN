@@ -214,7 +214,7 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
                 args[1] = topic+";qos:"+qos+";retained:"+retained;
 
                 fragmentTransaction.replace(R.id.container_body, electricityBillFragment);
-                title = "Electricity Bill";
+                title = "ElectricBill";
                 page = 3;
 
                 getSupportActionBar().setTitle(title);
@@ -256,6 +256,8 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
                 fragmentTransaction.replace(R.id.container_body, aboutFragment);
                 title = "About";
                 page = 5;
+                getSupportActionBar().setTitle(title);
+                fragmentTransaction.commit();
                 break;
             default:
                 break;
@@ -340,12 +342,8 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
                     e.printStackTrace();
                 }
 
-
-
-
                 if(checkLogin==1) login = true;
                 else login = false;
-
 
                 fragmentTransaction.replace(R.id.container_body, settingFragments);
                 title = "Settings";
@@ -384,7 +382,7 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
             }
             else if(event.getPropertyName().equals("electricityBill"))
             {
-                Bundle bundle = new Bundle();
+                Bundle bundle;
                 bundle = connection.getBundle();
 
                 fragmentTransaction.replace(R.id.container_body, electricityBillFragment);
@@ -407,12 +405,10 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
             Button logout = (Button) view.findViewById(R.id.logout);
             logout.setVisibility(View.VISIBLE);
 
-
             Button relogin = (Button) view.findViewById(R.id.reloginbt);
             relogin.setVisibility(View.INVISIBLE);
             TextView plslogin = (TextView) view.findViewById(R.id.plsLogin);
             plslogin.setVisibility(View.INVISIBLE);
-
 
             try {
                 settingFragments.createDummyData(bundle);
@@ -427,13 +423,10 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
             Button logout = (Button) view.findViewById(R.id.logout);
             logout.setVisibility(View.INVISIBLE);
 
-
             Button relogin = (Button) view.findViewById(R.id.reloginbt);
             relogin.setVisibility(View.VISIBLE);
             TextView plslogin = (TextView) view.findViewById(R.id.plsLogin);
             plslogin.setVisibility(View.VISIBLE);
-
-
         }
 
     }
