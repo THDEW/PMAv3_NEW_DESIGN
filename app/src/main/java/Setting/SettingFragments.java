@@ -26,6 +26,7 @@ import org.eclipse.paho.android.service.sample.Connections;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -49,7 +50,7 @@ public class SettingFragments extends Fragment {
 
     private String clientHandle = null;
     private Connection connection = null;
-    //private ChangeListener changeListener = new ChangeListener();
+    private ChangeListener changeListener = new ChangeListener();
 
 
     private Bundle temp = null;
@@ -69,6 +70,7 @@ public class SettingFragments extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         connection = Connections.getInstance(getActivity()).getConnection(clientHandle);
+        connection.registerChangeListener(changeListener);
         //connection.registerChangeListener(changeListener);
     }
 
@@ -123,7 +125,7 @@ public class SettingFragments extends Fragment {
 
         my_recycler_view.setHasFixedSize(true);
 
-        RecyclerViewForSettingAdapter adapter = new RecyclerViewForSettingAdapter(myContext, allSampleData, fm);
+        RecyclerViewForSettingAdapter adapter = new RecyclerViewForSettingAdapter(myContext, allSampleData, fm,connection);
 
         my_recycler_view.setLayoutManager(new LinearLayoutManager(myContext, LinearLayoutManager.VERTICAL, false));
 
@@ -260,11 +262,10 @@ public class SettingFragments extends Fragment {
             }
 
             dm.setAllItemsInSection(singleItem);
-
             allSampleData.add(dm);
 
         }
-        RecyclerViewForSettingAdapter adapter = new RecyclerViewForSettingAdapter(myContext, allSampleData, fm);
+        RecyclerViewForSettingAdapter adapter = new RecyclerViewForSettingAdapter(myContext, allSampleData, fm, connection);
 
         my_recycler_view.setAdapter(adapter);
 
@@ -281,6 +282,51 @@ public class SettingFragments extends Fragment {
         super.onAttach(activity);
         myContext = (FragmentActivity) activity;
     }
+
+    private class ChangeListener implements PropertyChangeListener {
+
+
+        String title = null;
+        @Override
+        public void propertyChange(PropertyChangeEvent event) {
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+
+            View view = null;
+            JSONArray jsonArray = null;
+            JSONObject jsonObject = null;
+            JSONParser parser = new JSONParser();
+
+            if(event.getPropertyName().equals("addDeviceType"))
+            {
+                String result = connection.getBundle().getString("settings/addData/device_type");
+                Log.v("adddevice","rowdata");
+                Toast.makeText(getActivity(),result,Toast.LENGTH_SHORT).show();
+            }
+            if(event.getPropertyName().equals("addDeviceDetail"))
+            {
+                String result = connection.getBundle().getString("settings/addData/device_detail");
+                Log.v("adddevicedetail","rowdata");
+                Toast.makeText(getActivity(),result,Toast.LENGTH_SHORT).show();
+            }
+            if(event.getPropertyName().equals("addPowerNode"))
+            {
+                String result = connection.getBundle().getString("settings/addData/power_node");
+                Log.v("addpowernode","rowdata");
+                Toast.makeText(getActivity(),result,Toast.LENGTH_SHORT).show();
+            }
+            if(event.getPropertyName().equals("addLocation"))
+            {
+                String result = connection.getBundle().getString("settings/addData/location");
+                Log.v("addlocation","rowdata");
+                Toast.makeText(getActivity(),result,Toast.LENGTH_SHORT).show();
+            }
+        }
+
+
+
+        }
 
 }
 

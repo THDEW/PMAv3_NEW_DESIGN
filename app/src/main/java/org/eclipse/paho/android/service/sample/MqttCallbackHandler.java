@@ -72,12 +72,7 @@ public class MqttCallbackHandler implements MqttCallback  {
       args[0] = c.getId();
       args[1] = c.getHostName();
 
-      //String message = context.getString(R.string.connection_lost, args);
 
-
-
-      //notify the user
-      //Notify.notifcation(context, message, intent, R.string.notifyTitle_connectionLost);
     }
   }
 
@@ -89,29 +84,11 @@ public class MqttCallbackHandler implements MqttCallback  {
 
     //Get connection object associated with this object
     Connection c = Connections.getInstance(context).getConnection(clientHandle);
-    //Toast.makeText(context,"success",Toast.LENGTH_LONG).show();
-
     String message2 = new String(message.getPayload());
-
-
     Bundle bundle = new Bundle();
 
-    //c.setTest(message2);
 
-
-
-    if(topic.equals("server/settings/authenticate"))
-    {
-
-
-      bundle = new Bundle();
-      bundle.putString("settings/authenticate", message2);
-      c.insertBundle(bundle);
-      Log.v("authenticatehandler","handle");
-
-      c.changePage("authenticate");
-    }
-    else if(topic.equals("server/settings"))
+    if(topic.equals("server/settings"))
     {
       bundle = new Bundle();
       bundle.putString("settings/authenticate",message2);
@@ -122,10 +99,47 @@ public class MqttCallbackHandler implements MqttCallback  {
 
       c.changePage("settings");
     }
+    else if(topic.equals("server/settings/authenticate"))
+    {
+      bundle = new Bundle();
+      bundle.putString("settings/authenticate", message2);
+      c.insertBundle(bundle);
+      Log.v("authenticatehandler","handle");
+
+      c.changePage("authenticate");
+    }
+    else if(topic.equals("server/settings/addData/device_type"))
+    {
+      bundle = new Bundle();
+      bundle.putString("settings/addData/device_type",message2);
+      c.insertBundle(bundle);
+      c.changePage("addDeviceType");
+    }
+    else if(topic.equals("server/settings/addData/device_detail"))
+    {
+      bundle = new Bundle();
+      bundle.putString("settings/addData/device_detail",message2);
+      c.insertBundle(bundle);
+      c.changePage("addDeviceDetail");
+    }
+    else if(topic.equals("server/settings/addData/power_node"))
+    {
+      bundle = new Bundle();
+      bundle.putString("settings/addData/power_node",message2);
+      c.insertBundle(bundle);
+      c.changePage("addPowerNode");
+    }
+    else if(topic.equals("server/settings/addData/location"))
+    {
+      bundle = new Bundle();
+      bundle.putString("settings/addData/location",message2);
+      c.insertBundle(bundle);
+      c.changePage("addLocation");
+    }
     else if(topic.equals("server/electricityBill"))
     {
       bundle = new Bundle();
-      bundle.putString("electricityBill",message2);
+      bundle.putString("electricityBill", message2);
       c.insertBundle(bundle);
 
 

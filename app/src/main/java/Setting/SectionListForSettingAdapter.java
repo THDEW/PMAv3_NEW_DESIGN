@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.example.senoir.newpmatry1.R;
 
+import org.eclipse.paho.android.service.sample.Connection;
+
 import java.util.ArrayList;
 
 /**
@@ -25,13 +27,18 @@ public class SectionListForSettingAdapter extends RecyclerView.Adapter<SectionLi
     private String rowName;
     private int condition;
 
-    public SectionListForSettingAdapter(Context context,ArrayList<ItemDataModel>[] itemsListSupport, ArrayList<ItemDataModel> itemsList, FragmentManager fm, String rowName, int i) {
+    private Connection connection;
+
+    public SectionListForSettingAdapter(Context context,ArrayList<ItemDataModel>[] itemsListSupport,
+                                        ArrayList<ItemDataModel> itemsList, FragmentManager fm, String rowName, int i,
+                                        Connection connection) {
         this.itemsList = itemsList;
         this.itemsListSupport = itemsListSupport;
         this.mContext = context;
         this.fm = fm;
         this.rowName = rowName;
         condition = i;
+        this.connection = connection;
     }
 
     @Override
@@ -76,7 +83,7 @@ public class SectionListForSettingAdapter extends RecyclerView.Adapter<SectionLi
             rl.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    RowDataDialog dialog = new RowDataDialog(rowName, condition, false, fm, itemsListSupport, ownData);
+                    RowDataDialog dialog = new RowDataDialog(rowName, condition, false, fm, itemsListSupport, ownData, connection);
                     dialog.show(fm, "Tag");
                     dialog.setCancelable(false);
                 }

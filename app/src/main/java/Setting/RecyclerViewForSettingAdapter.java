@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import com.example.senoir.newpmatry1.R;
 
+import org.eclipse.paho.android.service.sample.Connection;
+
 import java.util.ArrayList;
 
 /**
@@ -27,10 +29,13 @@ public class RecyclerViewForSettingAdapter extends RecyclerView.Adapter<Recycler
     private Context mContext;
     private FragmentManager fm;
 
-    public RecyclerViewForSettingAdapter(Context context, ArrayList<TableDataModel> dataList, FragmentManager fm) {
+    private Connection connection;
+
+    public RecyclerViewForSettingAdapter(Context context, ArrayList<TableDataModel> dataList, FragmentManager fm, Connection connection) {
         this.dataList = dataList;
         this.mContext = context;
         this.fm = fm;
+        this.connection = connection;
     }
 
     @Override
@@ -46,7 +51,7 @@ public class RecyclerViewForSettingAdapter extends RecyclerView.Adapter<Recycler
 
         ArrayList singleSectionItems = dataList.get(i).getAllItemsInSection();
 
-        SectionListForSettingAdapter itemListDataAdapter = new SectionListForSettingAdapter(mContext, itemRowHolder.groupOfData ,singleSectionItems, fm, sectionName, i);
+        SectionListForSettingAdapter itemListDataAdapter = new SectionListForSettingAdapter(mContext, itemRowHolder.groupOfData ,singleSectionItems, fm, sectionName, i, connection);
 
         itemRowHolder.backUp = itemListDataAdapter;
 
@@ -118,7 +123,7 @@ public class RecyclerViewForSettingAdapter extends RecyclerView.Adapter<Recycler
                 addBt.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        RowDataDialog dialog = new RowDataDialog(columnTitle.getText().toString(), condition, true, fm, groupOfData);
+                        RowDataDialog dialog = new RowDataDialog(columnTitle.getText().toString(), condition, true, fm, groupOfData, connection);
                         dialog.show(fm, "Tag");
                         dialog.setCancelable(false);
                     }
