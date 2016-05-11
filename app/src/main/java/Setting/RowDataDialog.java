@@ -230,6 +230,15 @@ public class RowDataDialog extends DialogFragment  {
                 spinner.setAdapter(dataAdapter);
                 spinner.setSelection(oldData);
 
+                // Spinner element group
+                spinner = (Spinner) rootView.findViewById(R.id.on_off_spinner);
+                item = new ArrayList<String>();
+                // Spinner Drop down elements
+                item.add("ON");
+                item.add("OFF");
+                dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, item);
+                spinner.setAdapter(dataAdapter);
+
                 //set edi text by old data
                 if(ownData != null) {
                     edit = (EditText) rootView.findViewById(R.id.data_group_1);
@@ -281,6 +290,7 @@ public class RowDataDialog extends DialogFragment  {
                 dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, item);
                 spinner.setAdapter(dataAdapter);
                 spinner.setSelection(oldData);
+
 
                 if(ownData != null) {
                     edit = (EditText) rootView.findViewById(R.id.data_device_1);
@@ -498,8 +508,12 @@ public class RowDataDialog extends DialogFragment  {
 
                 break;
             case 4:
+<<<<<<< HEAD
                 //group of device insertion
                 addData = new String[5];
+=======
+                addData = new String[6];
+>>>>>>> f3c2a959c5f1d68dc113ec3d63f7f6794fad04fe
                 // Spinner element node
                 spinner = (Spinner) rootView.findViewById(R.id.node_spinner);
                 power_node_id = dataFromDatabase[2].get(spinner.getSelectedItemPosition()).getId();
@@ -536,6 +550,8 @@ public class RowDataDialog extends DialogFragment  {
                         e.printStackTrace();
                     }
                 }
+                spinner = (Spinner) rootView.findViewById(R.id.on_off_spinner);
+                addData[5] = spinner.getSelectedItem().toString();
 
 
                 break;
