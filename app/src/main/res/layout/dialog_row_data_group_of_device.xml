@@ -79,15 +79,13 @@
             android:gravity="center|left"
             android:textSize="20dp" />
 
-        <EditText
+        <Spinner
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:id="@+id/data_group_2"
-            android:textSize="15dp"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/textView26"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_height="wrap_content"
+            android:id="@+id/on_off_spinner"
+            android:layout_toEndOf="@+id/textView26"
+            android:layout_toRightOf="@+id/textView26" />
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -111,26 +109,6 @@
             android:layout_toRightOf="@+id/textView27"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp" >
-
-        <TextView
-            android:layout_width="120dp"
-            android:layout_height="40dp"
-            android:text="Location"
-            android:id="@+id/textView7"
-            android:gravity="center|left"
-            android:textSize="20dp" />
-
-        <Spinner
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/on_off_spinner"
-            android:layout_toEndOf="@+id/textView7"
-            android:layout_toRightOf="@+id/textView7" />
     </RelativeLayout>
 
     <RelativeLayout

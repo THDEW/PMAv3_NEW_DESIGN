@@ -234,17 +234,18 @@ public class RowDataDialog extends DialogFragment  {
                 spinner = (Spinner) rootView.findViewById(R.id.on_off_spinner);
                 item = new ArrayList<String>();
                 // Spinner Drop down elements
-                item.add("ON");
                 item.add("OFF");
+                item.add("ON");
                 dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, item);
                 spinner.setAdapter(dataAdapter);
 
                 //set edi text by old data
                 if(ownData != null) {
+
+                    spinner.setSelection(Integer.parseInt(ownData.getData(3)));
+
                     edit = (EditText) rootView.findViewById(R.id.data_group_1);
                     edit.setText(ownData.getData(0));
-                    edit = (EditText) rootView.findViewById(R.id.data_group_2);
-                    edit.setText(ownData.getData(3));
                     edit = (EditText) rootView.findViewById(R.id.data_group_3);
                     edit.setText(ownData.getData(4));
                 }
@@ -508,38 +509,48 @@ public class RowDataDialog extends DialogFragment  {
 
                 break;
             case 4:
-<<<<<<< HEAD
+                String status = "";
                 //group of device insertion
                 addData = new String[5];
-=======
-                addData = new String[6];
->>>>>>> f3c2a959c5f1d68dc113ec3d63f7f6794fad04fe
+
+                // PIN
+                edit = (EditText) rootView.findViewById(R.id.data_group_1);
+                addData[0] = edit.getText().toString();
+
                 // Spinner element node
                 spinner = (Spinner) rootView.findViewById(R.id.node_spinner);
                 power_node_id = dataFromDatabase[2].get(spinner.getSelectedItemPosition()).getId();
 
+                //take out
                 // Spinner element location
                 spinner = (Spinner) rootView.findViewById(R.id.location_spinner_2);
-                addData[2] = spinner.getSelectedItem().toString();
                 location_id = dataFromDatabase[3].get(spinner.getSelectedItemPosition()).getId();
 
-                //set edi text by old data
 
-                    edit = (EditText) rootView.findViewById(R.id.data_group_1);
-                    addData[0] = edit.getText().toString();
-                    edit = (EditText) rootView.findViewById(R.id.data_group_2);
-                    addData[1] = edit.getText().toString();
-                    edit = (EditText) rootView.findViewById(R.id.data_group_3);
-                    addData[2] = edit.getText().toString();
+                spinner = (Spinner) rootView.findViewById(R.id.on_off_spinner);
+                addData[2] = spinner.getSelectedItem().toString();
+                if(addData[2].compareToIgnoreCase("on")==0)
+                {
+                    status = "1";
 
-                if(addData[0].isEmpty()||addData[1].isEmpty()||addData[2].isEmpty())
+                }
+                else
+                {
+                    status = "0";
+                }
+                Log.v(status,"god");
+
+                edit = (EditText) rootView.findViewById(R.id.data_group_3);
+                addData[1] = edit.getText().toString();
+                /*
+                if(addData[0].isEmpty()||addData[1].isEmpty())
                 {
                     Toast.makeText(getActivity(),"Please insert all the parameters",Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
                     topic = "android/settings/addData/group_of_device";
-                    message = addData[0]+","+addData[1];
+                    message = addData[0]+","+power_node_id+","+location_id+","+status+","+addData[1];
 
                     args[0] = message;
                     args[1] = topic+";qos:"+qos+";retained:"+retained;
@@ -550,8 +561,8 @@ public class RowDataDialog extends DialogFragment  {
                         e.printStackTrace();
                     }
                 }
-                spinner = (Spinner) rootView.findViewById(R.id.on_off_spinner);
-                addData[5] = spinner.getSelectedItem().toString();
+                */
+
 
 
                 break;
@@ -568,8 +579,10 @@ public class RowDataDialog extends DialogFragment  {
 
 
                 if(ownData != null) {
+                    //Device name
                     edit = (EditText) rootView.findViewById(R.id.data_device_1);
                     addData[0] = edit.getText().toString();
+                    //Description
                     edit = (EditText) rootView.findViewById(R.id.data_device_2);
                     addData[3] = edit.getText().toString();
                 }
@@ -588,6 +601,8 @@ public class RowDataDialog extends DialogFragment  {
         Spinner spinner;
 
         String[] editData = null;
+
+        int location_id,power_node_id,device_type_id,device_detail_id = 0;
 
         switch (type){
             case 0:
@@ -646,24 +661,27 @@ public class RowDataDialog extends DialogFragment  {
                 break;
             case 4:
                 editData = new String[5];
+
+                // PIN
+                edit = (EditText) rootView.findViewById(R.id.data_group_1);
+                editData[0] = edit.getText().toString();
+
                 // Spinner element node
                 spinner = (Spinner) rootView.findViewById(R.id.node_spinner);
+                power_node_id = dataFromDatabase[2].get(spinner.getSelectedItemPosition()).getId();
                 editData[1] = spinner.getSelectedItem().toString();
-
 
                 // Spinner element location
                 spinner = (Spinner) rootView.findViewById(R.id.location_spinner_2);
                 editData[2] = spinner.getSelectedItem().toString();
+                location_id = dataFromDatabase[3].get(spinner.getSelectedItemPosition()).getId();
 
-                //set edi text by old data
-                if(ownData != null) {
-                    edit = (EditText) rootView.findViewById(R.id.data_group_1);
-                    editData[0] = edit.getText().toString();
-                    edit = (EditText) rootView.findViewById(R.id.data_group_2);
-                    editData[3] = edit.getText().toString();
-                    edit = (EditText) rootView.findViewById(R.id.data_group_3);
-                    editData[4] = edit.getText().toString();
-                }
+                spinner = (Spinner) rootView.findViewById(R.id.on_off_spinner);
+                editData[3] = spinner.getSelectedItem().toString();
+                Log.d("aaa", editData[3]);
+
+                edit = (EditText) rootView.findViewById(R.id.data_group_3);
+                editData[4] = edit.getText().toString();
 
                 break;
             case 5:
