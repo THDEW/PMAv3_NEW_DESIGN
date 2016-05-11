@@ -145,7 +145,7 @@ public class IntroductionPage extends Activity {
             try {
                 client.connect(conOpt, null, callback);
 
-                //Toast.makeText(this,""+client.isConnected(),Toast.LENGTH_LONG).show();
+                Toast.makeText(this,"Connected to server",Toast.LENGTH_LONG).show();
 
             }
             catch (MqttException e) {

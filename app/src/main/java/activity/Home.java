@@ -77,22 +77,22 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
         setContentView(R.layout.activity_home);
         changeListener = new ChangeListener();
         clientHandle = getIntent().getStringExtra("handle");
-        //Toast.makeText(this,clientHandle,Toast.LENGTH_SHORT).show();
+
         connection = Connections.getInstance(this).getConnection(clientHandle);
-        //connection.getClient().setCallback(new MqttCallbackHandler(this,clientHandle));
+
         connection.registerChangeListener(changeListener);
-        //if(connection== null) Toast.makeText(this,"null",Toast.LENGTH_SHORT).show();
+
 
 
         try {
 
             connection.getClient().subscribe("server/#",1);
-            //Toast.makeText(this,"subscribe",Toast.LENGTH_SHORT).show();
+
         } catch (MqttException e) {
             e.printStackTrace();
         }
 
-        //Toast.makeText(this,clientHandle,Toast.LENGTH_SHORT).show();
+
 
 
 
@@ -294,7 +294,6 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
         @Override
         public void propertyChange(PropertyChangeEvent event) {
 
-
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
 
@@ -359,6 +358,7 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
                     loggedIn(view,bundle);
                 } else {
                     notLoggedIn(view);
+                    Toast.makeText(home,"Wrong username or password",Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -432,6 +432,8 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
             relogin.setVisibility(View.VISIBLE);
             TextView plslogin = (TextView) view.findViewById(R.id.plsLogin);
             plslogin.setVisibility(View.VISIBLE);
+
+
         }
 
     }

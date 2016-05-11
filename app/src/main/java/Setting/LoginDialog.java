@@ -65,22 +65,36 @@ public class LoginDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
 
+                String username = user.getText().toString();
+                String password = pass.getText().toString();
 
-                String topic = "android/settings/authenticate";
-                String message = user.getText().toString()+","+pass.getText().toString();
-                int qos = 0;
-                boolean retained = false;
-
-                String[] args = new String[2];
-                args[0] = message;
-                args[1] = topic + ";qos:" + qos + ";retained:" + retained;
-
-                try {
-                    connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(getActivity(), ActionListener.Action.PUBLISH, clientHandle, args));
-                } catch (MqttException e) {
-                    e.printStackTrace();
+                if(username.isEmpty())
+                {
+                    Toast.makeText(getActivity(),"Please insert username",Toast.LENGTH_SHORT).show();
                 }
-                dismiss();
+                else if(password.isEmpty())
+                {
+                    Toast.makeText(getActivity(),"Please insert password",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    String topic = "android/settings/authenticate";
+                    String message = user.getText().toString()+","+pass.getText().toString();
+                    int qos = 0;
+                    boolean retained = false;
+
+                    String[] args = new String[2];
+                    args[0] = message;
+                    args[1] = topic + ";qos:" + qos + ";retained:" + retained;
+
+                    try {
+                        connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(getActivity(), ActionListener.Action.PUBLISH, clientHandle, args));
+                    } catch (MqttException e) {
+                        e.printStackTrace();
+                    }
+                    dismiss();
+                }
+
             }
 
         });
