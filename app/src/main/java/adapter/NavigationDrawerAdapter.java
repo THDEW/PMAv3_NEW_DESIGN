@@ -4,7 +4,9 @@ package adapter;
  * Created by my131 on 19/4/2559.
  */
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,7 @@ import com.example.senoir.newpmatry1.R;
 import java.util.Collections;
 import java.util.List;
 
+import activity.Home;
 import model.NavDrawerItem;
 
 public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDrawerAdapter.MyViewHolder> {
@@ -63,6 +66,13 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
                     holder.img.setBackgroundResource(R.drawable.icon_6_about);
                 break;
         }
+
+        Log.d("aaa", position+"");
+
+        if(position == Home.page) {
+            holder.itemView.setBackgroundColor(Color.parseColor("#F2F2F2"));
+        }
+
     }
 
     @Override
@@ -75,10 +85,14 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
 
         ImageView img;
 
+        View itemView;
+
         public MyViewHolder(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.title);
             img = (ImageView) itemView.findViewById(R.id.icon_drawer);
+
+            this.itemView = itemView;
         }
     }
 }

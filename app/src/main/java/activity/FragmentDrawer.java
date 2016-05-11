@@ -76,6 +76,7 @@ public class FragmentDrawer extends Fragment {
             @Override
             public void onClick(View view, int position) {
                 drawerListener.onDrawerItemSelected(view, position);
+                recyclerView.setAdapter(adapter);
                 mDrawerLayout.closeDrawer(containerView);
             }
 
