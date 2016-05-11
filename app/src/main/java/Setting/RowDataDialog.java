@@ -215,20 +215,6 @@ public class RowDataDialog extends DialogFragment  {
                 spinner.setAdapter(dataAdapter);
                 spinner.setSelection(oldData);
 
-                // Spinner element location
-                spinner = (Spinner) rootView.findViewById(R.id.location_spinner_2);
-                item = new ArrayList<String>();
-                for(int i = 0; i < dataFromDatabase[3].size(); i++){
-                    item.add(dataFromDatabase[3].get(i).getName());
-                    if(ownData != null) {
-                        if (ownData.getData(2).equals(dataFromDatabase[3].get(i).getName())) {
-                            oldData = i;
-                        }
-                    }
-                }
-                dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, item);
-                spinner.setAdapter(dataAdapter);
-                spinner.setSelection(oldData);
 
                 // Spinner element group
                 spinner = (Spinner) rootView.findViewById(R.id.on_off_spinner);
@@ -521,12 +507,6 @@ public class RowDataDialog extends DialogFragment  {
                 spinner = (Spinner) rootView.findViewById(R.id.node_spinner);
                 power_node_id = dataFromDatabase[2].get(spinner.getSelectedItemPosition()).getId();
 
-                //take out
-                // Spinner element location
-                spinner = (Spinner) rootView.findViewById(R.id.location_spinner_2);
-                location_id = dataFromDatabase[3].get(spinner.getSelectedItemPosition()).getId();
-
-
                 spinner = (Spinner) rootView.findViewById(R.id.on_off_spinner);
                 addData[2] = spinner.getSelectedItem().toString();
                 if(addData[2].compareToIgnoreCase("on")==0)
@@ -671,17 +651,13 @@ public class RowDataDialog extends DialogFragment  {
                 power_node_id = dataFromDatabase[2].get(spinner.getSelectedItemPosition()).getId();
                 editData[1] = spinner.getSelectedItem().toString();
 
-                // Spinner element location
-                spinner = (Spinner) rootView.findViewById(R.id.location_spinner_2);
-                editData[2] = spinner.getSelectedItem().toString();
-                location_id = dataFromDatabase[3].get(spinner.getSelectedItemPosition()).getId();
 
                 spinner = (Spinner) rootView.findViewById(R.id.on_off_spinner);
-                editData[3] = spinner.getSelectedItem().toString();
+                editData[2] = spinner.getSelectedItem().toString();
                 Log.d("aaa", editData[3]);
 
                 edit = (EditText) rootView.findViewById(R.id.data_group_3);
-                editData[4] = edit.getText().toString();
+                editData[3] = edit.getText().toString();
 
                 break;
             case 5:
