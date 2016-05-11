@@ -213,6 +213,15 @@ public class RowDataDialog extends DialogFragment  {
                 spinner.setAdapter(dataAdapter);
                 spinner.setSelection(oldData);
 
+                // Spinner element group
+                spinner = (Spinner) rootView.findViewById(R.id.on_off_spinner);
+                item = new ArrayList<String>();
+                // Spinner Drop down elements
+                item.add("ON");
+                item.add("OFF");
+                dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, item);
+                spinner.setAdapter(dataAdapter);
+
                 //set edi text by old data
                 if(ownData != null) {
                     edit = (EditText) rootView.findViewById(R.id.data_group_1);
@@ -264,6 +273,7 @@ public class RowDataDialog extends DialogFragment  {
                 dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, item);
                 spinner.setAdapter(dataAdapter);
                 spinner.setSelection(oldData);
+
 
                 if(ownData != null) {
                     edit = (EditText) rootView.findViewById(R.id.data_device_1);
@@ -388,7 +398,7 @@ public class RowDataDialog extends DialogFragment  {
                 }
                 break;
             case 4:
-                addData = new String[5];
+                addData = new String[6];
                 // Spinner element node
                 spinner = (Spinner) rootView.findViewById(R.id.node_spinner);
                 addData[1] = spinner.getSelectedItem().toString();
@@ -407,6 +417,8 @@ public class RowDataDialog extends DialogFragment  {
                     edit = (EditText) rootView.findViewById(R.id.data_group_3);
                     addData[4] = edit.getText().toString();
                 }
+                spinner = (Spinner) rootView.findViewById(R.id.on_off_spinner);
+                addData[5] = spinner.getSelectedItem().toString();
 
                 break;
             case 5:
