@@ -245,7 +245,6 @@ public class SettingFragments extends Fragment {
                         singleItem.get(j).setId(Integer.parseInt(jsonObject1.getString("group_of_device_id")));
                         singleItem.get(j).addData(jsonObject1.getString("pin"));
                         singleItem.get(j).addData(jsonObject1.getString("name"));
-                        singleItem.get(j).addData(jsonObject1.getString("location_name"));
                         singleItem.get(j).addData(jsonObject1.getString("status"));
                         singleItem.get(j).addData(jsonObject1.getString("descr"));
                         break;
