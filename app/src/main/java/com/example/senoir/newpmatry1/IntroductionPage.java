@@ -157,4 +157,31 @@ public class IntroductionPage extends Activity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
+        //Register receivers again
+        if(connection!= null)
+        {
+            connection.getClient().registerResources(this);
+            connection.getClient().setCallback(new MqttCallbackHandler
+                    (this, connection.getClient().getServerURI() + connection.getClient().getClientId()));
+        }
+
+
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        if(connection!= null)
+        {
+            connection.getClient().unregisterResources();
+            connection.getClient().close();
+        }
+    }
+
 }

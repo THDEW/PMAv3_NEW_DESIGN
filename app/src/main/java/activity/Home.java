@@ -111,7 +111,7 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
         onOffFragment = new OnOffFragment();
         locationFragment = new LocationFragment();
         statisticFragment = new StatisticFragment();
-        electricityBillFragment = new ElectricityBillFragment();
+        electricityBillFragment = new ElectricityBillFragment(clientHandle);
         settingFragments = new SettingFragments(clientHandle);
         aboutFragment = new AboutFragment();
 
@@ -264,21 +264,7 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
 
-
-        //Register receivers again
-        if(connection!= null)
-        {
-            connection.getClient().registerResources(this);
-            connection.getClient().setCallback(new MqttCallbackHandler
-                    (this, connection.getClient().getServerURI() + connection.getClient().getClientId()));
-        }
-
-
-    }
 
     @Override
     public void onBackPressed()
@@ -378,14 +364,13 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
                     notLoggedIn(view);
                 }
             }
+
             else if(event.getPropertyName().equals("electricityBill"))
             {
                 Bundle bundle;
                 bundle = connection.getBundle();
-
+                Log.v("home","efrag");
                 fragmentTransaction.replace(R.id.container_body, electricityBillFragment);
-                title = "ElectricBill";
-                home.getSupportActionBar().setTitle(title);
                 fragmentTransaction.commit();
 
                 electricityBillFragment.prepareListData(bundle);
@@ -393,11 +378,12 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
 
 
 
+
         }
 
         public void loggedIn(View view, Bundle bundle)
         {
-            Toast.makeText(getApplicationContext(), "Login successfully", Toast.LENGTH_LONG).show();
+            //Toast.makeText(getApplicationContext(), "Login successfully", Toast.LENGTH_LONG).show();
             RecyclerView my_recycler_view = (RecyclerView) view.findViewById(R.id.my_recycler_view);
             my_recycler_view.setVisibility(View.VISIBLE);
             Button logout = (Button) view.findViewById(R.id.logout);

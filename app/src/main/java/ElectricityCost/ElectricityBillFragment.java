@@ -1,9 +1,14 @@
 package ElectricityCost;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,12 +22,19 @@ import android.widget.Toast;
 
 import com.example.senoir.newpmatry1.R;
 
+import org.eclipse.paho.android.service.sample.ActionListener;
+import org.eclipse.paho.android.service.sample.Connection;
+import org.eclipse.paho.android.service.sample.Connections;
+import org.eclipse.paho.android.service.sample.MqttCallbackHandler;
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import billcalculate.BillCalculate;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,13 +57,28 @@ public class ElectricityBillFragment extends Fragment {
     float electricityType = 0.00f;
     private int onspinnerselected = 0;
 
+    private String clientHandle;
+    private Connection connection;
+    //private ChangeListener changeListener = new ChangeListener();
+
+    private ElectricityBillFragment electricityBillFragment = this;
+
     public ElectricityBillFragment() {
         // Required empty public constructor
     }
 
+    public ElectricityBillFragment(String clientHandle) {
+
+        this.clientHandle = clientHandle;
+
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        connection = Connections.getInstance(getActivity()).getConnection(clientHandle);
+        //connection.registerChangeListener(changeListener);
     }
 
     @Override
@@ -152,7 +179,7 @@ public class ElectricityBillFragment extends Fragment {
             sumUnitOfLocation = sumOffPeakUnit + sumOnPeakUnit;
         }
 
-        totalCost.setText("Total: "  + df.format(costOfLocation) + " Baht/   " + df.format(sumUnitOfLocation) +" Units");
+        totalCost.setText("Total: " + df.format(costOfLocation) + " Baht/   " + df.format(sumUnitOfLocation) + " Units");
 
         for(int start = 0; start < electricitybillList.size(); start++) {
             expandevices = new ArrayList<String>();
@@ -424,6 +451,24 @@ public class ElectricityBillFragment extends Fragment {
 
             }
         }
+        /*
+        String topic = "android/electricityBill";
+        String message = "getElectricityCost";
+        int qos = 0;
+        boolean retained = false;
+
+        String[] args = new String[2];
+        args[0] = message;
+        args[1] = topic+";qos:"+qos+";retained:"+retained;
+
+        try {
+            connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(getActivity(), ActionListener.Action.PUBLISH, clientHandle, args));
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+        */
+
+
     }
 
 
@@ -432,5 +477,27 @@ public class ElectricityBillFragment extends Fragment {
         myContext = (FragmentActivity) activity;
         super.onAttach(activity);
     }
+
+
+    /*
+    private class ChangeListener implements PropertyChangeListener {
+        @Override
+        public void propertyChange(PropertyChangeEvent event) {
+
+            FragmentManager fragmentManager = electricityBillFragment.getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+            if(event.getPropertyName().equals("electricityBill"))
+            {
+                final Bundle bundle;
+                bundle = connection.getBundle();
+                Log.v("electricfrag", "efrag");
+                electricityBillFragment.prepareListData(bundle);
+
+
+            }
+        }
+    }
+    */
 
 }

@@ -108,6 +108,7 @@ public class MqttCallbackHandler implements MqttCallback  {
 
       c.changePage("authenticate");
     }
+
     else if(topic.equals("server/settings/addData/device_type"))
     {
       bundle = new Bundle();
@@ -136,6 +137,71 @@ public class MqttCallbackHandler implements MqttCallback  {
       c.insertBundle(bundle);
       c.changePage("addLocation");
     }
+    else if(topic.equals("server/settings/addData/location"))
+    {
+      bundle = new Bundle();
+      bundle.putString("settings/addData/location",message2);
+      c.insertBundle(bundle);
+      c.changePage("addLocation");
+    }
+    else if(topic.equals("server/settings/addData/group_of_device"))
+    {
+      bundle = new Bundle();
+      bundle.putString("settings/addData/group_of_device",message2);
+      c.insertBundle(bundle);
+      c.changePage("addGroupOfDevice");
+    }
+    else if(topic.equals("server/settings/addData/device"))
+    {
+      bundle = new Bundle();
+      bundle.putString("settings/addData/device",message2);
+      c.insertBundle(bundle);
+      c.changePage("addDevice");
+    }
+
+    else if(topic.equals("server/settings/editData/device_type"))
+    {
+      bundle = new Bundle();
+      bundle.putString("settings/editData/device_type",message2);
+      c.insertBundle(bundle);
+      c.changePage("editDeviceType");
+    }
+    else if(topic.equals("server/settings/editData/device_detail"))
+    {
+      bundle = new Bundle();
+      bundle.putString("settings/editData/device_detail",message2);
+      c.insertBundle(bundle);
+      c.changePage("editDeviceDetail");
+    }
+    else if(topic.equals("server/settings/editData/power_node"))
+    {
+      bundle = new Bundle();
+      bundle.putString("settings/editData/power_node",message2);
+      c.insertBundle(bundle);
+      c.changePage("editPowerNode");
+    }
+    else if(topic.equals("server/settings/editData/location"))
+    {
+      bundle = new Bundle();
+      bundle.putString("settings/editData/location",message2);
+      c.insertBundle(bundle);
+      c.changePage("editLocation");
+    }
+    else if(topic.equals("server/settings/editData/group_of_device"))
+    {
+      bundle = new Bundle();
+      bundle.putString("settings/editData/group_of_device",message2);
+      c.insertBundle(bundle);
+      c.changePage("editGroupOfDevice");
+    }
+    else if(topic.equals("server/settings/editData/device"))
+    {
+      bundle = new Bundle();
+      bundle.putString("settings/editData/device",message2);
+      c.insertBundle(bundle);
+      c.changePage("editDevice");
+    }
+
     else if(topic.equals("server/electricityBill"))
     {
       bundle = new Bundle();
