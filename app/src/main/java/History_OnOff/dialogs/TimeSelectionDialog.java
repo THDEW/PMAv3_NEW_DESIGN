@@ -97,7 +97,7 @@ public class TimeSelectionDialog extends DialogFragment {
                     } else if (compareDate() && !isAfterToday(date[5], date[4], date[3])){
                         Toast.makeText(getContext(), "Please! set a date after today or set as today", Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(getContext(), "Please! set a date after today or set as today and after first date", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Please! set a date before today or set as today and after started date", Toast.LENGTH_LONG).show();
                     }
                 } else {
                     Toast.makeText(getContext(), "Please set a first date", Toast.LENGTH_LONG).show();
