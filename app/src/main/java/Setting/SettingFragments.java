@@ -21,8 +21,11 @@ import android.widget.Toast;
 
 import com.example.senoir.newpmatry1.R;
 
+import org.eclipse.paho.android.service.sample.ActionListener;
 import org.eclipse.paho.android.service.sample.Connection;
 import org.eclipse.paho.android.service.sample.Connections;
+import org.eclipse.paho.android.service.sample.MqttCallbackHandler;
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -272,7 +275,7 @@ public class SettingFragments extends Fragment {
 
 
     public View getView() {
-        //Log.v("help", "me");
+
         return rootView;
     }
 
@@ -281,6 +284,8 @@ public class SettingFragments extends Fragment {
         super.onAttach(activity);
         myContext = (FragmentActivity) activity;
     }
+
+
 
     private class ChangeListener implements PropertyChangeListener {
 
@@ -297,30 +302,88 @@ public class SettingFragments extends Fragment {
             JSONObject jsonObject = null;
             JSONParser parser = new JSONParser();
 
+            String topic = "android/settings";
+            String message = "getSettings";
+            int qos = 0;
+            boolean retained = false;
+
+            String[] args = new String[2];
+            args[0] = message;
+            args[1] = topic+";qos:"+qos+";retained:"+retained;
+
             if(event.getPropertyName().equals("addDeviceType"))
             {
                 String result = connection.getBundle().getString("settings/addData/device_type");
                 Log.v("adddevice","rowdata");
                 Toast.makeText(getActivity(),result,Toast.LENGTH_SHORT).show();
+                try {
+                    connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(getActivity(), ActionListener.Action.PUBLISH, clientHandle, args));
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
+
             }
             if(event.getPropertyName().equals("addDeviceDetail"))
             {
                 String result = connection.getBundle().getString("settings/addData/device_detail");
                 Log.v("adddevicedetail","rowdata");
                 Toast.makeText(getActivity(),result,Toast.LENGTH_SHORT).show();
+                try {
+                    connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(getActivity(), ActionListener.Action.PUBLISH, clientHandle, args));
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
             }
             if(event.getPropertyName().equals("addPowerNode"))
             {
                 String result = connection.getBundle().getString("settings/addData/power_node");
                 Log.v("addpowernode","rowdata");
                 Toast.makeText(getActivity(),result,Toast.LENGTH_SHORT).show();
+                try {
+                    connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(getActivity(), ActionListener.Action.PUBLISH, clientHandle, args));
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
             }
             if(event.getPropertyName().equals("addLocation"))
             {
                 String result = connection.getBundle().getString("settings/addData/location");
                 Log.v("addlocation","rowdata");
                 Toast.makeText(getActivity(),result,Toast.LENGTH_SHORT).show();
+                try {
+                    connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(getActivity(), ActionListener.Action.PUBLISH, clientHandle, args));
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
             }
+            if(event.getPropertyName().equals("addGroupOfDevice"))
+            {
+                String result = connection.getBundle().getString("settings/addData/group_of_device");
+                Log.v("addgroupofdevice","rowdata");
+                Toast.makeText(getActivity(),result,Toast.LENGTH_SHORT).show();
+                try {
+                    connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(getActivity(), ActionListener.Action.PUBLISH, clientHandle, args));
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(event.getPropertyName().equals("addDevice"))
+            {
+                String result = connection.getBundle().getString("settings/addData/device");
+                Log.v("adddevice","rowdata");
+                Toast.makeText(getActivity(),result,Toast.LENGTH_SHORT).show();
+                try {
+                    connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(getActivity(), ActionListener.Action.PUBLISH, clientHandle, args));
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+
+
+
+
         }
 
 

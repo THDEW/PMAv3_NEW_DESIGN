@@ -352,7 +352,7 @@ public class RowDataDialog extends DialogFragment  {
 
         String[] args = new String[2];
 
-        int location_id,power_node_id,device_type_id,device_detail_id = 0;
+        int group_of_device_id,location_id,power_node_id,device_type_id,device_detail_id = 0;
 
 
 
@@ -512,7 +512,6 @@ public class RowDataDialog extends DialogFragment  {
                 if(addData[2].compareToIgnoreCase("on")==0)
                 {
                     status = "1";
-
                 }
                 else
                 {
@@ -522,7 +521,7 @@ public class RowDataDialog extends DialogFragment  {
 
                 edit = (EditText) rootView.findViewById(R.id.data_group_3);
                 addData[1] = edit.getText().toString();
-                /*
+
                 if(addData[0].isEmpty()||addData[1].isEmpty())
                 {
                     Toast.makeText(getActivity(),"Please insert all the parameters",Toast.LENGTH_SHORT).show();
@@ -530,7 +529,7 @@ public class RowDataDialog extends DialogFragment  {
                 else
                 {
                     topic = "android/settings/addData/group_of_device";
-                    message = addData[0]+","+power_node_id+","+location_id+","+status+","+addData[1];
+                    message = addData[0]+","+power_node_id+","+status+","+addData[1];
 
                     args[0] = message;
                     args[1] = topic+";qos:"+qos+";retained:"+retained;
@@ -541,7 +540,7 @@ public class RowDataDialog extends DialogFragment  {
                         e.printStackTrace();
                     }
                 }
-                */
+
 
 
 
@@ -551,21 +550,42 @@ public class RowDataDialog extends DialogFragment  {
 
                 // Spinner element detail
                 spinner = (Spinner) rootView.findViewById(R.id.detail_spinner);
-                addData[1] = spinner.getSelectedItem().toString();
+                device_detail_id = dataFromDatabase[1].get(spinner.getSelectedItemPosition()).getId();
 
                 // Spinner element group
                 spinner = (Spinner) rootView.findViewById(R.id.group_spinner);
-                addData[2] = spinner.getSelectedItem().toString();
+                group_of_device_id = dataFromDatabase[4].get(spinner.getSelectedItemPosition()).getId();
 
 
-                if(ownData != null) {
+
                     //Device name
                     edit = (EditText) rootView.findViewById(R.id.data_device_1);
                     addData[0] = edit.getText().toString();
                     //Description
                     edit = (EditText) rootView.findViewById(R.id.data_device_2);
-                    addData[3] = edit.getText().toString();
+                    addData[1] = edit.getText().toString();
+
+                if(addData[0].isEmpty()||addData[1].isEmpty())
+                {
+                    Toast.makeText(getActivity(),"Please insert all the parameters",Toast.LENGTH_SHORT).show();
                 }
+                else
+                {
+                    topic = "android/settings/addData/device";
+                    message = addData[0]+","+device_detail_id+","+group_of_device_id+","+addData[1];
+
+                    args[0] = message;
+                    args[1] = topic+";qos:"+qos+";retained:"+retained;
+
+                    try {
+                        connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(getActivity(), ActionListener.Action.PUBLISH, clientHandle, args));
+                    } catch (MqttException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+
                 break;
         }
 

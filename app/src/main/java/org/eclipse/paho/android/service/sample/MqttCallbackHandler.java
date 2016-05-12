@@ -136,6 +136,27 @@ public class MqttCallbackHandler implements MqttCallback  {
       c.insertBundle(bundle);
       c.changePage("addLocation");
     }
+    else if(topic.equals("server/settings/addData/location"))
+    {
+      bundle = new Bundle();
+      bundle.putString("settings/addData/location",message2);
+      c.insertBundle(bundle);
+      c.changePage("addLocation");
+    }
+    else if(topic.equals("server/settings/addData/group_of_device"))
+    {
+      bundle = new Bundle();
+      bundle.putString("settings/addData/group_of_device",message2);
+      c.insertBundle(bundle);
+      c.changePage("addGroupOfDevice");
+    }
+    else if(topic.equals("server/settings/addData/device"))
+    {
+      bundle = new Bundle();
+      bundle.putString("settings/addData/device",message2);
+      c.insertBundle(bundle);
+      c.changePage("addDevice");
+    }
     else if(topic.equals("server/electricityBill"))
     {
       bundle = new Bundle();
