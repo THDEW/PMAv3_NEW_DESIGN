@@ -77,10 +77,7 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
         clientHandle = getIntent().getStringExtra("handle");
 
         connection = Connections.getInstance(this).getConnection(clientHandle);
-
         connection.registerChangeListener(changeListener);
-
-
 
         try {
 
@@ -89,10 +86,6 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
         } catch (MqttException e) {
             e.printStackTrace();
         }
-
-
-
-
 
 
         mToolbar = (Toolbar) findViewById(R.id.toolbars);
@@ -108,7 +101,7 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
 
 
         // display the first navigation drawer view on app launch
-        onOffFragment = new OnOffFragment();
+        onOffFragment = new OnOffFragment(clientHandle);
         locationFragment = new LocationFragment();
         statisticFragment = new StatisticFragment();
         electricityBillFragment = new ElectricityBillFragment(clientHandle);
@@ -176,11 +169,12 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
 
         switch (position) {
             case 0:
-                onOffFragment.update(this);
+
                 fragmentTransaction.replace(R.id.container_body, onOffFragment);
                 title = getString(R.string.title_home);
                 getSupportActionBar().setTitle(title);
                 fragmentTransaction.commit();
+                onOffFragment.update(this);
                 page = 0;
                 break;
             case 1:

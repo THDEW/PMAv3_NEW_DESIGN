@@ -35,7 +35,7 @@ import android.app.Service;
 public class IntroductionPage extends Activity {
 
     /** Duration of wait **/
-    private final int SPLASH_DISPLAY_LENGTH = 1000;
+    private final int SPLASH_DISPLAY_LENGTH = 2000;
 
     private Connection connection = null;
 
@@ -97,19 +97,11 @@ public class IntroductionPage extends Activity {
         MqttAndroidClient client;
         client = new MqttAndroidClient(this, uri, clientId);
 
-
-
-
         // create a client handle
         clientHandle = uri + clientId;
-        //Toast.makeText(this,clientHandle,Toast.LENGTH_LONG).show();
-
 
         // connection options
 
-        String username = ActivityConstants.empty;
-
-        String password = ActivityConstants.empty;
 
         int timeout = 1000;
         int keepalive = 10;
@@ -145,7 +137,7 @@ public class IntroductionPage extends Activity {
             try {
                 client.connect(conOpt, null, callback);
 
-                Toast.makeText(this,"Connected to server",Toast.LENGTH_LONG).show();
+                //Toast.makeText(this,"Connected to server",Toast.LENGTH_LONG).show();
 
             }
             catch (MqttException e) {

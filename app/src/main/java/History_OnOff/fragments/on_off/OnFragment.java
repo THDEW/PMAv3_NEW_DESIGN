@@ -16,6 +16,9 @@ import com.example.senoir.newpmatry1.R;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import org.eclipse.paho.android.service.sample.Connection;
+import org.eclipse.paho.android.service.sample.Connections;
+
 import java.util.ArrayList;
 
 import History_OnOff.adapter.RecyclerViewDataAdapter;
@@ -32,8 +35,16 @@ public class OnFragment extends Fragment{
 
     RecyclerView my_recycler_view;
 
+    private String clientHandle;
+    private Connection connection;
+
     public OnFragment() {
         // Required empty public constructor
+    }
+
+    public OnFragment(String clientHandle) {
+        this.clientHandle = clientHandle;
+        connection = Connections.getInstance(getActivity()).getConnection(clientHandle);
     }
 
     @Override
