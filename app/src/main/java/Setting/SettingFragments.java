@@ -379,6 +379,67 @@ public class SettingFragments extends Fragment {
                 }
             }
 
+            if(event.getPropertyName().equals("editDeviceType"))
+            {
+                String result = connection.getBundle().getString("settings/editData/device_type");
+                Log.v("editdevicetype","rowdata");
+                Toast.makeText(getActivity(),result,Toast.LENGTH_SHORT).show();
+                try {
+                    connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(getActivity(), ActionListener.Action.PUBLISH, clientHandle, args));
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
+
+            }
+            if(event.getPropertyName().equals("editDeviceDetail"))
+            {
+                String result = connection.getBundle().getString("settings/editData/device_detail");
+                Log.v("editdevicedetail","rowdata");
+                Toast.makeText(getActivity(),result,Toast.LENGTH_SHORT).show();
+                try {
+                    connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(getActivity(), ActionListener.Action.PUBLISH, clientHandle, args));
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
+
+            }
+            if(event.getPropertyName().equals("editLocation"))
+            {
+                String result = connection.getBundle().getString("settings/editData/location");
+                Log.v("editlocation","rowdata");
+                Toast.makeText(getActivity(),result,Toast.LENGTH_SHORT).show();
+                try {
+                    connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(getActivity(), ActionListener.Action.PUBLISH, clientHandle, args));
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
+
+            }
+            if(event.getPropertyName().equals("editGroupOfDevice"))
+            {
+                String result = connection.getBundle().getString("settings/editData/group_of_device");
+                Log.v("editgroupofdevice","rowdata");
+                Toast.makeText(getActivity(),result,Toast.LENGTH_SHORT).show();
+                try {
+                    connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(getActivity(), ActionListener.Action.PUBLISH, clientHandle, args));
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
+
+            }
+            if(event.getPropertyName().equals("editDevice"))
+            {
+                String result = connection.getBundle().getString("settings/editData/device");
+                Log.v("editdevice","rowdata");
+                Toast.makeText(getActivity(),result,Toast.LENGTH_SHORT).show();
+                try {
+                    connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(getActivity(), ActionListener.Action.PUBLISH, clientHandle, args));
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
 
 
 

@@ -383,7 +383,7 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
 
         public void loggedIn(View view, Bundle bundle)
         {
-            Toast.makeText(getApplicationContext(), "Login successfully", Toast.LENGTH_LONG).show();
+            //Toast.makeText(getApplicationContext(), "Login successfully", Toast.LENGTH_LONG).show();
             RecyclerView my_recycler_view = (RecyclerView) view.findViewById(R.id.my_recycler_view);
             my_recycler_view.setVisibility(View.VISIBLE);
             Button logout = (Button) view.findViewById(R.id.logout);

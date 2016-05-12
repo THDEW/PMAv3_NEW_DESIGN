@@ -228,12 +228,12 @@ public class RowDataDialog extends DialogFragment  {
                 //set edi text by old data
                 if(ownData != null) {
 
-                    spinner.setSelection(Integer.parseInt(ownData.getData(3)));
+                    spinner.setSelection(Integer.parseInt(ownData.getData(2)));
 
                     edit = (EditText) rootView.findViewById(R.id.data_group_1);
                     edit.setText(ownData.getData(0));
                     edit = (EditText) rootView.findViewById(R.id.data_group_3);
-                    edit.setText(ownData.getData(4));
+                    edit.setText(ownData.getData(3));
                 }
 
                 break;
@@ -602,21 +602,58 @@ public class RowDataDialog extends DialogFragment  {
 
         String[] editData = null;
 
-        int location_id,power_node_id,device_type_id,device_detail_id = 0;
+        String clientHandle = connection.handle();
+        String topic = null;
+        String message = null;
+        int qos = 0;
+        boolean retained = false;
+
+        String[] args = new String[2];
+
+        int location_id,power_node_id,device_type_id,device_detail_id,group_of_device_id ,device_id = 0;
 
         switch (type){
             case 0:
+                device_type_id = ownData.getId();
+
+                Log.v("device_type ",""+device_type_id);
                 editData = new String[2];
                 edit = (EditText) rootView.findViewById(R.id.data_type_1);
                 editData[0] = edit.getText().toString();
                 edit = (EditText) rootView.findViewById(R.id.data_type_2);
                 editData[1] = edit.getText().toString();
 
+                if(editData[0].isEmpty()||editData[1].isEmpty())
+                {
+                    Toast.makeText(getActivity(),"Please insert all the parameters",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    topic = "android/settings/editData/device_type";
+                    message = device_type_id+","+editData[0]+","+editData[1];
+
+                    args[0] = message;
+                    args[1] = topic+";qos:"+qos+";retained:"+retained;
+
+                    try {
+                        connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(getActivity(), ActionListener.Action.PUBLISH, clientHandle, args));
+                    } catch (MqttException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+                break;
             case 1:
                 editData = new String[6];
                 // Spinner element type
+
+                device_detail_id = ownData.getId();
+
                 spinner = (Spinner) rootView.findViewById(R.id.data_type_spinner);
-                editData[0] = spinner.getSelectedItem().toString();
+                device_type_id = dataFromDatabase[0].get(spinner.getSelectedItemPosition()).getId();
+
+
 
                 if(ownData != null) {
                     edit = (EditText) rootView.findViewById(R.id.data_detail_1);
@@ -631,12 +668,34 @@ public class RowDataDialog extends DialogFragment  {
                     editData[5] = edit.getText().toString();
                 }
 
+                if(editData[1].isEmpty()||editData[2].isEmpty()||editData[3].isEmpty()||editData[4].isEmpty()||editData[5].isEmpty())
+                {
+                    Toast.makeText(getActivity(),"Please insert all the parameters",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    topic = "android/settings/editData/device_detail";
+                    message = device_detail_id+","+device_type_id+","+editData[1]+","+editData[2]+","+editData[3]+","+editData[4]+","+editData[5];
+
+                    args[0] = message;
+                    args[1] = topic+";qos:"+qos+";retained:"+retained;
+
+                    try {
+                        connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(getActivity(), ActionListener.Action.PUBLISH, clientHandle, args));
+                    } catch (MqttException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+
                 break;
             case 2:
                 editData = new String[5];
 
                 spinner = (Spinner) rootView.findViewById(R.id.location_spinner);
-                editData[4] = spinner.getSelectedItem().toString();
+                power_node_id = ownData.getId();
+                location_id = dataFromDatabase[3].get(spinner.getSelectedItemPosition()).getId();
 
                 //set edi text by old data
                 if(ownData != null) {
@@ -648,20 +707,63 @@ public class RowDataDialog extends DialogFragment  {
                     editData[3] = edit.getText().toString();
                 }
 
+                if(editData[1].isEmpty()||editData[2].isEmpty()||editData[3].isEmpty())
+                {
+                    Toast.makeText(getActivity(),"Please insert all the parameters",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    topic = "android/settings/editData/power_node";
+                    message = power_node_id+","+editData[2]+","+editData[1]+","+location_id+","+editData[3];
+
+                    args[0] = message;
+                    args[1] = topic+";qos:"+qos+";retained:"+retained;
+
+                    try {
+                        connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(getActivity(), ActionListener.Action.PUBLISH, clientHandle, args));
+                    } catch (MqttException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+
+
                 break;
             case 3:
                 editData = new String[2];
                 //set edi text by old data
+                location_id = ownData.getId();
                 if(ownData != null) {
                     edit = (EditText) rootView.findViewById(R.id.data_location_1);
                     editData[0] = edit.getText().toString();
                     edit = (EditText) rootView.findViewById(R.id.data_location_2);
                     editData[1] = edit.getText().toString();
                 }
+
+                if(editData[0].isEmpty()||editData[1].isEmpty())
+                {
+                    Toast.makeText(getActivity(),"Please insert all the parameters",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    topic = "android/settings/editData/location";
+                    message = location_id+","+editData[0]+","+editData[1];
+
+                    args[0] = message;
+                    args[1] = topic+";qos:"+qos+";retained:"+retained;
+
+                    try {
+                        connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(getActivity(), ActionListener.Action.PUBLISH, clientHandle, args));
+                    } catch (MqttException e) {
+                        e.printStackTrace();
+                    }
+                }
+
                 break;
             case 4:
                 editData = new String[5];
-
+                group_of_device_id = ownData.getId();
                 // PIN
                 edit = (EditText) rootView.findViewById(R.id.data_group_1);
                 editData[0] = edit.getText().toString();
@@ -669,34 +771,78 @@ public class RowDataDialog extends DialogFragment  {
                 // Spinner element node
                 spinner = (Spinner) rootView.findViewById(R.id.node_spinner);
                 power_node_id = dataFromDatabase[2].get(spinner.getSelectedItemPosition()).getId();
-                editData[1] = spinner.getSelectedItem().toString();
-
 
                 spinner = (Spinner) rootView.findViewById(R.id.on_off_spinner);
-                editData[2] = spinner.getSelectedItem().toString();
-                Log.d("aaa", editData[3]);
+
+                if(spinner.getSelectedItem().toString().equalsIgnoreCase("on"))
+                {
+                    editData[1] = "1";
+                }
+                else
+                {
+                    editData[1] = "0";
+                }
 
                 edit = (EditText) rootView.findViewById(R.id.data_group_3);
-                editData[3] = edit.getText().toString();
+                editData[2] = edit.getText().toString();
+
+                if(editData[0].isEmpty()||editData[1].isEmpty())
+                {
+                    Toast.makeText(getActivity(),"Please insert all the parameters",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    topic = "android/settings/editData/group_of_device";
+                    message = group_of_device_id+","+editData[0]+","+power_node_id+","+editData[1]+","+editData[2];
+
+                    args[0] = message;
+                    args[1] = topic+";qos:"+qos+";retained:"+retained;
+
+                    try {
+                        connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(getActivity(), ActionListener.Action.PUBLISH, clientHandle, args));
+                    } catch (MqttException e) {
+                        e.printStackTrace();
+                    }
+                }
 
                 break;
             case 5:
                 editData = new String[4];
 
+                device_id = ownData.getId();
                 // Spinner element detail
                 spinner = (Spinner) rootView.findViewById(R.id.detail_spinner);
-                editData[1] = spinner.getSelectedItem().toString();
+                device_detail_id = dataFromDatabase[1].get(spinner.getSelectedItemPosition()).getId();
 
                 // Spinner element group
                 spinner = (Spinner) rootView.findViewById(R.id.group_spinner);
-                editData[2] = spinner.getSelectedItem().toString();
+                group_of_device_id = dataFromDatabase[4].get(spinner.getSelectedItemPosition()).getId();
 
 
                 if(ownData != null) {
                     edit = (EditText) rootView.findViewById(R.id.data_device_1);
                     editData[0] = edit.getText().toString();
                     edit = (EditText) rootView.findViewById(R.id.data_device_2);
-                    editData[3] = edit.getText().toString();
+                    editData[1] = edit.getText().toString();
+                }
+
+                if(editData[0].isEmpty()||editData[1].isEmpty())
+                {
+                    Toast.makeText(getActivity(),"Please insert all the parameters",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    topic = "android/settings/editData/device";
+                    message = device_id+","+editData[0]+","+device_detail_id+","+group_of_device_id+","+editData[1];
+
+                    args[0] = message;
+                    args[1] = topic+";qos:"+qos+";retained:"+retained;
+
+                    try {
+                        connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(getActivity(), ActionListener.Action.PUBLISH, clientHandle, args));
+                    } catch (MqttException e) {
+                        e.printStackTrace();
+                    }
                 }
                 break;
         }
