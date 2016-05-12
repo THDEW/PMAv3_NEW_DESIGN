@@ -259,7 +259,7 @@ public class LocationFragment extends Fragment {
     public void createDummyData() {
         for (int i = 1; i <= 5; i++) {
 
-            double[] test = new double[5];
+            double[] test = new double[]{5,3,2,1,4};
 
             //declare size == amount of location
             open = new boolean[5];
@@ -273,6 +273,8 @@ public class LocationFragment extends Fragment {
             for (int j = 0; j <= 5; j++) {
                 singleItem.add(new SingleItemModel("Item " + j, test, "a"));
             }
+
+            dm.setPowerOfLocation(test);
 
             dm.setAllItemsInSection(singleItem);
 
@@ -354,6 +356,7 @@ public class LocationFragment extends Fragment {
                 count++;
             }
         }
+
         if(isBarGraph) {
             dataPoint = new DataPoint[count];
             dataPointName = new String[count];
@@ -363,6 +366,7 @@ public class LocationFragment extends Fragment {
             for (int i = 0; i < data.size(); i++) {
                 if (data.get(i).getValue(0) != -1d) {
                     dataPoint[count] = new DataPoint(count, data.get(i).getSumValue());
+
                     if(data.get(i).getIsLocation())
                         dataPointName[count] =  data.get(i).getLocation();
                     else

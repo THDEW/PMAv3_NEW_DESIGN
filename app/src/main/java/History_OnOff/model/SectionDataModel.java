@@ -37,6 +37,8 @@ public class SectionDataModel {
         this.powerOfLocation = power;
     }
 
+    public void setFirstPower(double d){powerOfLocation[0] = d;}
+
 
     public double[] getAllPower() {
         return this.powerOfLocation;

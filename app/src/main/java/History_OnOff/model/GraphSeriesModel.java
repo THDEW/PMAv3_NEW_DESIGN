@@ -31,8 +31,8 @@ public class GraphSeriesModel {
     }
 
 
-    public void setValue(int i) {
-        value[i] = -1d;
+    public void setValue(int i, double temp) {
+        value[i] = temp;
     }
 
     public double getValue(int i) {

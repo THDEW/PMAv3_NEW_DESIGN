@@ -53,11 +53,11 @@ public class EachDeviceDialog extends DialogFragment {
 
     public EachDeviceDialog(){}
 
-    public EachDeviceDialog(String name, String location,String energy,String bill,String time,boolean status){
+    public EachDeviceDialog(String name, String location,String energy/*,String bill*/,String time,boolean status){
         this.name = name;
         this.location = location;
         this.energy = energy;
-        this.bill = bill;
+//        this.bill = bill;
         this.time = time;
         this.status = status;
     }
@@ -70,14 +70,14 @@ public class EachDeviceDialog extends DialogFragment {
         whereTv = (TextView) rootView.findViewById(R.id.whereTv);
         energyTv = (TextView) rootView.findViewById(R.id.energyTv);
         timeTv = (TextView) rootView.findViewById(R.id.time_button);
-        billTv = (TextView) rootView.findViewById(R.id.billTv);
+//        billTv = (TextView) rootView.findViewById(R.id.billTv);
         statusTv = (TextView) rootView.findViewById(R.id.statusTv);
 
 
         whereTv.setText(location);
         energyTv.setText(energy);
         timeTv.setText(time);
-        billTv.setText(bill);
+//        billTv.setText(bill);
         if(status){
             statusTv.setText("ON");
             statusTv.setTextColor(Color.GREEN);
@@ -194,15 +194,15 @@ public class EachDeviceDialog extends DialogFragment {
         double energy = Double.parseDouble(this.energy) + newValue;
         this.energy = energy+"";
 
-        BillCalculate billCal = new BillCalculate();
+//        BillCalculate billCal = new BillCalculate();
 
-        this.bill = billCal.getBillOfType1_1(energy) + "";
+//        this.bill = billCal.getBillOfType1_1(energy) + "";
         this.time = " "; // current time usage
         this.status = false; // get current status
 
         energyTv.setText(this.energy);
         timeTv.setText(this.time);
-        billTv.setText(this.bill);
+//        billTv.setText(this.bill);
         if(this.status){
             statusTv.setText("ON");
             statusTv.setTextColor(Color.GREEN);

@@ -56,4 +56,6 @@ public class SingleItemModel {
     public double[] getAllPower() {
         return power;
     }
+
+    public void setFirstPower(double d){power[0] = d;}
 }

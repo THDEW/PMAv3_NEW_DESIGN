@@ -128,20 +128,18 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                     if (Home.page == 0) {
                         String unit = " Unit    ";
                         String hour = " Hr.    ";
-                        String baht = " BAHT.    ";
 
-                        BillCalculate bill = new BillCalculate();
 
                         // หน้า On และ Off parameter (ชื่อ device, location of device, power consumption of device (unit), cost, timing usage, status)
 
                         EachDeviceDialog dialogFragment = new EachDeviceDialog (item.getName() , location,item.getSumPower() + unit ,
-                                bill.getBillOfType1_1(item.getSumPower()) + baht,item.getUsageTime() + hour, onOff);
+                                item.getUsageTime() + hour, onOff);
                         dialogFragment.show(fm, tvTitle.getText().toString() );
 
 
                     } else if (Home.page == 1) {
                         if (selected) {
-                            LocationFragment.data.get(index).setValue(0);
+                            LocationFragment.data.get(index).setValue(0, -1d);
                             selected = false;
                             itemImage.setAlpha(1f);
                             LocationFragment.addNew = true;
@@ -150,7 +148,11 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                             index = LocationFragment.data.size();
 
                             // data for device ตามจุด เวลา ตามต้องการ
-                            double[] dataFromDataBase = item.getAllPower();
+                            int size = item.getAllPower().length;
+                            double[] dataFromDataBase = new double[size];
+                            for(int i = 0; i < size; i++) {
+                                dataFromDataBase[i] = item.getAllPower()[i];
+                            }
 
                             LocationFragment.data.add(new GraphSeriesModel(tvTitle.getText().toString(),location
                                     ,dataFromDataBase,false));
