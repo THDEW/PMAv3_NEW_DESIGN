@@ -1,6 +1,5 @@
 package activity;
 
-import android.app.ListActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -27,12 +26,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.regex.Pattern;
 
+import About.AboutFragment;
 import ElectricityCost.ElectricityBillFragment;
 import History_OnOff.fragments.LocationFragment;
 import History_OnOff.fragments.OnOffFragment;

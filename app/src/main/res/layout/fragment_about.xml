@@ -4,19 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="activity.AboutFragment">
+    tools:context="About.AboutFragment">
 
 
-    <TextView
-        android:id="@+id/title_about"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="100dp"
-        android:layout_width="fill_parent"
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:textSize="45dp"
-        android:text="ABOUT"
-        android:textStyle="bold"/>
+        android:id="@+id/rvAbout"
+        />
 
 
 </RelativeLayout>
