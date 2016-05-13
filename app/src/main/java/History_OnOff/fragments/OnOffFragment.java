@@ -20,6 +20,9 @@ import java.util.List;
 
 import com.example.senoir.newpmatry1.R;
 
+import org.eclipse.paho.android.service.sample.Connection;
+import org.eclipse.paho.android.service.sample.Connections;
+
 import History_OnOff.fragments.on_off.OffFragment;
 import History_OnOff.fragments.on_off.OnFragment;
 
@@ -29,18 +32,28 @@ public class OnOffFragment extends Fragment {
     private FragmentActivity myContext;
     private ViewPager viewPager;
 
+    private String clientHandle;
+    private Connection connection;
+
 
     public OnOffFragment() {
 
         // Required empty public constructor
     }
+
+    public OnOffFragment(String clientHandle) {
+
+        this.clientHandle = clientHandle;
+        connection = Connections.getInstance(getActivity()).getConnection(clientHandle);
+    }
+
     public void update(Activity context){
         if(viewPager != null) {
             FragmentActivity contextTemp = (FragmentActivity) context;
             FragmentManager fragManager = contextTemp.getSupportFragmentManager();
             ViewPagerAdapter adapter = new ViewPagerAdapter(fragManager);
-            adapter.addFrag(new OnFragment(), "ON");
-            adapter.addFrag(new OffFragment(), "OFF");
+            adapter.addFrag(new OnFragment(clientHandle), "ON");
+            adapter.addFrag(new OffFragment(clientHandle), "OFF");
             viewPager.setAdapter(adapter);
         }
     }
@@ -66,8 +79,8 @@ public class OnOffFragment extends Fragment {
     public void setupViewPager(ViewPager viewPager) {
         FragmentManager fragManager = myContext.getSupportFragmentManager();
         ViewPagerAdapter adapter = new ViewPagerAdapter(fragManager);
-        adapter.addFrag(new OnFragment(), "ON");
-        adapter.addFrag(new OffFragment(), "OFF");
+        adapter.addFrag(new OnFragment(clientHandle), "ON");
+        adapter.addFrag(new OffFragment(clientHandle), "OFF");
         viewPager.setAdapter(adapter);
     }
 

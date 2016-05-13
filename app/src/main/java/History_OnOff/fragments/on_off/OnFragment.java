@@ -16,6 +16,9 @@ import com.example.senoir.newpmatry1.R;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import org.eclipse.paho.android.service.sample.Connection;
+import org.eclipse.paho.android.service.sample.Connections;
+
 import java.util.ArrayList;
 
 import History_OnOff.adapter.RecyclerViewDataAdapter;
@@ -32,8 +35,16 @@ public class OnFragment extends Fragment{
 
     RecyclerView my_recycler_view;
 
+    private String clientHandle;
+    private Connection connection;
+
     public OnFragment() {
         // Required empty public constructor
+    }
+
+    public OnFragment(String clientHandle) {
+        this.clientHandle = clientHandle;
+        connection = Connections.getInstance(getActivity()).getConnection(clientHandle);
     }
 
     @Override
@@ -100,32 +111,19 @@ public class OnFragment extends Fragment{
 
         String[] locationName = new String[amountOfLocation]; // get location name มา
 
-        ArrayList<double[]> locationPower = new ArrayList<>();
-
         ArrayList<String[]> deviceName = new ArrayList<>();
-        ArrayList<ArrayList<double[]>> devicePower = new ArrayList<>();
+        ArrayList<double[]> devicePower = new ArrayList<>();
         ArrayList<String[]> deviceUsageTime = new ArrayList<>();
 
 
         for(int i = 0; i < amountOfLocation; i++){
 
-            double[] locationPowerTemp = new double[amountOfDevice[i]];// get location power  มา
             String[] deviceNameTemp = new String[amountOfDevice[i]];// get device name in each location มา
+            double[] devicePowerTemp = new double[amountOfDevice[i]];// get device power   มา
             String[] deviceUsageTimeTemp = new String[amountOfDevice[i]];// get device time  มา
 
-            devicePower.add(new ArrayList<double[]>());
-
-            for(int j = 0; j < amountOfDevice[i]; j++) {
-
-                int amountOfSeries = 0; // get device power size มา (จุดบน แกน X)
-
-                double[] devicePowerTemp = new double[amountOfSeries];// get device power   มา
-
-                devicePower.get(i).add(devicePowerTemp);
-            }
-
-            locationPower.add(locationPowerTemp);
             deviceName.add(deviceNameTemp);
+            devicePower.add(devicePowerTemp);
             deviceUsageTime.add(deviceUsageTimeTemp);
         }
 
@@ -136,11 +134,9 @@ public class OnFragment extends Fragment{
 
             dm.setHeaderTitle(locationName[i-1]);
 
-            dm.setPowerOfLocation(locationPower.get(i - 1));
-
             ArrayList<SingleItemModel> singleItem = new ArrayList<>();
             for (int j = 0; j < amountOfDevice[i]; j++) {
-                singleItem.add(new SingleItemModel(deviceName.get(i)[j], devicePower.get(i).get(j),  deviceUsageTime.get(i)[j]));
+                singleItem.add(new SingleItemModel(deviceName.get(i)[j], new double[]{devicePower.get(i)[j]},  deviceUsageTime.get(i)[j]));
             }
 
             dm.setAllItemsInSection(singleItem);

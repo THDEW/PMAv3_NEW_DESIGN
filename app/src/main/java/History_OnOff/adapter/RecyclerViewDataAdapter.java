@@ -142,6 +142,11 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
             this.allBt = (Button) view.findViewById(R.id.allBt);
             expandableButton = (RelativeLayout) view.findViewById(R.id.expandBt_2);
 
+            if (selectAll) {
+                allBt.setAlpha(0.5f);
+            } else {
+                allBt.setAlpha(1f);
+            }
 
             if(Home.page == 1) {
 
@@ -156,7 +161,7 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
 
                                 if (!LocationFragment.data.get(i).getIsLocation() &&
                                         LocationFragment.data.get(i).getLocation().equals(locationTitle.getText().toString())) {
-                                    LocationFragment.data.get(i).setValue(0);
+                                    LocationFragment.data.get(i).setValue(0,-1d);
                                 }
                             }
 
@@ -168,15 +173,18 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
 //                            dataFromDataBase.add(3d + index);
 //                            dataFromDataBase.add(3d + index);
 //                            dataFromDataBase.add(6d + index);
-
-                            double[] dataFromDataBase = locationItem.getAllPower();
+                            int size = locationItem.getAllPower().length;
+                            double[] dataFromDataBase = new double[size];
+                            for(int i = 0; i < size; i++) {
+                                dataFromDataBase[i] = locationItem.getAllPower()[i];
+                            }
 
                             LocationFragment.data.add(new GraphSeriesModel("", locationTitle.getText().toString(), dataFromDataBase, true));
                             LocationFragment.data2.add(0d); // ไม่เกี่ยว
                             allBt.setAlpha(0.5f);
                             LocationFragment.addNew = true;
                         } else {
-                            LocationFragment.data.get(index).setValue(0);
+                            LocationFragment.data.get(index).setValue(0,-1d);
                             allBt.setAlpha(1f);
                             selectAll = false;
                             LocationFragment.addNew = true;
@@ -195,14 +203,15 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
 
                         if (!LocationFragment.data.get(i).getIsLocation() &&
                                 LocationFragment.data.get(i).getLocation().equals(locationTitle.getText().toString())) {
-                            LocationFragment.data.get(i).setValue(0);
+                            LocationFragment.data.get(i).setValue(0,-1d);
                         }
                     }
                     if(selectAll) {
-                        LocationFragment.data.get(index).setValue(0);
+                        LocationFragment.data.get(index).setValue(0,-1d);
                         selectAll = false;
                         allBt.setAlpha(1f);
                     }
+
                     if(Home.page == 1) {
                         if (LocationFragment.open[parentIndex]) {
                             recycler_view_list.setAdapter(null);
