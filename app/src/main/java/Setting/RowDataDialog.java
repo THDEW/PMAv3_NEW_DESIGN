@@ -321,7 +321,7 @@ public class RowDataDialog extends DialogFragment  {
         deleteBt.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                DeleteConfirmDialog dialog = new DeleteConfirmDialog(typeOfData,ownData);
+                DeleteConfirmDialog dialog = new DeleteConfirmDialog(typeOfData,ownData,connection);
                 dialog.show(fm, "deleteItem");
                 dismiss();
             }

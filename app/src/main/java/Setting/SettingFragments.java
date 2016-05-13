@@ -440,6 +440,82 @@ public class SettingFragments extends Fragment {
 
             }
 
+            if(event.getPropertyName().equals("deleteDeviceType"))
+            {
+                String result = connection.getBundle().getString("settings/deleteData/device_type");
+                Log.v("deletedevicetype","rowdata");
+                Toast.makeText(getActivity(),result,Toast.LENGTH_SHORT).show();
+                try {
+                    connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(getActivity(), ActionListener.Action.PUBLISH, clientHandle, args));
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
+
+            }
+            if(event.getPropertyName().equals("deleteDeviceDetail"))
+            {
+                String result = connection.getBundle().getString("settings/deleteData/device_detail");
+                Log.v("deletedevicedetail","rowdata");
+                Toast.makeText(getActivity(),result,Toast.LENGTH_SHORT).show();
+                try {
+                    connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(getActivity(), ActionListener.Action.PUBLISH, clientHandle, args));
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
+
+            }
+            if(event.getPropertyName().equals("deleteDevice"))
+            {
+                String result = connection.getBundle().getString("settings/deleteData/device");
+                Log.v("deletedevice","rowdata");
+                Toast.makeText(getActivity(),result,Toast.LENGTH_SHORT).show();
+                try {
+                    connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(getActivity(), ActionListener.Action.PUBLISH, clientHandle, args));
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            if(event.getPropertyName().equals("deleteLocation"))
+            {
+                String result = connection.getBundle().getString("settings/deleteData/location");
+                Log.v("deletelocation","rowdata");
+                Toast.makeText(getActivity(),result,Toast.LENGTH_SHORT).show();
+                try {
+                    connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(getActivity(), ActionListener.Action.PUBLISH, clientHandle, args));
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            if(event.getPropertyName().equals("deletePowerNode"))
+            {
+                String result = connection.getBundle().getString("settings/deleteData/power_node");
+                Log.v("deletepowernode","rowdata");
+                Toast.makeText(getActivity(),result,Toast.LENGTH_SHORT).show();
+                try {
+                    connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(getActivity(), ActionListener.Action.PUBLISH, clientHandle, args));
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
+
+            }
+            if(event.getPropertyName().equals("deleteGroupOfDevice"))
+            {
+                String result = connection.getBundle().getString("settings/deleteData/group_of_device");
+                Log.v("deletegroupofdevice","rowdata");
+                Toast.makeText(getActivity(),result,Toast.LENGTH_SHORT).show();
+                try {
+                    connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(getActivity(), ActionListener.Action.PUBLISH, clientHandle, args));
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+
 
 
 

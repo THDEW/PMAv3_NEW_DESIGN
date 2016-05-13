@@ -7,6 +7,10 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 
+import org.eclipse.paho.android.service.sample.ActionListener;
+import org.eclipse.paho.android.service.sample.Connection;
+import org.eclipse.paho.client.mqttv3.MqttException;
+
 /**
  * Created by Toshiba on 5/1/2016.
  */
@@ -16,9 +20,13 @@ public class DeleteConfirmDialog extends DialogFragment{
     private int id;
     private ItemDataModel ownData;
 
-    public DeleteConfirmDialog(String typeOfItem, ItemDataModel ownData){
+    private Connection connection;
+
+
+    public DeleteConfirmDialog(String typeOfItem, ItemDataModel ownData, Connection connection){
         this.typeOfItem = typeOfItem;
         this.ownData = ownData;
+        this.connection = connection;
 
     }
 
@@ -26,16 +34,13 @@ public class DeleteConfirmDialog extends DialogFragment{
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Delete Confirmation");
-        builder.setMessage("Are you sure to delete " + typeOfItem +" "+ ownData.getId());
+        builder.setMessage("Are you sure to delete " + typeOfItem + " " + ownData.getId());
 
         builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
                 delete();
-
-                Toast.makeText(getContext(), "data deleted", Toast.LENGTH_SHORT).show();
-
                 dismiss();
             }
         });
@@ -51,7 +56,25 @@ public class DeleteConfirmDialog extends DialogFragment{
     }
 
     public void delete(){
+        String clientHandle = connection.handle();
+        String topic = null;
+        String message = null;
+        int qos = 0;
+        boolean retained = false;
 
+        String[] args = new String[2];
+
+        topic = "android/settings/deleteData/"+typeOfItem;
+        message = ""+ownData.getId();
+
+        args[0] = message;
+        args[1] = topic+";qos:"+qos+";retained:"+retained;
+
+        try {
+            connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(getActivity(), ActionListener.Action.PUBLISH, clientHandle, args));
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
 
     }
 }

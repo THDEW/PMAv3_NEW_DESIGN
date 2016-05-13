@@ -95,7 +95,7 @@ public class MqttCallbackHandler implements MqttCallback  {
       c.insertBundle(bundle);
 
 
-      Log.v("settingshandler","handle");
+      Log.v("settingshandler", "handle");
 
       c.changePage("settings");
     }
@@ -200,6 +200,48 @@ public class MqttCallbackHandler implements MqttCallback  {
       bundle.putString("settings/editData/device",message2);
       c.insertBundle(bundle);
       c.changePage("editDevice");
+    }
+    else if(topic.equals("server/settings/deleteData/device_type"))
+    {
+      bundle = new Bundle();
+      bundle.putString("settings/deleteData/device_type",message2);
+      c.insertBundle(bundle);
+      c.changePage("deleteDeviceType");
+    }
+    else if(topic.equals("server/settings/deleteData/device_detail"))
+    {
+      bundle = new Bundle();
+      bundle.putString("settings/deleteData/device_detail",message2);
+      c.insertBundle(bundle);
+      c.changePage("deleteDeviceDetail");
+    }
+    else if(topic.equals("server/settings/deleteData/device"))
+    {
+      bundle = new Bundle();
+      bundle.putString("settings/deleteData/device",message2);
+      c.insertBundle(bundle);
+      c.changePage("deleteDevice");
+    }
+    else if(topic.equals("server/settings/deleteData/location"))
+    {
+      bundle = new Bundle();
+      bundle.putString("settings/deleteData/location",message2);
+      c.insertBundle(bundle);
+      c.changePage("deletelocation");
+    }
+    else if(topic.equals("server/settings/deleteData/power_node"))
+    {
+      bundle = new Bundle();
+      bundle.putString("settings/deleteData/power_node",message2);
+      c.insertBundle(bundle);
+      c.changePage("deletePowerNode");
+    }
+    else if(topic.equals("server/settings/deleteData/group_of_device"))
+    {
+      bundle = new Bundle();
+      bundle.putString("settings/deleteData/group_of_device",message2);
+      c.insertBundle(bundle);
+      c.changePage("deleteGroupOfDevice");
     }
 
     else if(topic.equals("server/electricityBill"))
