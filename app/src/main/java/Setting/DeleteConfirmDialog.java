@@ -14,10 +14,11 @@ public class DeleteConfirmDialog extends DialogFragment{
 
     private String typeOfItem;
     private int id;
+    private ItemDataModel ownData;
 
-    public DeleteConfirmDialog(String typeOfItem, int id){
+    public DeleteConfirmDialog(String typeOfItem, ItemDataModel ownData){
         this.typeOfItem = typeOfItem;
-        this.id = id;
+        this.ownData = ownData;
 
     }
 
@@ -25,7 +26,7 @@ public class DeleteConfirmDialog extends DialogFragment{
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Delete Confirmation");
-        builder.setMessage("Are you sure to delete " + typeOfItem);
+        builder.setMessage("Are you sure to delete " + typeOfItem +" "+ ownData.getId());
 
         builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
             @Override
