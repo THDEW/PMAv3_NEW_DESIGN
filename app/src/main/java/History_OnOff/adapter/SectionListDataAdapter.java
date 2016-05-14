@@ -27,6 +27,7 @@ import Setting.ItemDataModel;
 import activity.Home;
 import billcalculate.BillCalculate;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import org.eclipse.paho.android.service.sample.Connection;
@@ -136,12 +137,13 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                 @Override
                 public void onClick(View v) {
                     if (Home.page == 0) {
-                        String unit = " Unit    ";
-                        String hour = " Hr.    ";
+                        String unit = " kW/hr ";
 
                         // หน้า On และ Off parameter (ชื่อ device, location of device, power consumption of device (unit), cost, timing usage, status)
 
-                        EachDeviceDialog dialogFragment = new EachDeviceDialog (item.getId(),item.getName() , item.getSumPower() + unit ,
+                        DecimalFormat df = new DecimalFormat("00.0000");
+
+                        EachDeviceDialog dialogFragment = new EachDeviceDialog (item.getId(),item.getName() , df.format(item.getSumPower()) + unit ,
                                 item.getLastTime(),item.getLastRecord()+"" ,connection);
                         dialogFragment.show(fm, tvTitle.getText().toString() );
 

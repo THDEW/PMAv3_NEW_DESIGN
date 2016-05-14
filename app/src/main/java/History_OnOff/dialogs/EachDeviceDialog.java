@@ -18,6 +18,8 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 
 import org.eclipse.paho.android.service.sample.Connection;
 
+import java.text.DecimalFormat;
+
 import ElectricityCost.ElectricityBillFragment;
 import History_OnOff.model.SingleItemModel;
 import billcalculate.BillCalculate;
@@ -116,6 +118,11 @@ public class EachDeviceDialog extends DialogFragment {
         graph.addSeries(series);
 
         graph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
+        graph.getGridLabelRenderer().setHorizontalAxisTitle("Current time");
+        graph.getGridLabelRenderer().setVerticalAxisTitle("Energy Consumption (kW/hr)");
+        graph.getGridLabelRenderer().setVerticalLabelsVisible(false);
+        graph.getSecondScale().setMinY(0);
+        graph.getSecondScale().setMaxY(getMax() + 5);
 
         graph.getViewport().setYAxisBoundsManual(true);
 
@@ -148,8 +155,8 @@ public class EachDeviceDialog extends DialogFragment {
 
                         series.resetData(dataPoint);
 
-                        graph.getViewport().setMinY(0);
-                        graph.getViewport().setMaxY(getMax() + 5);
+                        graph.getSecondScale().setMinY(0);
+                        graph.getSecondScale().setMaxY(getMax() + 5);
 
                         mHandler.postDelayed(this, 100);
                     }
@@ -205,8 +212,10 @@ public class EachDeviceDialog extends DialogFragment {
     public void updateData(Bundle bundle){
 
         double newValue = 5d; // current energy
+
+        DecimalFormat df = new DecimalFormat("00.0000");
         double energy = Double.parseDouble(this.energy) + newValue;
-        this.energy = energy+"";
+        this.energy = df.format(energy)+"";
 
 //        BillCalculate billCal = new BillCalculate();
 
