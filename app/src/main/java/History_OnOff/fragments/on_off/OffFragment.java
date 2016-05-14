@@ -88,7 +88,7 @@ public class OffFragment extends Fragment{
 
             ArrayList<SingleItemModel> singleItem = new ArrayList<>();
             for (int j = 0; j <= 5; j++) {
-                singleItem.add(new SingleItemModel("Item " + j, test, "a"));
+                singleItem.add(new SingleItemModel("Item " + j, test));
             }
 
             dm.setAllItemsInSection(singleItem);
@@ -111,18 +111,15 @@ public class OffFragment extends Fragment{
 
         ArrayList<String[]> deviceName = new ArrayList<>();
         ArrayList<double[]> devicePower = new ArrayList<>();
-        ArrayList<String[]> deviceUsageTime = new ArrayList<>();
 
 
         for(int i = 0; i < amountOfLocation; i++){
 
             String[] deviceNameTemp = new String[amountOfDevice[i]];// get device name in each location มา
             double[] devicePowerTemp = new double[amountOfDevice[i]];// get device power   มา
-            String[] deviceUsageTimeTemp = new String[amountOfDevice[i]];// get device time  มา
 
             deviceName.add(deviceNameTemp);
             devicePower.add(devicePowerTemp);
-            deviceUsageTime.add(deviceUsageTimeTemp);
         }
 
 
@@ -134,7 +131,7 @@ public class OffFragment extends Fragment{
 
             ArrayList<SingleItemModel> singleItem = new ArrayList<>();
             for (int j = 0; j < amountOfDevice[i]; j++) {
-                singleItem.add(new SingleItemModel(deviceName.get(i)[j], new double[]{devicePower.get(i)[j]},  deviceUsageTime.get(i)[j]));
+                singleItem.add(new SingleItemModel(deviceName.get(i)[j], new double[]{devicePower.get(i)[j]}));
             }
 
             dm.setAllItemsInSection(singleItem);

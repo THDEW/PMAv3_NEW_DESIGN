@@ -12,13 +12,9 @@ public class SingleItemModel {
     private String description;
 
 
-    public SingleItemModel() {
-    }
-
-    public SingleItemModel(String name, double[] power, String usageTime) {
+    public SingleItemModel(String s, double[] doubles) {
         this.name = name;
         this.power = power;
-        this.usageTime = usageTime;
     }
 
 
