@@ -33,6 +33,8 @@ public class EachDeviceDialog extends DialogFragment {
 
     private TextView timeTv;
 
+    private TextView recordTv;
+
     private TextView billTv;
 
     private TextView statusTv;
@@ -50,7 +52,7 @@ public class EachDeviceDialog extends DialogFragment {
 
     private double[] energyConsumption;
 
-    private String name, location, energy, bill, time;
+    private String name, location, energy, bill, lastTime, lastRecord;
 
     private boolean status;
 
@@ -61,14 +63,13 @@ public class EachDeviceDialog extends DialogFragment {
 
     public EachDeviceDialog(){}
 
-    public EachDeviceDialog(int id,String name, String location,String energy/*,String bill*/,String time,boolean status, Connection connection){
+    public EachDeviceDialog(int id,String name, /*String location,*/String energy/*,String bill*/,String lastTime, String lastRecord/*,boolean status*/, Connection connection){
         //        this.bill = bill;
         this.id = id;
         this.name = name;
-        this.location = location;
         this.energy = energy;
-        this.time = time;
-        this.status = status;
+        this.lastTime = lastTime;
+        this.lastRecord = lastRecord;
         this.connection = connection;
     }
 
@@ -77,25 +78,28 @@ public class EachDeviceDialog extends DialogFragment {
         View rootView = inflater.inflate(R.layout.dialog_device, container, false);
         getDialog().setTitle(name);
 
-        whereTv = (TextView) rootView.findViewById(R.id.whereTv);
         energyTv = (TextView) rootView.findViewById(R.id.energyTv);
-        timeTv = (TextView) rootView.findViewById(R.id.time_button);
+        timeTv = (TextView) rootView.findViewById(R.id.lastReceiveTv);
+        recordTv = (TextView) rootView.findViewById(R.id.lastRecordTv);
+
 //        billTv = (TextView) rootView.findViewById(R.id.billTv);
-        statusTv = (TextView) rootView.findViewById(R.id.statusTv);
+//        statusTv = (TextView) rootView.findViewById(R.id.statusTv);
 
 
-        whereTv.setText(location);
+//        whereTv.setText(location);
         energyTv.setText(energy);
-        timeTv.setText(time);
+        timeTv.setText(lastTime);
+        recordTv.setText(lastRecord);
+
 //        billTv.setText(bill);
-        if(status){
-            statusTv.setText("ON");
-            statusTv.setTextColor(Color.GREEN);
-        }
-        else {
-            statusTv.setText("OFF");
-            statusTv.setTextColor(Color.RED);
-        }
+//        if(status){
+//            statusTv.setText("ON");
+//            statusTv.setTextColor(Color.GREEN);
+//        }
+//        else {
+//            statusTv.setText("OFF");
+//            statusTv.setTextColor(Color.RED);
+//        }
 
         graph = (GraphView) rootView.findViewById(R.id.graph);
 
@@ -207,20 +211,21 @@ public class EachDeviceDialog extends DialogFragment {
 //        BillCalculate billCal = new BillCalculate();
 
 //        this.bill = billCal.getBillOfType1_1(energy) + "";
-        this.time = " "; // current time usage
-        this.status = false; // get current status
+        this.lastTime = " "; // current time usage
+        this.lastRecord = " "; // get current status
 
         energyTv.setText(this.energy);
-        timeTv.setText(this.time);
+        timeTv.setText(this.lastTime);
+        recordTv.setText(this.lastRecord);
 //        billTv.setText(this.bill);
-        if(this.status){
-            statusTv.setText("ON");
-            statusTv.setTextColor(Color.GREEN);
-        }
-        else {
-            statusTv.setText("OFF");
-            statusTv.setTextColor(Color.RED);
-        }
+//        if(this.status){
+//            statusTv.setText("ON");
+//            statusTv.setTextColor(Color.GREEN);
+//        }
+//        else {
+//            statusTv.setText("OFF");
+//            statusTv.setTextColor(Color.RED);
+//        }
 
         appendDataPoint(newValue);
 

@@ -282,7 +282,7 @@ public class LocationFragment extends Fragment {
 
             ArrayList<SingleItemModel> singleItem = new ArrayList<>();
             for (int j = 0; j <= 5; j++) {
-                singleItem.add(new SingleItemModel(1,"Item " + j, test, "a"));
+                singleItem.add(new SingleItemModel(1,"Item " + j, test,"",4));
             }
 
             dm.setPowerOfLocation(test);
@@ -309,29 +309,31 @@ public class LocationFragment extends Fragment {
 
         ArrayList<String[]> deviceName = new ArrayList<>();
         ArrayList<ArrayList<double[]>> devicePower = new ArrayList<>();
-        ArrayList<String[]> deviceUsageTime = new ArrayList<>();
+        ArrayList<ArrayList<double[]>> lastRecord = new ArrayList<>();
+        ArrayList<ArrayList<String[]>> lastRecieve = new ArrayList<>();
 
 
         for(int i = 0; i < amountOfLocation; i++){
 
             double[] locationPowerTemp = new double[amountOfDevice[i]];// get location power  มา
             String[] deviceNameTemp = new String[amountOfDevice[i]];// get device name in each location มา
-            String[] deviceUsageTimeTemp = new String[amountOfDevice[i]];// get device time  มา
 
             devicePower.add(new ArrayList<double[]>());
+            lastRecord.add(new ArrayList<double[]>());
+            lastRecieve.add(new ArrayList<String[]>());
 
             for(int j = 0; j < amountOfDevice[i]; j++) {
 
                 int amountOfSeries = 0; // get device power size มา (จุดบน แกน X)
 
                 double[] devicePowerTemp = new double[amountOfSeries];// get device power   มา
+                double[] lastRecordTemp = new double[amountOfSeries];// get lastRecord power   มา
 
                 devicePower.get(i).add(devicePowerTemp);
             }
 
             locationPower.add(locationPowerTemp);
             deviceName.add(deviceNameTemp);
-            deviceUsageTime.add(deviceUsageTimeTemp);
         }
 
 
@@ -345,7 +347,7 @@ public class LocationFragment extends Fragment {
 
             ArrayList<SingleItemModel> singleItem = new ArrayList<>();
             for (int j = 0; j < amountOfDevice[i]; j++) {
-                singleItem.add(new SingleItemModel(1,deviceName.get(i)[j], devicePower.get(i).get(j),  deviceUsageTime.get(i)[j]));
+                singleItem.add(new SingleItemModel(1,deviceName.get(i)[j], devicePower.get(i).get(j),"4",4));
             }
 
             dm.setAllItemsInSection(singleItem);

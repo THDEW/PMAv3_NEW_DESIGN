@@ -10,16 +10,19 @@ public class SingleItemModel {
     private double[] power;
     private String usageTime;
     private String description;
+    private String lastTime;
+    private double lastRecord;
 
 
     public SingleItemModel() {
     }
 
-    public SingleItemModel(int id, String name, double[] power, String usageTime) {
+    public SingleItemModel(int id, String name, double[] power, String lastTime, double lastRecord) {
         this.id = id;
         this.name = name;
         this.power = power;
-        this.usageTime = usageTime;
+        this.lastTime = lastTime;
+        this.lastRecord = lastRecord;
     }
 
 
@@ -61,4 +64,12 @@ public class SingleItemModel {
     }
 
     public void setFirstPower(double d){power[0] = d;}
+
+    public String getLastTime() {
+        return lastTime;
+    }
+
+    public double getLastRecord() {
+        return lastRecord;
+    }
 }

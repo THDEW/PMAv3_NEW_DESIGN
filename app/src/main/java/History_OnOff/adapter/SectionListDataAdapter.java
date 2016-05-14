@@ -141,8 +141,8 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
 
                         // หน้า On และ Off parameter (ชื่อ device, location of device, power consumption of device (unit), cost, timing usage, status)
 
-                        EachDeviceDialog dialogFragment = new EachDeviceDialog (item.getId(),item.getName() , location,item.getSumPower() + unit ,
-                                item.getUsageTime() + hour, onOff,connection);
+                        EachDeviceDialog dialogFragment = new EachDeviceDialog (item.getId(),item.getName() , item.getSumPower() + unit ,
+                                item.getLastTime(),item.getLastRecord()+"" ,connection);
                         dialogFragment.show(fm, tvTitle.getText().toString() );
 
                         String topic = "android/currentStatus/group_of_device";
