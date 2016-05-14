@@ -173,8 +173,12 @@ public class OffFragment extends Fragment{
 
             int[] deviceIDTemp = new int[amountOfDevice[i]];
             String[] deviceNameTemp = new String[amountOfDevice[i]];// get device name in each location มา
+<<<<<<< HEAD
             double[] devicePowerTemp = new double[amountOfDevice[i]];// get device energy   มา
             String[] deviceUsageTimeTemp = new String[amountOfDevice[i]];// get device time  มา
+=======
+            double[] devicePowerTemp = new double[amountOfDevice[i]];// get device power   มา
+>>>>>>> 6b5d0a63f2c49749dcfdd8fd76d7d5be58c46089
 
             JSONArray jsonArray2 = null;
             try {
@@ -205,8 +209,11 @@ public class OffFragment extends Fragment{
             deviceID.add(deviceIDTemp);
             deviceName.add(deviceNameTemp);
             devicePower.add(devicePowerTemp);
+<<<<<<< HEAD
             deviceUsageTime.add(deviceUsageTimeTemp);
             Log.v("offFrag", "dummydata3");
+=======
+>>>>>>> 6b5d0a63f2c49749dcfdd8fd76d7d5be58c46089
         }
 
 
@@ -219,7 +226,11 @@ public class OffFragment extends Fragment{
             ArrayList<SingleItemModel> singleItem = new ArrayList<>();
             Log.v("offFrag", "dummydata4");
             for (int j = 0; j < amountOfDevice[i]; j++) {
+<<<<<<< HEAD
                 singleItem.add(new SingleItemModel(deviceID.get(i)[j],deviceName.get(i)[j], new double[]{devicePower.get(i)[j]},  deviceUsageTime.get(i)[j]));
+=======
+                singleItem.add(new SingleItemModel(deviceName.get(i)[j], new double[]{devicePower.get(i)[j]}));
+>>>>>>> 6b5d0a63f2c49749dcfdd8fd76d7d5be58c46089
             }
             Log.v("offFrag", "dummydata5");
             dm.setAllItemsInSection(singleItem);
