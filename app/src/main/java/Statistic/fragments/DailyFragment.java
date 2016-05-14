@@ -25,6 +25,7 @@ import java.util.Collections;
 
 import Statistic.ApplianceAdapter;
 import Statistic.ApplianceModel;
+import Statistic.StatisticFragment;
 import activity.Home;
 import adapter.DividerItemDecoration;
 
@@ -81,7 +82,7 @@ public class DailyFragment extends Fragment implements AdapterView.OnItemSelecte
             applianceModelListeList.clear();
         }
 
-        prepareApplianceData(0);
+        prepareApplianceData(StatisticFragment.bundle);
 
         if(Home.menu_statistic==0){
             buttonToChange.setText("Devices");

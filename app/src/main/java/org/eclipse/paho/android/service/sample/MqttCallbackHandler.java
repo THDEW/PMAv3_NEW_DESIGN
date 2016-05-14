@@ -93,10 +93,7 @@ public class MqttCallbackHandler implements MqttCallback  {
       bundle = new Bundle();
       bundle.putString("settings/authenticate",message2);
       c.insertBundle(bundle);
-
-
       Log.v("settingshandler", "handle");
-
       c.changePage("settings");
     }
     else if(topic.equals("server/settings/authenticate"))
@@ -105,7 +102,6 @@ public class MqttCallbackHandler implements MqttCallback  {
       bundle.putString("settings/authenticate", message2);
       c.insertBundle(bundle);
       Log.v("authenticatehandler","handle");
-
       c.changePage("authenticate");
     }
 
@@ -249,9 +245,15 @@ public class MqttCallbackHandler implements MqttCallback  {
       bundle = new Bundle();
       bundle.putString("electricityBill", message2);
       c.insertBundle(bundle);
-
-
       c.changePage("electricityBill");
+    }
+
+    else if(topic.equals("server/currentStatus"))
+    {
+      bundle = new Bundle();
+      bundle.putString("currentStatus", message2);
+      c.insertBundle(bundle);
+      c.changePage("currentStatus");
     }
 
 

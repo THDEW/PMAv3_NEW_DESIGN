@@ -17,6 +17,8 @@ import android.widget.TextView;
 
 import com.example.senoir.newpmatry1.R;
 
+import org.eclipse.paho.android.service.sample.Connection;
+
 import History_OnOff.model.GraphSeriesModel;
 import History_OnOff.fragments.LocationFragment;
 import History_OnOff.model.SectionDataModel;
@@ -31,17 +33,21 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
     private Context mContext;
     private FragmentManager fm;
 
+    private String clientHandle;
+    private Connection connection;
+
     public RecyclerViewDataAdapter(Context context, ArrayList<SectionDataModel> dataList, FragmentManager fm) {
         this.dataList = dataList;
         this.mContext = context;
         this.fm = fm;
     }
 
-    public RecyclerViewDataAdapter(Context context, ArrayList<SectionDataModel> dataList, FragmentManager fm, boolean onOff) {
+    public RecyclerViewDataAdapter(Context context, ArrayList<SectionDataModel> dataList, FragmentManager fm, boolean onOff, Connection connection) {
         this.dataList = dataList;
         this.mContext = context;
         this.fm = fm;
         this.onOff = onOff;
+        this.connection = connection;
     }
 
     @Override
@@ -66,7 +72,7 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
 
         SectionListDataAdapter itemListDataAdapter;
         if(Home.page == 0){
-            itemListDataAdapter = new SectionListDataAdapter(mContext, singleSectionItems, fm, sectionName, onOff);
+            itemListDataAdapter = new SectionListDataAdapter(mContext, singleSectionItems, fm, sectionName, onOff,connection);
         }else{
             itemListDataAdapter = new SectionListDataAdapter(mContext, singleSectionItems, fm, sectionName);
         }

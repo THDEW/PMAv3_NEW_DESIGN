@@ -5,7 +5,7 @@ package History_OnOff.model;
  */
 public class SingleItemModel {
 
-
+    private int id;
     private String name;
     private double[] power;
     private String usageTime;
@@ -15,7 +15,8 @@ public class SingleItemModel {
     public SingleItemModel() {
     }
 
-    public SingleItemModel(String name, double[] power, String usageTime) {
+    public SingleItemModel(int id, String name, double[] power, String usageTime) {
+        this.id = id;
         this.name = name;
         this.power = power;
         this.usageTime = usageTime;
@@ -31,6 +32,8 @@ public class SingleItemModel {
 
         return temp;
     }
+
+    public int getId() {return id;}
 
     public String getName() {
         return name;

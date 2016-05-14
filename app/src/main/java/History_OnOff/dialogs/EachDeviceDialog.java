@@ -16,7 +16,10 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import org.eclipse.paho.android.service.sample.Connection;
+
 import ElectricityCost.ElectricityBillFragment;
+import History_OnOff.model.SingleItemModel;
 import billcalculate.BillCalculate;
 
 /**
@@ -51,15 +54,22 @@ public class EachDeviceDialog extends DialogFragment {
 
     private boolean status;
 
+    private int id;
+
+    private String clientHandle;
+    private Connection connection;
+
     public EachDeviceDialog(){}
 
-    public EachDeviceDialog(String name, String location,String energy/*,String bill*/,String time,boolean status){
+    public EachDeviceDialog(int id,String name, String location,String energy/*,String bill*/,String time,boolean status, Connection connection){
+        //        this.bill = bill;
+        this.id = id;
         this.name = name;
         this.location = location;
         this.energy = energy;
-//        this.bill = bill;
         this.time = time;
         this.status = status;
+        this.connection = connection;
     }
 
     @Override

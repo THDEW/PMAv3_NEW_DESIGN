@@ -270,6 +270,7 @@ public class SettingFragments extends Fragment {
         RecyclerViewForSettingAdapter adapter = new RecyclerViewForSettingAdapter(myContext, allSampleData, fm, connection);
 
         my_recycler_view.setAdapter(adapter);
+        Log.v("settingFrag", "dummydata7");
 
     }
 

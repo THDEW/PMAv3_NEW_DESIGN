@@ -33,6 +33,8 @@ public class StatisticFragment extends Fragment {
     private ViewPagerAdapter viewPagerAdapter;
     AdapterView<?> parent;
 
+    public static Bundle bundle;
+
     public StatisticFragment() {
         // Required empty public constructor
     }
@@ -57,9 +59,10 @@ public class StatisticFragment extends Fragment {
             FragmentActivity contextTemp = (FragmentActivity) context;
             FragmentManager fragManager = contextTemp.getSupportFragmentManager();
             viewPagerAdapter = new ViewPagerAdapter(fragManager);
-            viewPagerAdapter.addFragment(new DailyFragment(bundle), "Daily");
-            viewPagerAdapter.addFragment(new MonthlyFragment(bundle), "Monthly");
-            viewPagerAdapter.addFragment(new YearlyFragment(bundle), "Yearly");
+            this.bundle = bundle;
+            viewPagerAdapter.addFragment(new DailyFragment(), "Daily");
+            viewPagerAdapter.addFragment(new MonthlyFragment(), "Monthly");
+            viewPagerAdapter.addFragment(new YearlyFragment(), "Yearly");
             viewPager.setAdapter(viewPagerAdapter);
             viewPager.setCurrentItem(index);
         }

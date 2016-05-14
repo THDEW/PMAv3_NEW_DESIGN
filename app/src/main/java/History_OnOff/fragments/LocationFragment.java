@@ -26,6 +26,9 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
 
+import org.eclipse.paho.android.service.sample.Connection;
+import org.eclipse.paho.android.service.sample.Connections;
+
 import java.util.ArrayList;
 
 import History_OnOff.adapter.LegendAdapter;
@@ -74,8 +77,16 @@ public class LocationFragment extends Fragment {
 
     RecyclerView my_recycler_view;
 
+    private String clientHandle;
+    private Connection connection;
+
     public LocationFragment() {
         // Required empty public constructor
+    }
+
+    public LocationFragment(String clientHandle) {
+        this.clientHandle = clientHandle;
+        connection = Connections.getInstance(getActivity()).getConnection(clientHandle);
     }
 
     @Override
@@ -271,7 +282,7 @@ public class LocationFragment extends Fragment {
 
             ArrayList<SingleItemModel> singleItem = new ArrayList<>();
             for (int j = 0; j <= 5; j++) {
-                singleItem.add(new SingleItemModel("Item " + j, test, "a"));
+                singleItem.add(new SingleItemModel(1,"Item " + j, test, "a"));
             }
 
             dm.setPowerOfLocation(test);
@@ -334,7 +345,7 @@ public class LocationFragment extends Fragment {
 
             ArrayList<SingleItemModel> singleItem = new ArrayList<>();
             for (int j = 0; j < amountOfDevice[i]; j++) {
-                singleItem.add(new SingleItemModel(deviceName.get(i)[j], devicePower.get(i).get(j),  deviceUsageTime.get(i)[j]));
+                singleItem.add(new SingleItemModel(1,deviceName.get(i)[j], devicePower.get(i).get(j),  deviceUsageTime.get(i)[j]));
             }
 
             dm.setAllItemsInSection(singleItem);
@@ -342,7 +353,7 @@ public class LocationFragment extends Fragment {
             allSampleData.add(dm);
         }
 
-        RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(myContext, allSampleData, fm, true);
+        RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(myContext, allSampleData, fm, true, connection);
 
         my_recycler_view.setAdapter(adapter);
     }

@@ -15,6 +15,10 @@ import android.widget.TextView;
 
 import com.example.senoir.newpmatry1.R;
 
+import org.eclipse.paho.android.service.sample.ActionListener;
+import org.eclipse.paho.android.service.sample.Connection;
+import org.eclipse.paho.client.mqttv3.MqttException;
+
 import History_OnOff.dialogs.EachDeviceDialog;
 import History_OnOff.model.GraphSeriesModel;
 import History_OnOff.fragments.LocationFragment;
@@ -25,6 +29,8 @@ import billcalculate.BillCalculate;
 
 import java.util.ArrayList;
 
+import org.eclipse.paho.android.service.sample.Connection;
+
 public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListDataAdapter.SingleItemRowHolder> {
 
     private ArrayList<SingleItemModel> itemsList;
@@ -33,6 +39,9 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
     private String location;
     private boolean onOff;
 
+    private String clientHandle;
+    private Connection connection;
+
     public SectionListDataAdapter(Context context, ArrayList<SingleItemModel> itemsList, FragmentManager fm, String location) {
         this.itemsList = itemsList;
         this.mContext = context;
@@ -40,12 +49,13 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
         this.location = location;
     }
 
-    public SectionListDataAdapter(Context context, ArrayList<SingleItemModel> itemsList, FragmentManager fm, String location, boolean onOff) {
+    public SectionListDataAdapter(Context context, ArrayList<SingleItemModel> itemsList, FragmentManager fm, String location, boolean onOff,Connection connection) {
         this.itemsList = itemsList;
         this.mContext = context;
         this.fm = fm;
         this.location = location;
         this.onOff = onOff;
+        this.connection = connection;
     }
 
     @Override
@@ -129,12 +139,31 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                         String unit = " Unit    ";
                         String hour = " Hr.    ";
 
-
                         // หน้า On และ Off parameter (ชื่อ device, location of device, power consumption of device (unit), cost, timing usage, status)
 
-                        EachDeviceDialog dialogFragment = new EachDeviceDialog (item.getName() , location,item.getSumPower() + unit ,
-                                item.getUsageTime() + hour, onOff);
+                        EachDeviceDialog dialogFragment = new EachDeviceDialog (item.getId(),item.getName() , location,item.getSumPower() + unit ,
+                                item.getUsageTime() + hour, onOff,connection);
                         dialogFragment.show(fm, tvTitle.getText().toString() );
+
+                        String topic = "android/currentStatus/group_of_device";
+                        String message = item.getId()+"";
+                        int qos = 0;
+                        boolean retained = false;
+
+                        String[]args = new String[2];
+                        args[0] = message;
+                        args[1] = topic+";qos:"+qos+";retained:"+retained;
+
+                        try {
+                            connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(mContext, ActionListener.Action.PUBLISH, clientHandle, args));
+                        } catch (MqttException e) {
+                            e.printStackTrace();
+                        }
+
+
+
+
+
 
 
                     } else if (Home.page == 1) {

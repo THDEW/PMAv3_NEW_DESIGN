@@ -1,5 +1,6 @@
 package activity;
 
+import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -48,7 +49,6 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
     private Home home = this;
 
     private int show = 0;
-
 
     private Toolbar mToolbar;
     private FragmentDrawer drawerFragment;
@@ -102,11 +102,53 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
 
         // display the first navigation drawer view on app launch
         onOffFragment = new OnOffFragment(clientHandle);
-        locationFragment = new LocationFragment();
+        locationFragment = new LocationFragment(clientHandle);
         statisticFragment = new StatisticFragment();
         electricityBillFragment = new ElectricityBillFragment(clientHandle);
         settingFragments = new SettingFragments(clientHandle);
         aboutFragment = new AboutFragment();
+
+
+//        final Handler mHandler = new Handler();
+//
+//        Runnable mTimer1 = new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                Toast.makeText(getApplicationContext(), "go go go", Toast.LENGTH_SHORT).show();
+//
+//                String title = "";
+//
+//                String topic = null;
+//                String message = null;
+//                int qos = 0;
+//                boolean retained = false;
+//
+//                String[] args = new String[2];
+//
+//                if (page == 3){
+//                    topic = "android/electricityBill";
+//                    message = "getElectricityCost";
+//                    qos = 0;
+//                    retained = false;
+//
+//                    args = new String[2];
+//                    args[0] = message;
+//                    args[1] = topic+";qos:"+qos+";retained:"+retained;
+//
+//                    title = "ElectricBill";
+//
+//                    try {
+//                        connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(home, ActionListener.Action.PUBLISH, clientHandle, args));
+//                    } catch (MqttException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                mHandler.postDelayed(this, 5000);
+//            }
+//        };
+//
+//        mHandler.postDelayed(mTimer1, 5000);
 
         displayView(5);
     }
@@ -169,13 +211,32 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
 
         switch (position) {
             case 0:
+                if (page != 0){
+                    onOffFragment.update(home);
+                }
+                topic = "android/currentStatus";
+                message = "getCurrentStatus";
+                qos = 0;
+                retained = false;
+
+                args = new String[2];
+                args[0] = message;
+                args[1] = topic+";qos:"+qos+";retained:"+retained;
 
                 fragmentTransaction.replace(R.id.container_body, onOffFragment);
                 title = getString(R.string.title_home);
                 getSupportActionBar().setTitle(title);
                 fragmentTransaction.commit();
-                onOffFragment.update(this);
+
                 page = 0;
+
+                try {
+                    connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(this, ActionListener.Action.PUBLISH, clientHandle, args));
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
+
+
                 break;
             case 1:
                 fragmentTransaction.replace(R.id.container_body, locationFragment);
@@ -368,6 +429,21 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
                 fragmentTransaction.commit();
 
                 electricityBillFragment.prepareListData(bundle);
+            }
+            else if(event.getPropertyName().equals("currentStatus"))
+            {
+                Bundle bundle;
+                bundle = connection.getBundle();
+                Log.v("currentStatus", "efrag");
+
+
+                //Log.d("Home", bundle.toString());
+                fragmentTransaction.replace(R.id.container_body, onOffFragment);
+                fragmentTransaction.commit();
+                Log.v("currentStatus", "efrag1");
+                onOffFragment.update(home, bundle);
+                Log.v("currentStatus", "efrag3");
+
             }
 
 
