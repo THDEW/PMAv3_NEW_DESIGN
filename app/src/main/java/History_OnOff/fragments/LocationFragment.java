@@ -57,7 +57,6 @@ public class LocationFragment extends Fragment {
     public static String[] dataPointName;
     public static int[] dataPointColor;
     public static ArrayList<GraphSeriesModel> data = new ArrayList<>();
-    public static ArrayList<Double> data2 = new ArrayList<>();
 
     public static boolean[] open;
 
@@ -84,6 +83,8 @@ public class LocationFragment extends Fragment {
     private String clientHandle;
     private Connection connection;
 
+    TextView amount;
+
     public LocationFragment() {
         // Required empty public constructor
     }
@@ -108,6 +109,8 @@ public class LocationFragment extends Fragment {
         createDummyData();
 
         fm = getFragmentManager();
+
+        amount = (TextView) rootView.findViewById(R.id.amountOfdata);
 
         addNew = false;
 
@@ -158,7 +161,7 @@ public class LocationFragment extends Fragment {
 
         // draw values on top
         series.setDrawValuesOnTop(true);
-        series.setValuesOnTopColor(Color.RED);
+        series.setValuesOnTopColor(Color.WHITE);
 
         final DecimalFormat d = new DecimalFormat("0");
 
@@ -184,26 +187,14 @@ public class LocationFragment extends Fragment {
         graph.getViewport().setYAxisBoundsManual(true);
         graph.getViewport().setScrollable(true);
         graph.getViewport().setScalable(true);
-
-
-
+        graph.getViewport().setBackgroundColor(Color.parseColor("#4e739e"));
 
         final Handler mHandler = new Handler();
 
         Runnable mTimer1 = new Runnable() {
             @Override
             public void run() {
-                if(isBarGraph) {
-                    if(!isBarGraphSet) {
-                        graph.removeAllSeries();
 
-                        graph.addSeries(series);
-
-                        isBarGraphSet = true;
-
-//                        graph.getLegendRenderer().setVisible(false);
-
-                    }
                     if(addNew) {
                         setDataPoint();
 
@@ -214,39 +205,20 @@ public class LocationFragment extends Fragment {
                     if (dataPoint != null) {
                         series.resetData(dataPoint);
                     }
-                    graph.getViewport().setMinY(0);
-                    graph.getViewport().setMaxY(getMax() + 5);
-
-                    graph.getSecondScale().setMinY(0);
-                    graph.getSecondScale().setMaxY(getMax() + 5);
-
-
-                    for (int i = 0; i < data.size(); i++) {
-                        if (data.get(i).getSumValue() > data2.get(i)) {
-                            data2.set(i, data2.get(i) + (data.get(i).getSumValue() / 100) * 3);
-                        }
+                    if(data.size() != 0) {
+                        graph.getViewport().setMinY(0);
+                        graph.getViewport().setMaxY(getMax() + getMax() * 0.2);
+                        graph.getSecondScale().setMinY(0);
+                        graph.getSecondScale().setMaxY(getMax() + getMax() * 0.2);
+                    } else {
+                        graph.getViewport().setMinY(0);
+                        graph.getViewport().setMaxY(5);
+                        graph.getSecondScale().setMinY(0);
+                        graph.getSecondScale().setMaxY(5);
                     }
+                    amount.setText("Amount of data is "+data.size());
 
 
-                } else {
-                    if(addNew){
-                        if(data.size() != 0){
-                            setLineSeries();
-                            addNew = false;
-
-                            legendAdapter = new LegendAdapter(dataPointName, dataPointColor);
-                            legendView.setAdapter(legendAdapter);
-//                            graph.getLegendRenderer().setVisible(true);
-//                            graph.getLegendRenderer().setFixedPosition(0, 0);
-                        }
-                    }
-                    graph.getViewport().setMinY(0);
-                    graph.getViewport().setMaxY(getMaxLine() + 5);
-
-                    graph.getSecondScale().setMinY(0);
-                    graph.getSecondScale().setMaxY(getMaxLine() + 5);
-
-                }
                 mHandler.postDelayed(this, 1);
             }
         };
@@ -326,50 +298,37 @@ public class LocationFragment extends Fragment {
         }
 
         String[] locationName = new String[amountOfLocation]; // get location name มา
-
-        ArrayList<double[]> locationPower = new ArrayList<>();
+        int[] locationId = new int[amountOfLocation]; // get location id  มา
 
         ArrayList<String[]> deviceName = new ArrayList<>();
-        ArrayList<ArrayList<double[]>> devicePower = new ArrayList<>();
-        ArrayList<ArrayList<double[]>> lastRecord = new ArrayList<>();
-        ArrayList<ArrayList<String[]>> lastRecieve = new ArrayList<>();
+        ArrayList<int[]> deviceId = new ArrayList<>();
+        ArrayList<int[]> powerNodeId = new ArrayList<>();
 
 
         for(int i = 0; i < amountOfLocation; i++){
 
-            double[] locationPowerTemp = new double[amountOfDevice[i]];// get location power  มา
+            locationName[i] = "Location name";
+            locationId[i] = i;
+
             String[] deviceNameTemp = new String[amountOfDevice[i]];// get device name in each location มา
+            int[] deviceIdTemp = new int[amountOfDevice[i]];// get device id มา
+            int[] powerNodeIdTemp = new int[amountOfDevice[i]];// get power node id มา
 
-            devicePower.add(new ArrayList<double[]>());
-            lastRecord.add(new ArrayList<double[]>());
-            lastRecieve.add(new ArrayList<String[]>());
 
-            for(int j = 0; j < amountOfDevice[i]; j++) {
-
-                int amountOfSeries = 0; // get device power size มา (จุดบน แกน X)
-
-                double[] devicePowerTemp = new double[amountOfSeries];// get device power   มา
-                double[] lastRecordTemp = new double[amountOfSeries];// get lastRecord power   มา
-
-                devicePower.get(i).add(devicePowerTemp);
-            }
-
-            locationPower.add(locationPowerTemp);
             deviceName.add(deviceNameTemp);
+            deviceId.add(deviceIdTemp);
+            powerNodeId.add(powerNodeIdTemp);
+
         }
 
 
         for (int i = 1; i <= amountOfLocation; i++) {
 
-            SectionDataModel dm = new SectionDataModel();
-
-            dm.setHeaderTitle(locationName[i-1]);
-
-            dm.setPowerOfLocation(locationPower.get(i-1));
+            SectionDataModel dm = new SectionDataModel(locationId[i-1] ,locationName[i-1]);
 
             ArrayList<SingleItemModel> singleItem = new ArrayList<>();
             for (int j = 0; j < amountOfDevice[i]; j++) {
-                singleItem.add(new SingleItemModel(1,deviceName.get(i)[j], devicePower.get(i).get(j),"4",4));
+                singleItem.add(new SingleItemModel(deviceId.get(i-1)[j] ,deviceName.get(i)[j], locationId[i-1],powerNodeId.get(i-1)[j]));
             }
 
             dm.setAllItemsInSection(singleItem);
@@ -387,7 +346,7 @@ public class LocationFragment extends Fragment {
         int count = 0;
 
         for(int i = 0; i < data.size(); i++){
-            if(data.get(i).getValue(0) != -1d){
+            if(data.get(i).getValue() != -1d){
                 count++;
             }
         }
@@ -399,15 +358,15 @@ public class LocationFragment extends Fragment {
             count = 0;
 
             for (int i = 0; i < data.size(); i++) {
-                if (data.get(i).getValue(0) != -1d) {
-                    dataPoint[count] = new DataPoint(count, data.get(i).getSumValue());
+                if (data.get(i).getValue() != -1d) {
+                    dataPoint[count] = new DataPoint(count, data.get(i).getValue());
 
                     if(data.get(i).getIsLocation())
                         dataPointName[count] =  data.get(i).getLocation();
                     else
                         dataPointName[count] =  data.get(i).getDevice();
 
-                    dataPointColor[count] = Color.rgb(count*255/4, (int) Math.abs(data.get(count).getSumValue()*255/6), 100);
+                    dataPointColor[count] = Color.rgb(count*255/4, (int) Math.abs(data.get(count).getValue()*255/6), 100);
 
                     count++;
                 }
@@ -415,68 +374,13 @@ public class LocationFragment extends Fragment {
         }
     }
 
-    public void setLineSeries(){
-
-        lineSeries.clear();
-        graph.removeAllSeries();
-
-        int count = 0;
-
-        for(int i = 0; i < data.size(); i++) {
-
-            int size = data.get(i).getSize();
-
-            if(data.get(i).getValue(0) != -1d) {
-                DataPoint[] tempData = new DataPoint[size];
-                for(int j = 0; j < size; j++) {
-                    tempData[j] = new DataPoint(j, data.get(i).getValue(j));
-                }
-                lineSeries.add(new LineGraphSeries<>(tempData));
-
-                graph.addSeries(lineSeries.get(count));
-                if(data.get(i).getIsLocation()) {
-                    lineSeries.get(count).setTitle(data.get(i).getLocation());
-                }else{
-                    lineSeries.get(count).setTitle(data.get(i).getDevice());
-                }
-
-                lineSeries.get(count).setColor(Color.rgb(count * 255 / 4, (int) Math.abs(data.get(count).getSumValue() * 255 / 6), 100));
-
-                count++;
-            }
-        }
-
-        dataPointName = new String[count];
-        dataPointColor = new int[count];
-        for(int i = 0; i < count; i++){
-            dataPointName[i] = lineSeries.get(i).getTitle();
-            dataPointColor[i] = lineSeries.get(i).getColor();
-        }
-
-    }
-
-    public double getMaxLine(){
-
-        double max = 0;
-
-        for(int i = 0; i < data.size(); i++){
-            for(int j = 0; j < data.get(i).getSize(); j++){
-                if(data.get(i).getValue(j) > max){
-                    max = data.get(i).getValue(j);
-                }
-            }
-        }
-
-        return max;
-    }
-
     public double getMax(){
 
         double max = 0;
 
         for(int i = 0; i < data.size(); i++){
-            if(data.get(i).getSumValue() > max){
-                max = data.get(i).getSumValue();
+            if(data.get(i).getValue() > max){
+                max = data.get(i).getValue();
             }
         }
 

@@ -24,9 +24,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=" Last Record"
+                android:text=" Last Record (Ws)"
                 android:id="@+id/textView3"
-                android:textSize="20dp"
+                android:textSize="15dp"
                 android:layout_span="0"
                 android:background="#FFC107"
                 android:gravity="center" />
@@ -35,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/lastRecordTv"
-                android:textSize="20dp"
+                android:textSize="15dp"
                 android:layout_span="0"
                 android:background="#FFECB3"
                 android:gravity="center" />
@@ -49,9 +49,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=" Last Received"
+                android:text="    Last Received    "
                 android:id="@+id/textView7"
-                android:textSize="20dp"
+                android:textSize="15dp"
                 android:layout_span="0"
                 android:background="#FFC107"
                 android:gravity="center" />
@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:text="       last re    "
                 android:id="@+id/lastReceiveTv"
-                android:textSize="20dp"
+                android:textSize="15dp"
                 android:layout_span="0"
                 android:background="#FFECB3"
                 android:gravity="center" />
@@ -77,7 +77,7 @@
                 android:layout_height="wrap_content"
                 android:text=" Energy Today"
                 android:id="@+id/textView2"
-                android:textSize="20dp"
+                android:textSize="15dp"
                 android:background="#FFC107"
                 android:gravity="center" />
 
@@ -86,7 +86,7 @@
                 android:layout_height="wrap_content"
                 android:text="8 Unit    "
                 android:id="@+id/energyTv"
-                android:textSize="20dp"
+                android:textSize="15dp"
                 android:background="#FFECB3"
                 android:gravity="center" />
 

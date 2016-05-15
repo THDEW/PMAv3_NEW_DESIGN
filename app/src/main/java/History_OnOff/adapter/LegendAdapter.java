@@ -32,7 +32,7 @@ public class LegendAdapter extends RecyclerView.Adapter<LegendAdapter.Item>{
     @Override
     public void onBindViewHolder(Item holder, int position) {
 
-        holder.itemName.setText(name[position]);
+        holder.itemName.setText(position+": "+name[position]);
 
         holder.img.setBackgroundColor(color[position]);
 

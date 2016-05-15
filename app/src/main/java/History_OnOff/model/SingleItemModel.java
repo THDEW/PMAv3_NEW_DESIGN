@@ -8,10 +8,11 @@ public class SingleItemModel {
     private int id;
     private String name;
     private double[] power;
-    private String usageTime;
     private String description;
     private String lastTime;
     private double lastRecord;
+    private int locationId;
+    private int powernodeId;
 
 
     public SingleItemModel() {
@@ -23,6 +24,13 @@ public class SingleItemModel {
         this.power = power;
         this.lastTime = lastTime;
         this.lastRecord = lastRecord;
+    }
+
+    public SingleItemModel(int id, String name, int locationId, int powernodeId) {
+        this.id = id;
+        this.name = name;
+        this.locationId = locationId;
+        this.powernodeId = powernodeId;
     }
 
 
@@ -55,10 +63,6 @@ public class SingleItemModel {
     }
 
 
-    public String getUsageTime() {
-        return usageTime;
-    }
-
     public double[] getAllPower() {
         return power;
     }
@@ -71,5 +75,13 @@ public class SingleItemModel {
 
     public double getLastRecord() {
         return lastRecord;
+    }
+
+    public int getLocationId(){
+        return locationId;
+    }
+
+    public int getPowernodeId(){
+        return powernodeId;
     }
 }

@@ -59,6 +59,9 @@ public class StatisticFragment extends Fragment {
             viewPagerAdapter.addFragment(new YearlyFragment(), "This year");
             viewPager.setAdapter(viewPagerAdapter);
             viewPager.setCurrentItem(index);
+
+            tabLayout.setupWithViewPager(viewPager);
+
         }
     }
 
@@ -78,6 +81,9 @@ public class StatisticFragment extends Fragment {
             viewPager.setAdapter(viewPagerAdapter);
 
             viewPager.setCurrentItem(index);
+
+            tabLayout.setupWithViewPager(viewPager);
+
             Log.v("statistic", "efrag8");
         }
     }

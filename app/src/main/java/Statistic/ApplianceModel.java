@@ -64,7 +64,7 @@ public class ApplianceModel {
             //return appliname1.compareTo(appliname2);
 
             //descending order
-            return (int) (electusage2-electusage1);
+            return (int) ((electusage2*100000)-(electusage1*100000));
         }};
 
     public static Comparator<ApplianceModel> electusageMinComparator = new Comparator<ApplianceModel>() {
@@ -74,7 +74,7 @@ public class ApplianceModel {
             double electusage2 = e2.getElect();
 
             //ascending order
-            return (int) (electusage1-electusage2);
+            return (int) ((electusage1*100000)-(electusage2*100000));
 
             //descending order
             //return (int) (electusage2-electusage1);

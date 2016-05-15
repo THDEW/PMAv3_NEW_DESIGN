@@ -11,36 +11,23 @@ public class GraphSeriesModel {
 
     String device;
     String location;
-    double[] value;
+    double value;
     boolean isLocation = false;
 
-    public GraphSeriesModel(String device, String location, double[] value, boolean isLocation){
+    public GraphSeriesModel(String device, String location, double value, boolean isLocation){
         this.device = device;
         this.location = location;
         this.value = value;
         this.isLocation = isLocation;
     }
 
-    public double getSumValue(){
-        double temp = 0d;
 
-        for(int i = 0; i < value.length; i++){
-            temp += value[i];
-        }
-        return temp;
+    public void setValue(double temp) {
+        value = temp;
     }
 
-
-    public void setValue(int i, double temp) {
-        value[i] = temp;
-    }
-
-    public double getValue(int i) {
-        return value[i];
-    }
-
-    public int getSize() {
-        return value.length;
+    public double getValue() {
+        return value;
     }
 
     public String getDevice() {

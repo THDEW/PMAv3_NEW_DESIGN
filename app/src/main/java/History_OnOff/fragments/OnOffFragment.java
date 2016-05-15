@@ -71,7 +71,7 @@ public class OnOffFragment extends Fragment {
             Log.v("updateviewpager", "test");
             viewPager.setAdapter(adapter);
             tabLayout.setupWithViewPager(viewPager);
-            //publish here
+
         }
     }
 

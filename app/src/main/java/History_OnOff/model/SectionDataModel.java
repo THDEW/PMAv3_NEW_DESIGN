@@ -8,6 +8,7 @@ public class SectionDataModel {
     private String headerTitle;
     private ArrayList<SingleItemModel> allItemsInSection;
     private double[] powerOfLocation;
+    private int id;
 
     public SectionDataModel() {
 
@@ -15,6 +16,11 @@ public class SectionDataModel {
     public SectionDataModel(String headerTitle, ArrayList<SingleItemModel> allItemsInSection) {
         this.headerTitle = headerTitle;
         this.allItemsInSection = allItemsInSection;
+    }
+
+    public SectionDataModel(int id, String headerTitle) {
+        this.id = id;
+        this.headerTitle = headerTitle;
     }
 
     public String getHeaderTitle() {
@@ -39,6 +45,9 @@ public class SectionDataModel {
 
     public void setFirstPower(double d){powerOfLocation[0] = d;}
 
+    public int getId(){
+        return id;
+    }
 
     public double[] getAllPower() {
         return this.powerOfLocation;

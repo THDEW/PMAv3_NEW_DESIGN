@@ -4,6 +4,7 @@ package History_OnOff.adapter;
  * Created by my131 on 28/4/2559.
  */
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -87,10 +88,8 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
         for (int j = 0; j < LocationFragment.data.size(); j++) {
 
             if (LocationFragment.data.get(j).getDevice().equals(holder.tvTitle.getText().toString()) &&
-                    LocationFragment.data.get(j).getLocation().equals(location) &&
-                    LocationFragment.data.get(j).getValue(0) != -1d) {
+                    LocationFragment.data.get(j).getLocation().equals(location)) {
 
-                holder.index = j;
                 if(Home.page == 1) {
                     holder.itemImage.setAlpha(0.2f);
                 }
@@ -124,8 +123,6 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
         boolean selected = false;
 
         protected SingleItemModel item;
-
-        int index;
 
         public SingleItemRowHolder(View view) {
             super(view);
@@ -162,32 +159,27 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                             e.printStackTrace();
                         }
 
-
-
-
-
-
-
                     } else if (Home.page == 1) {
                         if (selected) {
-                            LocationFragment.data.get(index).setValue(0, -1d);
-                            selected = false;
-                            itemImage.setAlpha(1f);
-                            LocationFragment.addNew = true;
-                            //itemImage.setBackgroundResource(R.drawable.ic_brightness_7_black_36dp);
-                        } else {
-                            index = LocationFragment.data.size();
+//                            LocationFragment.data.get(index).setValue(-1d);
+                            for (int j = 0; j < LocationFragment.data.size(); j++) {
 
-                            // data for device ตามจุด เวลา ตามต้องการ
-                            int size = item.getAllPower().length;
-                            double[] dataFromDataBase = new double[size];
-                            for(int i = 0; i < size; i++) {
-                                dataFromDataBase[i] = item.getAllPower()[i];
+                                if (LocationFragment.data.get(j).getDevice().equals(tvTitle.getText().toString()) &&
+                                        LocationFragment.data.get(j).getLocation().equals(location)) {
+                                    LocationFragment.data.remove(j);
+
+                                    selected = false;
+                                    itemImage.setAlpha(1f);
+                                    LocationFragment.addNew = true;
+                                    break;
+                                }
                             }
+                        } else {
 
                             LocationFragment.data.add(new GraphSeriesModel(tvTitle.getText().toString(),location
-                                    ,dataFromDataBase,false));
-                            LocationFragment.data2.add(0d);
+                                    ,5d,false));
+
+
                             itemImage.setAlpha(0.2f);
                             selected = true;
                             LocationFragment.addNew = true;
@@ -201,6 +193,13 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
 
         }
 
+        public void addSeries(Bundle bundle){
+
+            double value = 0; //bundle unit มา
+            LocationFragment.data.add(new GraphSeriesModel(tvTitle.getText().toString(),location
+                    ,value,false));
+
+        }
     }
 
 }

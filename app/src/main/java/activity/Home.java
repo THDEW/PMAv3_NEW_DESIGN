@@ -30,6 +30,7 @@ import org.json.simple.parser.JSONParser;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 
 import About.AboutFragment;
 import ElectricityCost.ElectricityBillFragment;
@@ -172,12 +173,16 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_statistic_devices){
             menu_statistic = 0;
-            statisticFragment.updateStatistic(this, statisticFragment.getCurrentPosition());
+            if(StatisticFragment.bundle != null) {
+                statisticFragment.updateStatistic(this, statisticFragment.getCurrentPosition(), StatisticFragment.bundle);
+            }
             return true;
         }
         if (id == R.id.action_statistic_location){
             menu_statistic = 1;
-            statisticFragment.updateStatistic(this,statisticFragment.getCurrentPosition());
+            if(StatisticFragment.bundle != null) {
+                statisticFragment.updateStatistic(this, statisticFragment.getCurrentPosition(), StatisticFragment.bundle);
+            }
             return true;
         }
 
@@ -239,7 +244,9 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
 
                 break;
             case 1:
-
+                if(page != 1) {
+                    LocationFragment.data = new ArrayList<>();
+                }
                 fragmentTransaction.replace(R.id.container_body, locationFragment);
                 title = getString(R.string.title_Location);
                 page = 1;
@@ -476,7 +483,7 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
                 fragmentTransaction.replace(R.id.container_body, statisticFragment);
                 fragmentTransaction.commit();
                 Log.v("statistic", "efrag1");
-                statisticFragment.updateStatistic(home, statisticFragment.getCurrentPosition() ,bundle);
+                statisticFragment.updateStatistic(home, statisticFragment.getCurrentPosition(), bundle);
                 Log.v("statistic", "efrag3");
 
             }

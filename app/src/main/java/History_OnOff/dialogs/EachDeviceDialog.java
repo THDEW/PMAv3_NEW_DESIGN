@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +18,15 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import org.eclipse.paho.android.service.sample.ActionListener;
 import org.eclipse.paho.android.service.sample.Connection;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.text.DecimalFormat;
 
 import ElectricityCost.ElectricityBillFragment;
@@ -63,6 +71,9 @@ public class EachDeviceDialog extends DialogFragment {
 
     private String clientHandle;
     private Connection connection;
+    private ChangeListener changeListener = new ChangeListener();
+
+    private EachDeviceDialog eachDeviceDialog;
 
     public EachDeviceDialog(){}
 
@@ -74,6 +85,8 @@ public class EachDeviceDialog extends DialogFragment {
         this.lastTime = lastTime;
         this.lastRecord = lastRecord;
         this.connection = connection;
+        connection.registerChangeListener(changeListener);
+        eachDeviceDialog = this;
     }
 
     @Override
@@ -109,7 +122,7 @@ public class EachDeviceDialog extends DialogFragment {
         energyConsumption = new double[10];
 
         for(int i = 0; i < 10; i++){
-            energyConsumption[i] = 2d;
+            energyConsumption[i] = 0d;
         }
 
         setDataPoint(energyConsumption);
@@ -118,7 +131,7 @@ public class EachDeviceDialog extends DialogFragment {
 
         graph.addSeries(series);
 
-        final DecimalFormat d = new DecimalFormat("0");
+        final DecimalFormat d = new DecimalFormat("0.00");
 
         graph.getSecondScale().setLabelFormatter(new DefaultLabelFormatter() {
             @Override
@@ -128,7 +141,7 @@ public class EachDeviceDialog extends DialogFragment {
                     return super.formatLabel(value, isValueX);
                 } else {
                     // show currency for y values
-                    return super.formatLabel(Double.parseDouble(d.format(value)), isValueX) + " kW/hr   x";
+                    return super.formatLabel(Double.parseDouble(d.format(value)), isValueX) + " kW/hr   |";
                 }
             }
         });
@@ -137,50 +150,26 @@ public class EachDeviceDialog extends DialogFragment {
         graph.getGridLabelRenderer().setHorizontalAxisTitle("Current time");
         graph.getGridLabelRenderer().setVerticalAxisTitle("Energy Consumption (kW/hr)");
         graph.getGridLabelRenderer().setVerticalLabelsVisible(false);
-        graph.getSecondScale().setMinY(0);
-        graph.getSecondScale().setMaxY(getMax() + 5);
+        graph.getSecondScale().setMinY(0.1);
+        graph.getSecondScale().setMaxY(getMax() + 2);
 
         graph.getViewport().setYAxisBoundsManual(true);
 
-        realValue = 4d;
-        increase = true;
-
         deviceSelected = true;
-        if(status) {
-            final Handler mHandler = new Handler();
+//        final Handler mHandler = new Handler();
+//        Runnable mTimer1 = new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                    series.resetData(dataPoint);
+//                    graph.getSecondScale().setMinY(0);
+//                    graph.getSecondScale().setMaxY(getMax() + 5);
+//                    mHandler.postDelayed(this, 2000);
+//
+//            }
+//        };
+//        mHandler.postDelayed(mTimer1, 100);
 
-            Runnable mTimer1 = new Runnable() {
-                @Override
-                public void run() {
-                    if (deviceSelected) {
-                        if (increase) {
-                            realValue += 2d;
-                            if (realValue > 20d) {
-                                increase = false;
-                            }
-                        } else {
-                            realValue -= 2d;
-                            if (realValue < 2d) {
-                                increase = true;
-                            }
-                        }
-
-                        appendDataPoint(realValue);
-
-                        setDataPoint(energyConsumption);
-
-                        series.resetData(dataPoint);
-
-                        graph.getSecondScale().setMinY(0);
-                        graph.getSecondScale().setMaxY(getMax() + 5);
-
-                        mHandler.postDelayed(this, 100);
-                    }
-                }
-            };
-
-            mHandler.postDelayed(mTimer1, 200);
-        }
         Button dismiss = (Button) rootView.findViewById(R.id.dismiss);
         dismiss.setOnClickListener(new View.OnClickListener() {
 
@@ -223,25 +212,60 @@ public class EachDeviceDialog extends DialogFragment {
 
         energyConsumption[9] = newValue;
 
+        setDataPoint(energyConsumption);
+
+        Log.d("aaabbb", newValue+"");
     }
 
     public void updateData(Bundle bundle){
 
+        String jall = bundle.getString("currentStatus/group_of_device");
+        Log.v("newval", "1");
+        JSONArray group_of_device_data = null;
+        JSONObject group_of_device_data_row = null;
         double newValue = 5d; // current energy
+        DecimalFormat df = new DecimalFormat("0.0000");
 
-        DecimalFormat df = new DecimalFormat("00.0000");
-        double energy = Double.parseDouble(this.energy) + newValue;
-        this.energy = df.format(energy)+"";
+        try {
+            group_of_device_data = new JSONArray(jall);
+            group_of_device_data_row = (JSONObject) group_of_device_data.get(0);
+            Log.v("newval", "2");
 
-//        BillCalculate billCal = new BillCalculate();
 
-//        this.bill = billCal.getBillOfType1_1(energy) + "";
-        this.lastTime = " "; // current time usage
-        this.lastRecord = " "; // get current status
 
-        energyTv.setText(this.energy);
+            this.energy = group_of_device_data_row.getString("sum_energy_god");
+            Log.v("newval", "3");
+
+            Double energydub = Double.parseDouble(this.energy);
+            energydub = (energydub/1000)/3600;
+
+
+            this.energy = df.format(energydub);
+
+            this.lastTime = group_of_device_data_row.getString("year")+"/"
+                    +group_of_device_data_row.getString("month")+"/"
+                    +group_of_device_data_row.getString("date")+" "
+                    +group_of_device_data_row.getString("hour")+":"
+                    +group_of_device_data_row.getString("minute")+":"
+                    +group_of_device_data_row.getString("second"); // current time usage
+            Log.v("newval", "4");
+            this.lastRecord = group_of_device_data_row.getString("energy"); // get current status
+            Log.v("newval", "5");
+
+            newValue = Double.parseDouble(this.lastRecord);
+            Log.v("newval", "6");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+            Log.v("newval", newValue+"");
+
+
+
+        energyTv.setText(this.energy + " kW/hr");
         timeTv.setText(this.lastTime);
-        recordTv.setText(this.lastRecord);
+        recordTv.setText(this.lastRecord + " Ws");
 //        billTv.setText(this.bill);
 //        if(this.status){
 //            statusTv.setText("ON");
@@ -252,8 +276,50 @@ public class EachDeviceDialog extends DialogFragment {
 //            statusTv.setTextColor(Color.RED);
 //        }
 
-        appendDataPoint(newValue);
+        appendDataPoint(Double.parseDouble(this.energy));
 
+        series.resetData(dataPoint);
+
+        graph.getSecondScale().setMinY(0);
+        graph.getSecondScale().setMaxY(getMax() + getMax() * 0.5);
+        graph.getViewport().setMinY(0);
+        graph.getViewport().setMaxY(getMax() + getMax()*0.5);
+
+    }
+
+    private class ChangeListener implements PropertyChangeListener {
+
+        @Override
+        public void propertyChange(PropertyChangeEvent event) {
+
+
+            if(event.getPropertyName().equals("currentStatus/group_of_device"))
+            {
+                Bundle bundle;
+                bundle = connection.getBundle();
+                Log.v("eachdev",bundle.toString());
+                eachDeviceDialog.updateData(bundle);
+
+                /*
+                String topic = "android/currentStatus/group_of_device/data";
+                String message = ""+id;
+                int qos = 0;
+                boolean retained = false;
+
+                String[] args = new String[2];
+                args[0] = message;
+                args[1] = topic+";qos:"+qos+";retained:"+retained;
+
+                try {
+                    connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(getActivity(), ActionListener.Action.PUBLISH, clientHandle, args));
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
+                */
+            }
+
+
+        }
     }
 
     /*

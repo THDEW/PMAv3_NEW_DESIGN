@@ -255,6 +255,13 @@ public class MqttCallbackHandler implements MqttCallback  {
       c.insertBundle(bundle);
       c.changePage("currentStatus");
     }
+    else if(topic.equals("server/currentStatus/group_of_device"))
+    {
+      bundle = new Bundle();
+      bundle.putString("currentStatus/group_of_device", message2);
+      c.insertBundle(bundle);
+      c.changePage("currentStatus/group_of_device");
+    }
     else if(topic.equals("server/statistic"))
     {
       bundle = new Bundle();

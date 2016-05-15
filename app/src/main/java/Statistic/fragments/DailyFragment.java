@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.senoir.newpmatry1.R;
 
@@ -41,6 +42,8 @@ public class DailyFragment extends Fragment implements AdapterView.OnItemSelecte
     private RecyclerView recyclerView;
     private ApplianceAdapter mAdapter;
     private int onspinnerselected;
+    private ArrayList<Double> sortTest = new ArrayList<>();
+
 
     TextView buttonToChange;
 
@@ -208,24 +211,20 @@ public class DailyFragment extends Fragment implements AdapterView.OnItemSelecte
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // On selecting a spinner item
         String item = parent.getItemAtPosition(position).toString();
+
         switch (item){
             case "Max Power usage":
                 Collections.sort(applianceModelListeList, ApplianceModel.electusageMaxComparator);
-                recyclerView.setItemAnimator(new DefaultItemAnimator());
                 recyclerView.setAdapter(mAdapter);
                 onspinnerselected=0;
-                //Toast.makeText(parent.getContext(), "Selected 0: " + item, Toast.LENGTH_LONG).show();
+//                Toast.makeText(parent.getContext(), "Selected 0: " + applianceModelListeList.get(0).getElect(), Toast.LENGTH_LONG).show();
                 break;
             case "Min Power usage":
                 Collections.sort(applianceModelListeList, ApplianceModel.electusageMinComparator);
-                recyclerView.setItemAnimator(new DefaultItemAnimator());
                 recyclerView.setAdapter(mAdapter);
                 onspinnerselected=1;
-                //Toast.makeText(parent.getContext(), "Selected 1: " + item, Toast.LENGTH_LONG).show();
+//                Toast.makeText(parent.getContext(), "Selected 1: " + applianceModelListeList.get(1).getElect(), Toast.LENGTH_LONG).show();
                 break;
-            /*case 2:
-                Toast.makeText(parent.getContext(), "Selected 2: " + item, Toast.LENGTH_LONG).show();
-                break;*/
         }
 
         // Showing selected spinner item

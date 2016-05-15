@@ -4,6 +4,7 @@ package History_OnOff.adapter;
  * Created by my131 on 28/4/2559.
  */
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -131,8 +132,6 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
 
         boolean selectAll = false;
 
-        int index;
-
         boolean open;
 
         protected int parentIndex;
@@ -161,39 +160,34 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
                     public void onClick(View v) {
                         if (!selectAll) {
                             selectAll = true;
-                            index = LocationFragment.data.size();
 
-                            for (int i = 0; i < index; i++) {
+                            LocationFragment.data.add(new GraphSeriesModel("", locationTitle.getText().toString()
+                                    , 10, true));
+
+                            for (int i = 0; i < LocationFragment.data.size(); i++) {
 
                                 if (!LocationFragment.data.get(i).getIsLocation() &&
                                         LocationFragment.data.get(i).getLocation().equals(locationTitle.getText().toString())) {
-                                    LocationFragment.data.get(i).setValue(0,-1d);
+                                    LocationFragment.data.remove(i);
+                                    i--;
                                 }
                             }
 
-                            // ปุ่ม all
-                            // data for location ตามจุด เวลา ตามต้องการ
-//                            ArrayList<Double> dataFromDataBase = new ArrayList<>();
-//                            dataFromDataBase.add(2d + index);
-//                            dataFromDataBase.add(5d + index);
-//                            dataFromDataBase.add(3d + index);
-//                            dataFromDataBase.add(3d + index);
-//                            dataFromDataBase.add(6d + index);
-                            int size = locationItem.getAllPower().length;
-                            double[] dataFromDataBase = new double[size];
-                            for(int i = 0; i < size; i++) {
-                                dataFromDataBase[i] = locationItem.getAllPower()[i];
-                            }
-
-                            LocationFragment.data.add(new GraphSeriesModel("", locationTitle.getText().toString(), dataFromDataBase, true));
-                            LocationFragment.data2.add(0d); // ไม่เกี่ยว
                             allBt.setAlpha(0.5f);
                             LocationFragment.addNew = true;
                         } else {
-                            LocationFragment.data.get(index).setValue(0,-1d);
-                            allBt.setAlpha(1f);
-                            selectAll = false;
-                            LocationFragment.addNew = true;
+                            for (int j = 0; j < LocationFragment.data.size(); j++) {
+
+                                if (LocationFragment.data.get(j).getLocation().equals(locationTitle.getText().toString()) &&
+                                        LocationFragment.data.get(j).getIsLocation()) {
+                                    LocationFragment.data.remove(j);
+
+                                    allBt.setAlpha(1f);
+                                    selectAll = false;
+                                    LocationFragment.addNew = true;
+                                    break;
+                                }
+                            }
                         }
                     }
 
@@ -205,20 +199,24 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
             expandableButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    for (int i = 0; i < index; i++) {
-
-                        if (!LocationFragment.data.get(i).getIsLocation() &&
-                                LocationFragment.data.get(i).getLocation().equals(locationTitle.getText().toString())) {
-                            LocationFragment.data.get(i).setValue(0,-1d);
-                        }
-                    }
-                    if(selectAll) {
-                        LocationFragment.data.get(index).setValue(0,-1d);
-                        selectAll = false;
-                        allBt.setAlpha(1f);
-                    }
 
                     if(Home.page == 1) {
+
+                        if(selectAll){
+                            for (int j = 0; j < LocationFragment.data.size(); j++) {
+
+                                if (LocationFragment.data.get(j).getLocation().equals(locationTitle.getText().toString()) &&
+                                        LocationFragment.data.get(j).getIsLocation()) {
+                                    LocationFragment.data.remove(j);
+
+                                    allBt.setAlpha(1f);
+                                    selectAll = false;
+                                    LocationFragment.addNew = true;
+                                    break;
+                                }
+                            }
+                        }
+
                         if (LocationFragment.open[parentIndex]) {
                             recycler_view_list.setAdapter(null);
                             img.setBackgroundResource(R.drawable.down_arrow);
@@ -248,6 +246,14 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
 
         }
 
+        public void addSeries(Bundle bundle){
+
+            double value = 0; //bundle unit มา
+
+            LocationFragment.data.add(new GraphSeriesModel("", locationTitle.getText().toString()
+                    , value, true));
+
+        }
     }
 
 }
