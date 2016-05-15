@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
+import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
 
 import com.example.senoir.newpmatry1.R;
@@ -29,7 +30,10 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 import org.eclipse.paho.android.service.sample.Connection;
 import org.eclipse.paho.android.service.sample.Connections;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.zip.DataFormatException;
 
 import History_OnOff.adapter.LegendAdapter;
 import History_OnOff.adapter.RecyclerViewDataAdapter;
@@ -156,8 +160,23 @@ public class LocationFragment extends Fragment {
         series.setDrawValuesOnTop(true);
         series.setValuesOnTopColor(Color.RED);
 
+        final DecimalFormat d = new DecimalFormat("0");
+
+        graph.getSecondScale().setLabelFormatter(new DefaultLabelFormatter() {
+            @Override
+            public String formatLabel(double value, boolean isValueX) {
+                if (isValueX) {
+                    // show normal x values
+                    return super.formatLabel(value, isValueX);
+                } else {
+                    // show currency for y values
+                    return super.formatLabel(Double.parseDouble(d.format(value)), isValueX) + " kW/hr   x";
+                }
+            }
+        });
+
         graph.getGridLabelRenderer().setNumHorizontalLabels(5);
-        graph.getGridLabelRenderer().setVerticalAxisTitle("Energy Consumption (WATTs)");
+        graph.getGridLabelRenderer().setVerticalAxisTitle("Energy Consumption (kW/hr)");
         graph.getGridLabelRenderer().setVerticalLabelsVisible(false);
         graph.getViewport().setMinX(0);
         graph.getViewport().setMaxX(4);
@@ -165,6 +184,9 @@ public class LocationFragment extends Fragment {
         graph.getViewport().setYAxisBoundsManual(true);
         graph.getViewport().setScrollable(true);
         graph.getViewport().setScalable(true);
+
+
+
 
         final Handler mHandler = new Handler();
 
