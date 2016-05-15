@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -113,6 +114,12 @@ public class MonthlyFragment extends Fragment implements AdapterView.OnItemSelec
     }
 
     private void prepareApplianceData(Bundle bundle) {
+        Log.v("preparemonthly", "month");
+
+        String jall = bundle.getString("statistic");
+
+        int numsizeGoD = 0;
+        int numsizeLocation = 0;
 
         int numSize = Integer.parseInt(bundle.getString("size")); // size ของ ชุดข้อมูลของเมิง
 

@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -119,7 +120,8 @@ public class DailyFragment extends Fragment implements AdapterView.OnItemSelecte
     }
 
     private void prepareApplianceData(Bundle bundle) {
-
+        Log.v("preparedaily", "daily1");
+        String jall = bundle.getString("statistic");
         int numSize = Integer.parseInt(bundle.getString("size")); // size ของ ชุดข้อมูลของเมิง
 
         // แล้วเมิง ก็เอาข้อมูล ของ location กับ device มา split บลาๆๆๆๆๆๆๆ
@@ -127,7 +129,7 @@ public class DailyFragment extends Fragment implements AdapterView.OnItemSelecte
         // Bundle ที่ส่งมา ก็ เอามาทั้ง Device กะ Location เลย
 
         // แล้ว เอาไปใส่ตาม พารามิเตอร์ ใน ลูป ข้างล่าง
-
+        Log.v("preparedaily", "daily2");
 
         // อันนี้ กุ สมมุติ ก็ แแยกๆ ใส่เข้าไป
         String[] deviceName = new String[1];
@@ -153,6 +155,7 @@ public class DailyFragment extends Fragment implements AdapterView.OnItemSelecte
                 applianceModelListeList.add(locationapp);
             }
         }
+        Log.v("preparedaily", "daily3");
         mAdapter.notifyDataSetChanged();
 
     }

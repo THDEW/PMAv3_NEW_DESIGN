@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,8 @@ import Statistic.fragments.YearlyFragment;
 
 import com.example.senoir.newpmatry1.R;
 
+import org.eclipse.paho.android.service.sample.Connection;
+
 
 public class StatisticFragment extends Fragment {
     private FragmentActivity myContext;
@@ -33,10 +36,17 @@ public class StatisticFragment extends Fragment {
     private ViewPagerAdapter viewPagerAdapter;
     AdapterView<?> parent;
 
+    private String clientHandle;
+    private Connection connection;
+
     public static Bundle bundle;
 
     public StatisticFragment() {
         // Required empty public constructor
+    }
+
+    public StatisticFragment(String clientHandle) {
+        this.clientHandle = clientHandle;
     }
 
     public void updateStatistic(Activity context, int index){
@@ -44,9 +54,9 @@ public class StatisticFragment extends Fragment {
             FragmentActivity contextTemp = (FragmentActivity) context;
             FragmentManager fragManager = contextTemp.getSupportFragmentManager();
             viewPagerAdapter = new ViewPagerAdapter(fragManager);
-            viewPagerAdapter.addFragment(new DailyFragment(), "Daily");
-            viewPagerAdapter.addFragment(new MonthlyFragment(), "Monthly");
-            viewPagerAdapter.addFragment(new YearlyFragment(), "Yearly");
+            viewPagerAdapter.addFragment(new DailyFragment(), "Today");
+            viewPagerAdapter.addFragment(new MonthlyFragment(), "This Month");
+            viewPagerAdapter.addFragment(new YearlyFragment(), "This year");
             viewPager.setAdapter(viewPagerAdapter);
             viewPager.setCurrentItem(index);
         }
@@ -56,15 +66,19 @@ public class StatisticFragment extends Fragment {
     //Bundle ส่งมา ทั้ง location และ Device เลยนะ
     public void updateStatistic(Activity context, int index, Bundle bundle){
         if(viewPager != null) {
+            Log.v("statistic", "efrag5");
             FragmentActivity contextTemp = (FragmentActivity) context;
             FragmentManager fragManager = contextTemp.getSupportFragmentManager();
             viewPagerAdapter = new ViewPagerAdapter(fragManager);
             this.bundle = bundle;
-            viewPagerAdapter.addFragment(new DailyFragment(), "Daily");
-            viewPagerAdapter.addFragment(new MonthlyFragment(), "Monthly");
-            viewPagerAdapter.addFragment(new YearlyFragment(), "Yearly");
+            viewPagerAdapter.addFragment(new DailyFragment(), "Today");
+            viewPagerAdapter.addFragment(new MonthlyFragment(), "This Month");
+            viewPagerAdapter.addFragment(new YearlyFragment(), "This year");
+            Log.v("statistic", "efrag6");
             viewPager.setAdapter(viewPagerAdapter);
+
             viewPager.setCurrentItem(index);
+            Log.v("statistic", "efrag8");
         }
     }
 
@@ -82,10 +96,10 @@ public class StatisticFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_statistic, container, false);
 
         viewPager = (ViewPager) rootView.findViewById(R.id.statistic_viewpager);
-        setupViewPager(viewPager);
+        //setupViewPager(viewPager);
 
         tabLayout = (TabLayout) rootView.findViewById(R.id.statistic_tabs);
-        tabLayout.setupWithViewPager(viewPager);
+        //tabLayout.setupWithViewPager(viewPager);
 
 
         return rootView;
@@ -93,6 +107,7 @@ public class StatisticFragment extends Fragment {
 
 
     private void setupViewPager(ViewPager viewPager) {
+        /*
         Activity context;
         context = (FragmentActivity) getActivity();
         FragmentActivity contextTemp = (FragmentActivity) context;
@@ -102,6 +117,7 @@ public class StatisticFragment extends Fragment {
         viewPagerAdapter.addFragment(new MonthlyFragment(), "Monthly");
         viewPagerAdapter.addFragment(new YearlyFragment(), "Yearly");
         viewPager.setAdapter(viewPagerAdapter);
+        */
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {

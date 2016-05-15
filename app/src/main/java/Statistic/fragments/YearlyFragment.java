@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -113,7 +114,7 @@ public class YearlyFragment extends Fragment implements AdapterView.OnItemSelect
     }
 
     private void prepareApplianceData(Bundle bundle) {
-
+        Log.v("preparedyearly", "yearly1");
         int numSize = Integer.parseInt(bundle.getString("size")); // size ของ ชุดข้อมูลของเมิง
 
         // แล้วเมิง ก็เอาข้อมูล ของ location กับ device มา split บลาๆๆๆๆๆๆๆ

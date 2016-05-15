@@ -103,7 +103,7 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
         // display the first navigation drawer view on app launch
         onOffFragment = new OnOffFragment(clientHandle);
         locationFragment = new LocationFragment(clientHandle);
-        statisticFragment = new StatisticFragment();
+        statisticFragment = new StatisticFragment(clientHandle);
         electricityBillFragment = new ElectricityBillFragment(clientHandle);
         settingFragments = new SettingFragments(clientHandle);
         aboutFragment = new AboutFragment();
@@ -239,6 +239,7 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
 
                 break;
             case 1:
+
                 fragmentTransaction.replace(R.id.container_body, locationFragment);
                 title = getString(R.string.title_Location);
                 page = 1;
@@ -246,6 +247,18 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
                 fragmentTransaction.commit();
                 break;
             case 2:
+
+                topic = "android/statistic";
+                message = "getStatistic";
+                qos = 0;
+                retained = false;
+
+                args = new String[2];
+                args[0] = message;
+                args[1] = topic+";qos:"+qos+";retained:"+retained;
+
+
+
                 if (page != 2){
                     statisticFragment.updateStatistic(this, statisticFragment.getCurrentPosition());
                 }
@@ -254,6 +267,13 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
                 page = 2;
                 getSupportActionBar().setTitle(title);
                 fragmentTransaction.commit();
+
+                try {
+                    connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(this, ActionListener.Action.PUBLISH, clientHandle, args));
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
+
                 break;
             case 3:
 
@@ -443,6 +463,21 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
                 Log.v("currentStatus", "efrag1");
                 onOffFragment.update(home, bundle);
                 Log.v("currentStatus", "efrag3");
+
+            }
+            else if(event.getPropertyName().equals("statistic"))
+            {
+                Bundle bundle;
+                bundle = connection.getBundle();
+                Log.v("statistic", "efrag");
+
+
+                //Log.d("Home", bundle.toString());
+                fragmentTransaction.replace(R.id.container_body, statisticFragment);
+                fragmentTransaction.commit();
+                Log.v("statistic", "efrag1");
+                statisticFragment.updateStatistic(home, statisticFragment.getCurrentPosition() ,bundle);
+                Log.v("statistic", "efrag3");
 
             }
 
