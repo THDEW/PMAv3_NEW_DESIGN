@@ -62,7 +62,7 @@ public class MqttCallbackHandler implements MqttCallback  {
 
       try {
         c.getClient().connect();
-        Toast.makeText(context, "connect", Toast.LENGTH_LONG).show();
+        Toast.makeText(context, "Please reconnect by re-openning the application", Toast.LENGTH_LONG).show();
       } catch (MqttException e) {
         e.printStackTrace();
       }
