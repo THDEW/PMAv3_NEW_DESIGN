@@ -21,6 +21,10 @@ import android.widget.TextView;
 
 import com.example.senoir.newpmatry1.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -105,13 +109,13 @@ public class DailyFragment extends Fragment implements AdapterView.OnItemSelecte
         if (Home.menu_statistic==0) {
             for (start = 0; start < numSize; start++) {
                 //ตรงนี้นะสัสApplianceModel(device name, กำลังไฟฟ้าที่ใช้,วันที่เปนสตริงนะ,constant string)
-                ApplianceModel appliances = new ApplianceModel("Name: Air-Conditioner " + start, elecusages++, "03/02/2016", "Electricity's Usage: ");
+                ApplianceModel appliances = new ApplianceModel("Name: Air-Conditioner " + start, elecusages++, "Electricity's Usage: ");
                 applianceModelListeList.add(appliances);
             }
         } else if (Home.menu_statistic==1) {
             for (start0 = 0; start0 < numSize - 15; start0++) {
                 //ตรงนี้นะสัสApplianceModel(location name, กำลังไฟฟ้าที่ใช้,วันที่เปนสตริงนะ,constant string)
-                ApplianceModel locationapp = new ApplianceModel("Name: Location " + start0, elecusageLocation++, "05/12/2016", "Electricity's Usage: ");
+                ApplianceModel locationapp = new ApplianceModel("Name: Location " + start0, elecusageLocation++, "Electricity's Usage: ");
                 applianceModelListeList.add(locationapp);
             }
         }
@@ -122,36 +126,74 @@ public class DailyFragment extends Fragment implements AdapterView.OnItemSelecte
     private void prepareApplianceData(Bundle bundle) {
         Log.v("preparedaily", "daily1");
         String jall = bundle.getString("statistic");
-        int numSize = Integer.parseInt(bundle.getString("size")); // size ของ ชุดข้อมูลของเมิง
 
-        // แล้วเมิง ก็เอาข้อมูล ของ location กับ device มา split บลาๆๆๆๆๆๆๆ
+        JSONObject jsonObject = null;
+        JSONArray today_god = null;
+        JSONArray today_location = null;
 
-        // Bundle ที่ส่งมา ก็ เอามาทั้ง Device กะ Location เลย
+        try {
+            jsonObject = new JSONObject(jall);
+            today_god = jsonObject.getJSONArray("today_group_of_device_statistic");
+            today_location = jsonObject.getJSONArray("today_location_statistic");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-        // แล้ว เอาไปใส่ตาม พารามิเตอร์ ใน ลูป ข้างล่าง
-        Log.v("preparedaily", "daily2");
+        int numsizeGoD = today_god.length();
+        int numsizeLocation = today_location.length();
+
+        Log.v("dailyfrag","size god "+numsizeGoD);
+        Log.v("dailyfrag","size loc "+numsizeLocation);
 
         // อันนี้ กุ สมมุติ ก็ แแยกๆ ใส่เข้าไป
-        String[] deviceName = new String[1];
-        String[] devicePower = new String[1];
-        String[] deviceDate = new String[1];
+        String[] deviceName = new String[numsizeGoD];
+        String[] devicePower = new String[numsizeGoD];
 
-        String[] locationName = new String[1];
-        String[] locationPower = new String[1];
-        String[] locationDate = new String[1];
+        for(int i = 0; i< numsizeGoD ; i++)
+        {
+            JSONObject jsonObject1 = null;
+            try {
+                jsonObject1 = (JSONObject) today_god.get(i);
+                deviceName[i] = "Location : "+jsonObject1.getString("location_name")+" \n"+"IP address : "+jsonObject1.getString("ip_address")+" \nPin : "+jsonObject1.getString("pin");
+                devicePower[i] = jsonObject1.getString("sum_energy_today");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+        Log.v("dailyfrag","yay1");
+
+
+        String[] locationName = new String[numsizeLocation];
+        String[] locationPower = new String[numsizeLocation];
+
+        for(int i = 0; i< numsizeLocation ; i++)
+        {
+            JSONObject jsonObject1 = null;
+            try {
+                jsonObject1 = (JSONObject) today_location.get(i);
+                locationName[i] = "Location : "+jsonObject1.getString("location_name");
+                locationPower[i] = jsonObject1.getString("sum_energy_today");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+        Log.v("dailyfrag","yay2");
+
 
 
         int start, start0;
         if (Home.menu_statistic==0) {
-            for (start = 0; start < numSize; start++) {
+            for (start = 0; start < numsizeGoD; start++) {
                 //ตรงนี้นะสัสApplianceModel(device name, กำลังไฟฟ้าที่ใช้,วันที่เปนสตริงนะ,constant string)
-                ApplianceModel appliances = new ApplianceModel(deviceName[start], Double.parseDouble(devicePower[start]), deviceDate[start], "Electricity's Usage: ");
+                ApplianceModel appliances = new ApplianceModel(deviceName[start], Double.parseDouble(devicePower[start]), "Electricity's Usage: ");
                 applianceModelListeList.add(appliances);
             }
         } else if (Home.menu_statistic==1) {
-            for (start0 = 0; start0 < numSize - 15; start0++) {
+            for (start0 = 0; start0 < numsizeLocation; start0++) {
                 //ตรงนี้นะสัสApplianceModel(location name, กำลังไฟฟ้าที่ใช้,วันที่เปนสตริงนะ,constant string)
-                ApplianceModel locationapp = new ApplianceModel(locationName[start0], Double.parseDouble(locationPower[start0]), locationDate[start0], "Electricity's Usage: ");
+                ApplianceModel locationapp = new ApplianceModel(locationName[start0], Double.parseDouble(locationPower[start0]), "Electricity's Usage: ");
                 applianceModelListeList.add(locationapp);
             }
         }

@@ -13,16 +13,14 @@ public class ApplianceModel {
     public ApplianceModel() {
     }
 
-    public ApplianceModel(String appliname, double elecusage, String date, String frontelectusage) {
+    public ApplianceModel(String appliname, double elecusage, String frontelectusage) {
         this.appliname = appliname;
         this.elecusage = elecusage;
-        this.date = date;
         this.frontelectusage = frontelectusage;
     }
-    public ApplianceModel(String locationname, double elecusageLocation, String date, String frontelectusage,boolean isLocation){
+    public ApplianceModel(String locationname, double elecusageLocation, String frontelectusage,boolean isLocation){
         this.locationname = locationname;
         this.elecusageLocation = elecusageLocation;
-        this.date = date;
         this.frontelectusage = frontelectusage;
         this.isLocation = isLocation;
 

@@ -21,6 +21,10 @@ import android.widget.TextView;
 
 import com.example.senoir.newpmatry1.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -91,6 +95,7 @@ public class MonthlyFragment extends Fragment implements AdapterView.OnItemSelec
         myContext = (FragmentActivity) activity;
         super.onAttach(activity);
     }
+    /*
     //numsizeนี่คือจำนวนของดีไว้เมิงอะหรือโลเคชั่น
     private void prepareApplianceData(int numSize) {
         int start, start0;
@@ -112,16 +117,32 @@ public class MonthlyFragment extends Fragment implements AdapterView.OnItemSelec
         mAdapter.notifyDataSetChanged();
 
     }
+    */
 
     private void prepareApplianceData(Bundle bundle) {
         Log.v("preparemonthly", "month");
 
         String jall = bundle.getString("statistic");
 
-        int numsizeGoD = 0;
-        int numsizeLocation = 0;
+        JSONObject jsonObject = null;
+        JSONArray this_month_god = null;
+        JSONArray this_month_location = null;
 
-        int numSize = Integer.parseInt(bundle.getString("size")); // size ของ ชุดข้อมูลของเมิง
+        try {
+            jsonObject = new JSONObject(jall);
+            this_month_god = jsonObject.getJSONArray("this_month_group_of_device_statistic");
+            this_month_location = jsonObject.getJSONArray("this_month_location_statistic");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        int numsizeGoD = this_month_god.length();
+        int numsizeLocation = this_month_location.length();
+
+        Log.v("monthlyfrag","size god "+numsizeGoD);
+        Log.v("monthlyfrag","size loc "+numsizeLocation);
+
+
 
         // แล้วเมิง ก็เอาข้อมูล ของ location กับ device มา split บลาๆๆๆๆๆๆๆ
 
@@ -131,27 +152,57 @@ public class MonthlyFragment extends Fragment implements AdapterView.OnItemSelec
 
 
         // อันนี้ กุ สมมุติ ก็ แแยกๆ ใส่เข้าไป
-        String[] deviceName = new String[1];
-        String[] devicePower = new String[1];
-        String[] deviceDate = new String[1];
+        String[] deviceName = new String[numsizeGoD];
+        String[] devicePower = new String[numsizeGoD];
 
-        String[] locationName = new String[1];
-        String[] locationPower = new String[1];
-        String[] locationDate = new String[1];
+        for(int i = 0; i< numsizeGoD ; i++)
+        {
+            JSONObject jsonObject1 = null;
+            try {
+                jsonObject1 = (JSONObject) this_month_god.get(i);
+                deviceName[i] = "Location : "+jsonObject1.getString("location_name")+"\nIP address : "+jsonObject1.getString("ip_address")+"\nPin : "+jsonObject1.getString("pin");
+                devicePower[i] = jsonObject1.getString("sum_energy");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+        Log.v("monthlyfrag","yay1");
+
+
+        String[] locationName = new String[numsizeLocation];
+        String[] locationPower = new String[numsizeLocation];
+
+        for(int i = 0; i< numsizeLocation ; i++)
+        {
+            JSONObject jsonObject1 = null;
+            try {
+                jsonObject1 = (JSONObject) this_month_location.get(i);
+                locationName[i] = "Location : "+jsonObject1.getString("location_name");
+                locationPower[i] = jsonObject1.getString("sum_energy");
+                Log.v("monthlyfrag","yay12 "+locationPower[i]);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+        Log.v("monthlyfrag","yay2");
 
 
         int start, start0;
         if (Home.menu_statistic==0) {
-            for (start = 0; start < numSize; start++) {
+            for (start = 0; start < numsizeGoD; start++) {
                 //ตรงนี้นะสัสApplianceModel(device name, กำลังไฟฟ้าที่ใช้,วันที่เปนสตริงนะ,constant string)
-                ApplianceModel appliances = new ApplianceModel(deviceName[start], Double.parseDouble(devicePower[start]), deviceDate[start], "Electricity's Usage: ");
+                ApplianceModel appliances = new ApplianceModel(deviceName[start], Double.parseDouble(devicePower[start]), "Electricity's Usage: ");
                 applianceModelListeList.add(appliances);
+                Log.v("monthlyfrag", "yay3");
             }
         } else if (Home.menu_statistic==1) {
-            for (start0 = 0; start0 < numSize - 15; start0++) {
+            for (start0 = 0; start0 < numsizeLocation ; start0++) {
                 //ตรงนี้นะสัสApplianceModel(location name, กำลังไฟฟ้าที่ใช้,วันที่เปนสตริงนะ,constant string)
-                ApplianceModel locationapp = new ApplianceModel(locationName[start0], Double.parseDouble(locationPower[start0]), locationDate[start0], "Electricity's Usage: ");
+                ApplianceModel locationapp = new ApplianceModel(locationName[start0], Double.parseDouble(locationPower[start0]), "Electricity's Usage: ");
                 applianceModelListeList.add(locationapp);
+                Log.v("monthlyfrag", "yay4");
             }
         }
         mAdapter.notifyDataSetChanged();
