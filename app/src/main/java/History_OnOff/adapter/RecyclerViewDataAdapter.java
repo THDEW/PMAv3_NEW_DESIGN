@@ -164,36 +164,38 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
                 allBt.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (!selectAll) {
-                            selectAll = true;
+                        if(LocationFragment.canSelectData){
+                            if (!selectAll) {
+                                selectAll = true;
 
-                            LocationFragment.data.add(new GraphSeriesModel(locationId,locationTitle.getText().toString()
-                                    , 10, true));
+                                LocationFragment.data.add(new GraphSeriesModel(locationId,locationTitle.getText().toString()
+                                        , 10, true));
 
-                            //publish here to get all data in a location
+                                //publish here to get all data in a location
 
-                            for (int i = 0; i < LocationFragment.data.size(); i++) {
+                                for (int i = 0; i < LocationFragment.data.size(); i++) {
 
-                                if (!LocationFragment.data.get(i).getIsLocation() &&
-                                        LocationFragment.data.get(i).getLocation().equals(locationTitle.getText().toString())) {
-                                    LocationFragment.data.remove(i);
-                                    i--;
+                                    if (!LocationFragment.data.get(i).getIsLocation() &&
+                                            LocationFragment.data.get(i).getLocation().equals(locationTitle.getText().toString())) {
+                                        LocationFragment.data.remove(i);
+                                        i--;
+                                    }
                                 }
-                            }
 
-                            allBt.setAlpha(0.5f);
-                            LocationFragment.addNew = true;
-                        } else {
-                            for (int j = 0; j < LocationFragment.data.size(); j++) {
+                                allBt.setAlpha(0.5f);
+                                LocationFragment.addNew = true;
+                            } else {
+                                for (int j = 0; j < LocationFragment.data.size(); j++) {
 
-                                if (LocationFragment.data.get(j).getLocation().equals(locationTitle.getText().toString()) &&
-                                        LocationFragment.data.get(j).getIsLocation()) {
-                                    LocationFragment.data.remove(j);
+                                    if (LocationFragment.data.get(j).getLocation().equals(locationTitle.getText().toString()) &&
+                                            LocationFragment.data.get(j).getIsLocation()) {
+                                        LocationFragment.data.remove(j);
 
-                                    allBt.setAlpha(1f);
-                                    selectAll = false;
-                                    LocationFragment.addNew = true;
-                                    break;
+                                        allBt.setAlpha(1f);
+                                        selectAll = false;
+                                        LocationFragment.addNew = true;
+                                        break;
+                                    }
                                 }
                             }
                         }
