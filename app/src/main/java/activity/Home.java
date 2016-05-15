@@ -110,46 +110,6 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
         aboutFragment = new AboutFragment();
 
 
-//        final Handler mHandler = new Handler();
-//
-//        Runnable mTimer1 = new Runnable() {
-//            @Override
-//            public void run() {
-//
-//                Toast.makeText(getApplicationContext(), "go go go", Toast.LENGTH_SHORT).show();
-//
-//                String title = "";
-//
-//                String topic = null;
-//                String message = null;
-//                int qos = 0;
-//                boolean retained = false;
-//
-//                String[] args = new String[2];
-//
-//                if (page == 3){
-//                    topic = "android/electricityBill";
-//                    message = "getElectricityCost";
-//                    qos = 0;
-//                    retained = false;
-//
-//                    args = new String[2];
-//                    args[0] = message;
-//                    args[1] = topic+";qos:"+qos+";retained:"+retained;
-//
-//                    title = "ElectricBill";
-//
-//                    try {
-//                        connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(home, ActionListener.Action.PUBLISH, clientHandle, args));
-//                    } catch (MqttException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//                mHandler.postDelayed(this, 5000);
-//            }
-//        };
-//
-//        mHandler.postDelayed(mTimer1, 5000);
 
         displayView(5);
     }

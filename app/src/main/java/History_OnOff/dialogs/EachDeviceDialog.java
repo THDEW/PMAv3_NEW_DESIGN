@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.senoir.newpmatry1.R;
 import com.jjoe64.graphview.DefaultLabelFormatter;
@@ -75,9 +76,16 @@ public class EachDeviceDialog extends DialogFragment {
 
     private EachDeviceDialog eachDeviceDialog;
 
+    private boolean onUpdate = false;
+
+    final Handler mHandler = new Handler();
+
+    private Runnable r;
+
+
     public EachDeviceDialog(){}
 
-    public EachDeviceDialog(int id,String name, /*String location,*/String energy/*,String bill*/,String lastTime, String lastRecord/*,boolean status*/, Connection connection){
+    public EachDeviceDialog(int id,String name, /*String location,*/String energy/*,String bill*/,String lastTime, String lastRecord/*,boolean status*/, final Connection connection){
         //        this.bill = bill;
         this.id = id;
         this.name = name;
@@ -87,6 +95,39 @@ public class EachDeviceDialog extends DialogFragment {
         this.connection = connection;
         connection.registerChangeListener(changeListener);
         eachDeviceDialog = this;
+        r = new Runnable() {
+            private volatile boolean shutdown = false;
+            @Override
+            public void run() {
+
+
+                        String topic = "android/currentStatus/group_of_device";
+                        String message = ""+eachDeviceDialog.id;
+                        int qos = 0;
+                        boolean retained = false;
+
+                        String[] args = new String[2];
+                        args[0] = message;
+                        args[1] = topic+";qos:"+qos+";retained:"+retained;
+
+                        if(eachDeviceDialog.connection != null)
+                        {
+                            try {
+                                eachDeviceDialog.connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(getActivity(), ActionListener.Action.PUBLISH, clientHandle, args));
+                            } catch (MqttException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        else
+                        {
+
+                        }
+                    }
+
+
+
+        };
+
     }
 
     @Override
@@ -141,14 +182,14 @@ public class EachDeviceDialog extends DialogFragment {
                     return super.formatLabel(value, isValueX);
                 } else {
                     // show currency for y values
-                    return super.formatLabel(Double.parseDouble(d.format(value)), isValueX) + " kW/hr   |";
+                    return super.formatLabel(Double.parseDouble(d.format(value)), isValueX) + " Ws        |";
                 }
             }
         });
 
         graph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
         graph.getGridLabelRenderer().setHorizontalAxisTitle("Current time");
-        graph.getGridLabelRenderer().setVerticalAxisTitle("Energy Consumption (kW/hr)");
+        graph.getGridLabelRenderer().setVerticalAxisTitle("Energy Consumption (Ws)");
         graph.getGridLabelRenderer().setVerticalLabelsVisible(false);
         graph.getSecondScale().setMinY(0.1);
         graph.getSecondScale().setMaxY(getMax() + 2);
@@ -175,7 +216,10 @@ public class EachDeviceDialog extends DialogFragment {
 
             @Override
             public void onClick(View v) {
+
+                eachDeviceDialog.connection = null;
                 dismiss();
+
                 deviceSelected = false;
             }
         });
@@ -275,15 +319,22 @@ public class EachDeviceDialog extends DialogFragment {
 //            statusTv.setText("OFF");
 //            statusTv.setTextColor(Color.RED);
 //        }
-
-        appendDataPoint(Double.parseDouble(this.energy));
+        appendDataPoint(newValue);
+        //appendDataPoint(Double.parseDouble(this.energy));
 
         series.resetData(dataPoint);
 
         graph.getSecondScale().setMinY(0);
         graph.getSecondScale().setMaxY(getMax() + getMax() * 0.5);
         graph.getViewport().setMinY(0);
-        graph.getViewport().setMaxY(getMax() + getMax()*0.5);
+        graph.getViewport().setMaxY(getMax() + getMax() * 0.5);
+
+        //onUpdate = true;
+
+        mHandler.postDelayed(r,3000);
+        //onUpdate = false;
+
+
 
     }
 
@@ -293,29 +344,19 @@ public class EachDeviceDialog extends DialogFragment {
         public void propertyChange(PropertyChangeEvent event) {
 
 
-            if(event.getPropertyName().equals("currentStatus/group_of_device"))
+            if(event.getPropertyName().equals("currentStatus/group_of_device/"+eachDeviceDialog.id))
             {
                 Bundle bundle;
                 bundle = connection.getBundle();
-                Log.v("eachdev",bundle.toString());
+                Log.v("eachdev", bundle.toString());
                 eachDeviceDialog.updateData(bundle);
 
-                /*
-                String topic = "android/currentStatus/group_of_device/data";
-                String message = ""+id;
-                int qos = 0;
-                boolean retained = false;
 
-                String[] args = new String[2];
-                args[0] = message;
-                args[1] = topic+";qos:"+qos+";retained:"+retained;
 
-                try {
-                    connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(getActivity(), ActionListener.Action.PUBLISH, clientHandle, args));
-                } catch (MqttException e) {
-                    e.printStackTrace();
-                }
-                */
+
+
+
+
             }
 
 

@@ -164,6 +164,8 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
                             LocationFragment.data.add(new GraphSeriesModel("", locationTitle.getText().toString()
                                     , 10, true));
 
+                            //publish here to get all data in a location
+
                             for (int i = 0; i < LocationFragment.data.size(); i++) {
 
                                 if (!LocationFragment.data.get(i).getIsLocation() &&

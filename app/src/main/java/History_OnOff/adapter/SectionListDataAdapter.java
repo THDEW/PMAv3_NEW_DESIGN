@@ -134,7 +134,7 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                 @Override
                 public void onClick(View v) {
                     if (Home.page == 0) {
-                        String unit = " kW/hr ";
+                        String unit = " Ws ";
 
                         // หน้า On และ Off parameter (ชื่อ device, location of device, power consumption of device (unit), cost, timing usage, status)
 
@@ -176,6 +176,7 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                             }
                         } else {
 
+                            //publish here to get each data of group_of_device
                             LocationFragment.data.add(new GraphSeriesModel(tvTitle.getText().toString(),location
                                     ,5d,false));
 
