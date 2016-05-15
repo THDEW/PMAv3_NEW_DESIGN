@@ -127,9 +127,11 @@ public class TimeSelectionDialog extends DialogFragment {
                 if(startIsSet && endDateIsSet) {
                     if (!startDate.equals(endDate)) {
                         tv.setText(startDate + "\nto " + endDate);
+                        LocationFragment.dateTime = startDate + " to " + endDate;
                     }
                     else {
                         tv.setText(startDate);
+                        LocationFragment.dateTime = startDate;
                     }
 
                     LocationFragment.canSelectData = true;

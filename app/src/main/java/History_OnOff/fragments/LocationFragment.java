@@ -94,6 +94,8 @@ public class LocationFragment extends Fragment {
 
     public static boolean canSelectData = false;
 
+    public static String dateTime = "";
+
     public LocationFragment() {
         // Required empty public constructor
     }
@@ -198,29 +200,30 @@ public class LocationFragment extends Fragment {
             @Override
             public void run() {
 
-                    if(addNew) {
-                        setDataPoint();
+//                Log.d("date time","" + dateTime);
 
-                        legendAdapter = new LegendAdapter(dataPointName, dataPointColor);
-                        legendView.setAdapter(legendAdapter);
-                    }
+                if(addNew) {
+                    setDataPoint();
 
-                    if (dataPoint != null) {
-                        series.resetData(dataPoint);
-                    }
-                    if(data.size() != 0) {
-                        graph.getViewport().setMinY(0);
-                        graph.getViewport().setMaxY(getMax() + getMax() * 0.2);
-                        graph.getSecondScale().setMinY(0);
-                        graph.getSecondScale().setMaxY(getMax() + getMax() * 0.2);
-                    } else {
-                        graph.getViewport().setMinY(0);
-                        graph.getViewport().setMaxY(5);
-                        graph.getSecondScale().setMinY(0);
-                        graph.getSecondScale().setMaxY(5);
-                    }
-                    amount.setText("Amount of data is "+data.size());
+                    legendAdapter = new LegendAdapter(dataPointName, dataPointColor);
+                    legendView.setAdapter(legendAdapter);
+                }
 
+                if (dataPoint != null) {
+                    series.resetData(dataPoint);
+                }
+                if(data.size() != 0) {
+                    graph.getViewport().setMinY(0);
+                    graph.getViewport().setMaxY(getMax() + getMax() * 0.2);
+                    graph.getSecondScale().setMinY(0);
+                    graph.getSecondScale().setMaxY(getMax() + getMax() * 0.2);
+                } else {
+                    graph.getViewport().setMinY(0);
+                    graph.getViewport().setMaxY(5);
+                    graph.getSecondScale().setMinY(0);
+                    graph.getSecondScale().setMaxY(5);
+                }
+                amount.setText("Amount of data is " + data.size());
 
                 mHandler.postDelayed(this, 1);
             }
@@ -400,7 +403,7 @@ public class LocationFragment extends Fragment {
             Log.v("here", "after insert55");
             allSampleData.add(dm);
             Log.v("here", dm.getAllItemsInSection().size() + "");
-            Log.v("here", allSampleData.size()+"");
+            Log.v("here", allSampleData.size() + "");
         }
 
         adapter = new RecyclerViewDataAdapter(myContext, allSampleData, fm, true, connection);
