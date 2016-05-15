@@ -26,7 +26,7 @@ public class SingleItemModel {
         this.lastRecord = lastRecord;
     }
 
-    public SingleItemModel(int id, String name, int locationId, int powernodeId) {
+    public SingleItemModel( int id, String name, int locationId, int powernodeId) {
         this.id = id;
         this.name = name;
         this.locationId = locationId;

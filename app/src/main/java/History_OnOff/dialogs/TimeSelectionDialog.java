@@ -1,7 +1,10 @@
 package History_OnOff.dialogs;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +14,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.senoir.newpmatry1.R;
+
+import org.xml.sax.helpers.LocatorImpl;
+
+import History_OnOff.adapter.RecyclerViewDataAdapter;
+import History_OnOff.fragments.LocationFragment;
+import History_OnOff.model.GraphSeriesModel;
+import adapter.DividerItemDecoration;
 
 /**
  * Created by Toshiba on 4/29/2016.
@@ -25,7 +35,9 @@ public class TimeSelectionDialog extends DialogFragment {
 
     private boolean startIsSet = false;
 
+    private Context myContext;
     private View view;
+    private RecyclerViewDataAdapter adapter;
 
     private int[] date = new int[6];
 
@@ -38,8 +50,10 @@ public class TimeSelectionDialog extends DialogFragment {
     private String endDate;
     private boolean endDateIsSet;
 
-    public TimeSelectionDialog(View view){
+    public TimeSelectionDialog(Context myContext,View view, RecyclerViewDataAdapter adapter){
+        this.myContext = myContext;
         this.view = view;
+        this.adapter = adapter;
     }
 
     @Override
@@ -112,10 +126,25 @@ public class TimeSelectionDialog extends DialogFragment {
             public void onClick(View v) {
                 TextView tv = (TextView) view.findViewById(R.id.periodOfTime);
                 if(startIsSet && endDateIsSet) {
-                    if (!startDate.equals(endDate))
+                    if (!startDate.equals(endDate)) {
                         tv.setText(startDate + "\nto " + endDate);
-                    else
+                    }
+                    else {
                         tv.setText(startDate);
+                    }
+
+                    RecyclerView my_recycler_view = (RecyclerView) view.findViewById(R.id.my_recycler_view);
+
+                    my_recycler_view.setHasFixedSize(true);
+
+                    my_recycler_view.setLayoutManager(new LinearLayoutManager(myContext, LinearLayoutManager.VERTICAL, false));
+
+                    my_recycler_view.addItemDecoration(new DividerItemDecoration(myContext, LinearLayoutManager.VERTICAL));
+
+                    my_recycler_view.setAdapter(adapter);
+
+                    LocationFragment.data.clear();
+
                     dismiss();
                 } else {
                     Toast.makeText(getContext(), "Please set your date completely", Toast.LENGTH_LONG).show();

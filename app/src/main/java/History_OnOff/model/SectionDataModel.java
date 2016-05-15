@@ -18,7 +18,7 @@ public class SectionDataModel {
         this.allItemsInSection = allItemsInSection;
     }
 
-    public SectionDataModel(int id, String headerTitle) {
+    public SectionDataModel(String headerTitle) {
         this.id = id;
         this.headerTitle = headerTitle;
     }

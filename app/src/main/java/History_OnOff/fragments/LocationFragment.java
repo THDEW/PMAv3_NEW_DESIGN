@@ -10,12 +10,14 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
@@ -29,6 +31,9 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 
 import org.eclipse.paho.android.service.sample.Connection;
 import org.eclipse.paho.android.service.sample.Connections;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -76,6 +81,8 @@ public class LocationFragment extends Fragment {
 
     LegendAdapter legendAdapter;
 
+    RecyclerViewDataAdapter adapter;
+
     public static RecyclerView legendView;
 
     RecyclerView my_recycler_view;
@@ -106,7 +113,7 @@ public class LocationFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.fragment_location, container, false);
 
         allSampleData = new ArrayList<>();
-        createDummyData();
+        //createDummyData();
 
         fm = getFragmentManager();
 
@@ -118,13 +125,9 @@ public class LocationFragment extends Fragment {
 
         my_recycler_view.setHasFixedSize(true);
 
-        RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(myContext, allSampleData, fm);
-
         my_recycler_view.setLayoutManager(new LinearLayoutManager(myContext, LinearLayoutManager.VERTICAL, false));
 
         my_recycler_view.addItemDecoration(new DividerItemDecoration(myContext, LinearLayoutManager.VERTICAL));
-
-        my_recycler_view.setAdapter(adapter);
 
         legendView = (RecyclerView) rootView.findViewById(R.id.legend);
         legendView.setLayoutManager(new LinearLayoutManager(myContext, LinearLayoutManager.VERTICAL, false));
@@ -233,23 +236,23 @@ public class LocationFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                TimeSelectionDialog dialog = new TimeSelectionDialog(rootView);
+                TimeSelectionDialog dialog = new TimeSelectionDialog(myContext, rootView, adapter);
                 dialog.show(fm, "Time Selection");
 
             }
         });
 
-        Button graphSelection = (Button) rootView.findViewById(R.id.graph_button);
-        graphSelection.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                GraphSelection dialog = new GraphSelection();
-                dialog.show(fm, "Graph Type Selection");
-
-            }
-        });
+//        Button graphSelection = (Button) rootView.findViewById(R.id.graph_button);
+//        graphSelection.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//
+//                GraphSelection dialog = new GraphSelection();
+//                dialog.show(fm, "Graph Type Selection");
+//
+//            }
+//        });
 
         DatePicker dp = new DatePicker(myContext);
 
@@ -290,55 +293,121 @@ public class LocationFragment extends Fragment {
 
     public void createDummyData(Bundle bundle) {
 
-        int amountOfLocation = 3; // get size location มา
+        String jall = bundle.getString("history");
+        Toast.makeText(getActivity(),jall,Toast.LENGTH_LONG).show();;
+        JSONArray jsonArray = null;
+        int amountOfLocation = 0; // get size location มา
+        try {
+            jsonArray = new JSONArray(jall);
+            amountOfLocation = jsonArray.length();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.v("location_size",""+amountOfLocation);
+
+
         int[] amountOfDevice = new int[amountOfLocation];
 
         for(int i = 0; i < amountOfLocation; i++){
-            amountOfDevice[i] = 5; // get size ของ device ในแต่ละ location มา
+
+            open = new boolean[amountOfLocation];
+            open[i] = false;
+
+            JSONObject jsonObject = null;
+            JSONArray jsonArray1 = null;
+
+            try {
+                jsonObject = (JSONObject) jsonArray.get(i);
+                jsonArray1 = jsonObject.getJSONArray("value");
+                amountOfDevice[i] = jsonArray1.length(); // get size ของ device ในแต่ละ location มา
+                Log.v("amountofdevice "+i," "+amountOfDevice[i]);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         }
 
         String[] locationName = new String[amountOfLocation]; // get location name มา
-        int[] locationId = new int[amountOfLocation]; // get location id  มา
+
 
         ArrayList<String[]> deviceName = new ArrayList<>();
         ArrayList<int[]> deviceId = new ArrayList<>();
         ArrayList<int[]> powerNodeId = new ArrayList<>();
+        ArrayList<int[]> locationId = new ArrayList<>();
 
 
         for(int i = 0; i < amountOfLocation; i++){
+            JSONObject location_name = null;
+            try {
+                location_name = (JSONObject) jsonArray.get(i);
+                locationName[i] = location_name.getString("location_name");
+                Log.v("location_name "+i," "+locationName[i]);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
-            locationName[i] = "Location name";
-            locationId[i] = i;
+
 
             String[] deviceNameTemp = new String[amountOfDevice[i]];// get device name in each location มา
             int[] deviceIdTemp = new int[amountOfDevice[i]];// get device id มา
             int[] powerNodeIdTemp = new int[amountOfDevice[i]];// get power node id มา
+            int[] locationIdTemp = new int[amountOfDevice[i]]; // get location id  มา
 
+            JSONObject jsonObject = null;
+            JSONArray value = null;
+            try {
+                jsonObject = (JSONObject) jsonArray.get(i);
+                value = jsonObject.getJSONArray("value");
+                Log.v("first god", value.toString()+"");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            for(int j = 0; j<amountOfDevice[i];j++)
+            {
+                JSONObject eachGoD = null;
+                try {
+                    eachGoD = (JSONObject) value.get(j);
+                    deviceNameTemp[j] = eachGoD.getString("name")+" : "+eachGoD.getString("pin");
+                    deviceIdTemp[j] = Integer.parseInt(eachGoD.getString("group_of_device_id"));
+                    powerNodeIdTemp[j] = Integer.parseInt(eachGoD.getString("power_node_id"));
+                    locationIdTemp[j] = Integer.parseInt(eachGoD.getString("location_id"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
 
             deviceName.add(deviceNameTemp);
             deviceId.add(deviceIdTemp);
             powerNodeId.add(powerNodeIdTemp);
+            locationId.add(locationIdTemp);
+            Log.v("here", "after insert");
 
         }
 
 
-        for (int i = 1; i <= amountOfLocation; i++) {
-
-            SectionDataModel dm = new SectionDataModel(locationId[i-1] ,locationName[i-1]);
-
+        for (int i = 0; i < amountOfLocation; i++) {
+            Log.v("here", "after insert11");
+            SectionDataModel dm = new SectionDataModel(locationName[i]);
+            Log.v("here", "after insert22");
             ArrayList<SingleItemModel> singleItem = new ArrayList<>();
             for (int j = 0; j < amountOfDevice[i]; j++) {
-                singleItem.add(new SingleItemModel(deviceId.get(i-1)[j] ,deviceName.get(i)[j], locationId[i-1],powerNodeId.get(i-1)[j]));
+                singleItem.add(new SingleItemModel(deviceId.get(i)[j] ,deviceName.get(i)[j],locationId.get(i)[j],powerNodeId.get(i)[j]));
+                Log.v("here", "after insert33");
             }
-
+            Log.v("here", "after insert44");
             dm.setAllItemsInSection(singleItem);
-
+            Log.v("here", "after insert55");
             allSampleData.add(dm);
+            Log.v("here", dm.getAllItemsInSection().size() + "");
+            Log.v("here", allSampleData.size()+"");
         }
 
-        RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(myContext, allSampleData, fm, true, connection);
-
+        adapter = new RecyclerViewDataAdapter(myContext, allSampleData, fm, true, connection);
+        Log.v("here", "after insert77");
         my_recycler_view.setAdapter(adapter);
+        Log.v("here", "after insert88");
     }
 
     public static void setDataPoint(){

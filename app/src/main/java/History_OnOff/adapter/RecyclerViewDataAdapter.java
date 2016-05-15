@@ -88,6 +88,10 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
 
         itemRowHolder.open = false;
 
+        if(dataList.get(i).getAllItemsInSection().size() != 0) {
+            itemRowHolder.locationId = dataList.get(i).getAllItemsInSection().get(0).getLocationId();
+        }
+
 
         if(Home.page == 1) {
             if (LocationFragment.open[i]) {
@@ -130,6 +134,8 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
 
         protected SectionDataModel locationItem;
 
+        int locationId;
+
         boolean selectAll = false;
 
         boolean open;
@@ -161,7 +167,7 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
                         if (!selectAll) {
                             selectAll = true;
 
-                            LocationFragment.data.add(new GraphSeriesModel("", locationTitle.getText().toString()
+                            LocationFragment.data.add(new GraphSeriesModel(locationId,locationTitle.getText().toString()
                                     , 10, true));
 
                             //publish here to get all data in a location
@@ -252,8 +258,8 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
 
             double value = 0; //bundle unit มา
 
-            LocationFragment.data.add(new GraphSeriesModel("", locationTitle.getText().toString()
-                    , value, true));
+            LocationFragment.data.add(new GraphSeriesModel(locationId,locationTitle.getText().toString()
+                    , 10, true));
 
         }
     }

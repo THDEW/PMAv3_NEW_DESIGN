@@ -31,6 +31,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import activity.Home;
 import billcalculate.BillCalculate;
 
 import java.beans.PropertyChangeEvent;
@@ -370,6 +371,7 @@ public class ElectricityBillFragment extends Fragment {
 
         ArrayList<String[]> deviceName = new ArrayList<>();
         ArrayList<double[]> deviceUnits = new ArrayList<>();
+        Home.expanded = new boolean[amountOfLocation];
 
 
         for(int i = 0; i < amountOfLocation; i++){

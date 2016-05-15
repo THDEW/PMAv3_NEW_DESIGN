@@ -59,6 +59,8 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
 
     public static boolean login = false;
 
+    public static boolean[] expanded = new boolean[1];
+
     OnOffFragment onOffFragment = null;
     LocationFragment locationFragment = null;
     StatisticFragment statisticFragment = null;
@@ -212,6 +214,25 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
                 page = 1;
                 getSupportActionBar().setTitle(title);
                 fragmentTransaction.commit();
+
+                topic = "android/history";
+                message = "getHistory";
+                qos = 0;
+                retained = false;
+
+                args = new String[2];
+                args[0] = message;
+                args[1] = topic+";qos:"+qos+";retained:"+retained;
+
+                try {
+                    connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(this, ActionListener.Action.PUBLISH, clientHandle, args));
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
+
+
+
+
                 break;
             case 2:
 
@@ -446,6 +467,20 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
                 statisticFragment.updateStatistic(home, statisticFragment.getCurrentPosition(), bundle);
                 Log.v("statistic", "efrag3");
 
+            }
+            else if(event.getPropertyName().equals("history"))
+            {
+                Bundle bundle;
+                bundle = connection.getBundle();
+                Log.v("history", "efrag");
+
+
+                //Log.d("Home", bundle.toString());
+                fragmentTransaction.replace(R.id.container_body, locationFragment);
+                fragmentTransaction.commit();
+                Log.v("history", "efrag1");
+                locationFragment.createDummyData(bundle);
+                Log.v("history", "efrag2");
             }
 
 

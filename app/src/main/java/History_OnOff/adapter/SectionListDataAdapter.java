@@ -74,6 +74,12 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
 
         holder.item = itemsList.get(i);
 
+        holder.deviceId = holder.item.getId();
+
+        holder.powerNodeId = holder.item.getPowernodeId();
+
+        holder.locationId = holder.item.getLocationId();
+
         holder.tvTitle.setText(singleItem.getName());
 
         //if(singleItem.getUrl().equals("a2")){
@@ -123,6 +129,13 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
         boolean selected = false;
 
         protected SingleItemModel item;
+
+        protected int deviceId;
+
+        protected int powerNodeId;
+
+        protected int locationId;
+
 
         public SingleItemRowHolder(View view) {
             super(view);
@@ -177,7 +190,7 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                         } else {
 
                             //publish here to get each data of group_of_device
-                            LocationFragment.data.add(new GraphSeriesModel(tvTitle.getText().toString(),location
+                            LocationFragment.data.add(new GraphSeriesModel(deviceId, powerNodeId, locationId, tvTitle.getText().toString(),location
                                     ,5d,false));
 
 
@@ -197,7 +210,7 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
         public void addSeries(Bundle bundle){
 
             double value = 0; //bundle unit มา
-            LocationFragment.data.add(new GraphSeriesModel(tvTitle.getText().toString(),location
+            LocationFragment.data.add(new GraphSeriesModel(deviceId, powerNodeId, locationId,tvTitle.getText().toString(),location
                     ,value,false));
 
         }
