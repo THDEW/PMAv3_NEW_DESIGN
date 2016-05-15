@@ -294,7 +294,7 @@ public class LocationFragment extends Fragment {
     public void createDummyData(Bundle bundle) {
 
         String jall = bundle.getString("history");
-        Toast.makeText(getActivity(),jall,Toast.LENGTH_LONG).show();;
+
         JSONArray jsonArray = null;
         int amountOfLocation = 0; // get size location มา
         try {
