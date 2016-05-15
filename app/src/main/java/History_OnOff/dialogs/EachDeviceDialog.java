@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.senoir.newpmatry1.R;
+import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
@@ -116,6 +117,21 @@ public class EachDeviceDialog extends DialogFragment {
         series = new LineGraphSeries<>(dataPoint);
 
         graph.addSeries(series);
+
+        final DecimalFormat d = new DecimalFormat("0");
+
+        graph.getSecondScale().setLabelFormatter(new DefaultLabelFormatter() {
+            @Override
+            public String formatLabel(double value, boolean isValueX) {
+                if (isValueX) {
+                    // show normal x values
+                    return super.formatLabel(value, isValueX);
+                } else {
+                    // show currency for y values
+                    return super.formatLabel(Double.parseDouble(d.format(value)), isValueX) + " kW/hr   x";
+                }
+            }
+        });
 
         graph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
         graph.getGridLabelRenderer().setHorizontalAxisTitle("Current time");
