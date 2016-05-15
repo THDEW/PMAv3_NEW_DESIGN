@@ -92,6 +92,8 @@ public class LocationFragment extends Fragment {
 
     TextView amount;
 
+    public static boolean canSelectData = false;
+
     public LocationFragment() {
         // Required empty public constructor
     }
@@ -147,8 +149,6 @@ public class LocationFragment extends Fragment {
             series.setSpacing(20);
 
             isBarGraphSet = true;
-
-            series.setTitle("Location XXX"); // ไม่เกี่ยว
 
             // styling
             series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
@@ -254,11 +254,10 @@ public class LocationFragment extends Fragment {
 //            }
 //        });
 
-        DatePicker dp = new DatePicker(myContext);
 
         TextView periodOfTime = (TextView) rootView.findViewById(R.id.periodOfTime);
 
-        periodOfTime.setText(dp.getDayOfMonth() + "/" + (dp.getMonth()+1) + "/" + dp.getYear());
+        periodOfTime.setText("Please! select time");
 
         // Inflate the layout for this fragment
         return rootView;

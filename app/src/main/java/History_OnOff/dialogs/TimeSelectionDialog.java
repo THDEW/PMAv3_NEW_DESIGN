@@ -15,11 +15,8 @@ import android.widget.Toast;
 
 import com.example.senoir.newpmatry1.R;
 
-import org.xml.sax.helpers.LocatorImpl;
-
 import History_OnOff.adapter.RecyclerViewDataAdapter;
 import History_OnOff.fragments.LocationFragment;
-import History_OnOff.model.GraphSeriesModel;
 import adapter.DividerItemDecoration;
 
 /**
@@ -42,7 +39,7 @@ public class TimeSelectionDialog extends DialogFragment {
     private int[] date = new int[6];
 
     private String currentDate;
-    private int curentDay;
+    private int currentDay;
     private int currentMonth;
     private int currentYear;
 
@@ -68,7 +65,7 @@ public class TimeSelectionDialog extends DialogFragment {
 
         currentDate = datePicker.getDayOfMonth() + "/" + (datePicker.getMonth()+1) + "/" + datePicker.getYear();
 
-        curentDay = datePicker.getDayOfMonth();
+        currentDay = datePicker.getDayOfMonth();
         currentMonth = (datePicker.getMonth()+1);
         currentYear =  datePicker.getYear();
 
@@ -80,13 +77,13 @@ public class TimeSelectionDialog extends DialogFragment {
                 date[0] = datePicker.getYear();
                 date[1] = (datePicker.getMonth()+1);
                 date[2] = datePicker.getDayOfMonth();
-                if (isAfterToday(date[2], date[1], date[0])){
+                if (isBeforeToday(date[2], date[1], date[0])){
                 startTv.setText(date[2] + "/" + date[1] + "/" + date[0]);
 
                 startDate = date[2] + "/" + date[1] + "/" + date[0];
                 startIsSet = true;
                 } else {
-                    Toast.makeText(getContext(), "Please! set a date before today or set as today" , Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Please! set a date before today" , Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -100,18 +97,20 @@ public class TimeSelectionDialog extends DialogFragment {
                     date[3] = datePicker.getYear();
                     date[4] = (datePicker.getMonth()+1);
                     date[5] = datePicker.getDayOfMonth();
-                    if(compareDate() && isAfterToday(date[5], date[4], date[3])) {
+
+
+                    if(compareDate() && isBeforeToday(date[5], date[4], date[3])) {
 
                         endTv.setText(date[5] + "/" + date[4] + "/" + date[3]);
                         endDate = date[5] + "/" + date[4] + "/" + date[3];
                         endDateIsSet = true;
 
-                    } else if (!compareDate() && isAfterToday(date[5], date[4], date[3])){
+                    } else if (!compareDate() && isBeforeToday(date[5], date[4], date[3])){
                         Toast.makeText(getContext(), "Please! set a date after or same a first date", Toast.LENGTH_LONG).show();
-                    } else if (compareDate() && !isAfterToday(date[5], date[4], date[3])){
-                        Toast.makeText(getContext(), "Please! set a date after today or set as today", Toast.LENGTH_LONG).show();
+                    } else if (compareDate() && !isBeforeToday(date[5], date[4], date[3])){
+                        Toast.makeText(getContext(), "Please! set a date before today", Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(getContext(), "Please! set a date before today or set as today and after started date", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Please! set a date before today and after or as started day", Toast.LENGTH_LONG).show();
                     }
                 } else {
                     Toast.makeText(getContext(), "Please set a first date", Toast.LENGTH_LONG).show();
@@ -132,6 +131,8 @@ public class TimeSelectionDialog extends DialogFragment {
                     else {
                         tv.setText(startDate);
                     }
+
+                    LocationFragment.canSelectData = true;
 
                     RecyclerView my_recycler_view = (RecyclerView) view.findViewById(R.id.my_recycler_view);
 
@@ -208,14 +209,14 @@ public class TimeSelectionDialog extends DialogFragment {
         }
     }
 
-    public boolean isAfterToday(int day, int month, int year){
+    public boolean isBeforeToday(int day, int month, int year){
         if(year > currentYear){
             return false;
         } else {
             if(month > currentMonth){
                 return false;
             } else {
-                if(day > curentDay){
+                if(day >= currentDay){
                     return false;
                 }
             }
@@ -223,6 +224,7 @@ public class TimeSelectionDialog extends DialogFragment {
 
         return true;
     }
+
 
     /*
     @Override

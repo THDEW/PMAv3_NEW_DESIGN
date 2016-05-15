@@ -173,32 +173,34 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                         }
 
                     } else if (Home.page == 1) {
-                        if (selected) {
+                        if (LocationFragment.canSelectData) {
+                            if (selected) {
 //                            LocationFragment.data.get(index).setValue(-1d);
-                            for (int j = 0; j < LocationFragment.data.size(); j++) {
+                                for (int j = 0; j < LocationFragment.data.size(); j++) {
 
-                                if (LocationFragment.data.get(j).getDevice().equals(tvTitle.getText().toString()) &&
-                                        LocationFragment.data.get(j).getLocation().equals(location)) {
-                                    LocationFragment.data.remove(j);
+                                    if (LocationFragment.data.get(j).getDevice().equals(tvTitle.getText().toString()) &&
+                                            LocationFragment.data.get(j).getLocation().equals(location)) {
+                                        LocationFragment.data.remove(j);
 
-                                    selected = false;
-                                    itemImage.setAlpha(1f);
-                                    LocationFragment.addNew = true;
-                                    break;
+                                        selected = false;
+                                        itemImage.setAlpha(1f);
+                                        LocationFragment.addNew = true;
+                                        break;
+                                    }
                                 }
+                            } else {
+
+                                //publish here to get each data of group_of_device
+                                LocationFragment.data.add(new GraphSeriesModel(deviceId, powerNodeId, locationId, tvTitle.getText().toString(), location
+                                        , 5d, false));
+
+
+                                itemImage.setAlpha(0.2f);
+                                selected = true;
+                                LocationFragment.addNew = true;
+
+                                //itemImage.setBackgroundResource(R.drawable.ic_action_search);
                             }
-                        } else {
-
-                            //publish here to get each data of group_of_device
-                            LocationFragment.data.add(new GraphSeriesModel(deviceId, powerNodeId, locationId, tvTitle.getText().toString(),location
-                                    ,5d,false));
-
-
-                            itemImage.setAlpha(0.2f);
-                            selected = true;
-                            LocationFragment.addNew = true;
-
-                            //itemImage.setBackgroundResource(R.drawable.ic_action_search);
                         }
                     }
                 }
