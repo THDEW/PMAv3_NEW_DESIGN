@@ -286,7 +286,7 @@ public class EachDeviceDialog extends DialogFragment {
             Log.v("newval", "3");
 
             Double energydub = Double.parseDouble(this.energy);
-            energydub = (energydub/1000)/3600;
+            energydub = (energydub)/3600;
 
 
             this.energy = df.format(energydub);
@@ -312,7 +312,7 @@ public class EachDeviceDialog extends DialogFragment {
 
 
 
-        energyTv.setText(this.energy + " kWhr");
+        energyTv.setText(this.energy + " Wh");
         timeTv.setText(this.lastTime);
         recordTv.setText(this.lastRecord + " Ws");
 //        billTv.setText(this.bill);
