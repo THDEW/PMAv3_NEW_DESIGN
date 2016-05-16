@@ -82,7 +82,7 @@ public class IntroductionPage extends Activity {
         MqttConnectOptions conOpt = new MqttConnectOptions();
 
         // The basic client information
-        String server = "192.168.1.35";
+        String server = "192.168.0.100";
         String clientId = "Android42";
         int port = 1883;
         boolean cleanSession = false;

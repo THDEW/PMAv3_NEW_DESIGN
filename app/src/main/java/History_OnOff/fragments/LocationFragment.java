@@ -75,7 +75,7 @@ public class LocationFragment extends Fragment {
 
     public static boolean addNew;
 
-    static GraphView graph;
+    public static GraphView graph;
 
     static TextView tv;
 
@@ -148,7 +148,7 @@ public class LocationFragment extends Fragment {
 
             graph.addSeries(series);
 
-            series.setSpacing(20);
+            series.setSpacing(10);
 
             isBarGraphSet = true;
 
@@ -199,7 +199,6 @@ public class LocationFragment extends Fragment {
         Runnable mTimer1 = new Runnable() {
             @Override
             public void run() {
-
 //                Log.d("date time","" + dateTime);
 
                 if(addNew) {
@@ -214,9 +213,9 @@ public class LocationFragment extends Fragment {
                 }
                 if(data.size() != 0) {
                     graph.getViewport().setMinY(0);
-                    graph.getViewport().setMaxY(getMax() + getMax() * 0.2);
+                    graph.getViewport().setMaxY(getMax() + getMax() * 0.8);
                     graph.getSecondScale().setMinY(0);
-                    graph.getSecondScale().setMaxY(getMax() + getMax() * 0.2);
+                    graph.getSecondScale().setMaxY(getMax() + getMax() * 0.8);
                 } else {
                     graph.getViewport().setMinY(0);
                     graph.getViewport().setMaxY(5);
@@ -260,7 +259,7 @@ public class LocationFragment extends Fragment {
 
         TextView periodOfTime = (TextView) rootView.findViewById(R.id.periodOfTime);
 
-        periodOfTime.setText("Please! select time");
+        periodOfTime.setText("Please Select Date of Comparison");
 
         // Inflate the layout for this fragment
         return rootView;
@@ -294,7 +293,7 @@ public class LocationFragment extends Fragment {
     }
 
     public void createDummyData(Bundle bundle) {
-
+        allSampleData.clear();
         String jall = bundle.getString("history");
 
         JSONArray jsonArray = null;

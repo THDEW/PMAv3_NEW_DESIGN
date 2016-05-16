@@ -82,6 +82,8 @@ public class EachDeviceDialog extends DialogFragment {
 
     private Runnable r;
 
+    private boolean close = false;
+
 
     public EachDeviceDialog(){}
 
@@ -110,7 +112,7 @@ public class EachDeviceDialog extends DialogFragment {
                         args[0] = message;
                         args[1] = topic+";qos:"+qos+";retained:"+retained;
 
-                        if(eachDeviceDialog.connection != null)
+                        if(!close)
                         {
                             try {
                                 eachDeviceDialog.connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(getActivity(), ActionListener.Action.PUBLISH, clientHandle, args));
@@ -217,7 +219,7 @@ public class EachDeviceDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
 
-                eachDeviceDialog.connection = null;
+                close = true;
                 dismiss();
 
                 deviceSelected = false;
@@ -350,16 +352,7 @@ public class EachDeviceDialog extends DialogFragment {
                 bundle = connection.getBundle();
                 Log.v("eachdev", bundle.toString());
                 eachDeviceDialog.updateData(bundle);
-
-
-
-
-
-
-
             }
-
-
         }
     }
 

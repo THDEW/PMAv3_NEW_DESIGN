@@ -69,6 +69,8 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
     AboutFragment aboutFragment = null;
     public static FragmentManager fragmentManagerCancel;
 
+    private boolean updating = false;
+
     //String title = getString(R.string.app_name);
     FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -161,168 +163,177 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
 
     private void displayView(int position) {
 
-        if(position != 0 && position != 1) {
-            LocationFragment.data.clear();
+        if(!updating)
+        {
+            if(position != 0 && position != 1) {
+                LocationFragment.data.clear();
+            }
+
+            String title = getString(R.string.app_name);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+            String topic = null;
+            String message = null;
+            int qos = 0;
+            boolean retained = false;
+
+            String[] args = new String[2];
+
+            switch (position) {
+                case 0:
+                    if (page != 0){
+                        onOffFragment.update(home);
+                    }
+                    topic = "android/currentStatus";
+                    message = "getCurrentStatus";
+                    qos = 0;
+                    retained = false;
+
+                    args = new String[2];
+                    args[0] = message;
+                    args[1] = topic+";qos:"+qos+";retained:"+retained;
+
+                    fragmentTransaction.replace(R.id.container_body, onOffFragment);
+                    title = getString(R.string.title_home);
+                    getSupportActionBar().setTitle(title);
+                    fragmentTransaction.commit();
+
+                    page = 0;
+
+                    try {
+                        connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(this, ActionListener.Action.PUBLISH, clientHandle, args));
+                    } catch (MqttException e) {
+                        e.printStackTrace();
+                    }
+                    updating = true;
+                    Toast.makeText(this,"Retrieving Current Status data. Please wait.",Toast.LENGTH_SHORT).show();
+
+                    break;
+                case 1:
+
+                    //LocationFragment.data = new ArrayList<>();
+                    fragmentTransaction.replace(R.id.container_body, locationFragment);
+                    title = getString(R.string.title_Location);
+                    page = 1;
+                    getSupportActionBar().setTitle(title);
+                    fragmentTransaction.commit();
+
+                    topic = "android/history";
+                    message = "getHistory";
+                    qos = 0;
+                    retained = false;
+
+                    args = new String[2];
+                    args[0] = message;
+                    args[1] = topic+";qos:"+qos+";retained:"+retained;
+
+                    try {
+                        connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(this, ActionListener.Action.PUBLISH, clientHandle, args));
+                    } catch (MqttException e) {
+                        e.printStackTrace();
+                    }
+                    updating = true;
+                    Toast.makeText(this,"Retrieving History data. Please wait.",Toast.LENGTH_SHORT).show();
+                    break;
+                case 2:
+
+                    topic = "android/statistic";
+                    message = "getStatistic";
+                    qos = 0;
+                    retained = false;
+
+                    args = new String[2];
+                    args[0] = message;
+                    args[1] = topic+";qos:"+qos+";retained:"+retained;
+
+
+
+                    if (page != 2){
+                        statisticFragment.updateStatistic(this, statisticFragment.getCurrentPosition());
+                    }
+                    fragmentTransaction.replace(R.id.container_body, statisticFragment);
+                    title = getString(R.string.title_statistic);
+                    page = 2;
+                    getSupportActionBar().setTitle(title);
+                    fragmentTransaction.commit();
+
+                    try {
+                        connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(this, ActionListener.Action.PUBLISH, clientHandle, args));
+                    } catch (MqttException e) {
+                        e.printStackTrace();
+                    }
+                    updating = true;
+                    Toast.makeText(this,"Retrieving Statistics data. Please wait.",Toast.LENGTH_SHORT).show();
+                    break;
+                case 3:
+
+                    topic = "android/electricityBill";
+                    message = "getElectricityCost";
+                    qos = 0;
+                    retained = false;
+
+                    args = new String[2];
+                    args[0] = message;
+                    args[1] = topic+";qos:"+qos+";retained:"+retained;
+
+                    fragmentTransaction.replace(R.id.container_body, electricityBillFragment);
+                    title = "ElectricBill";
+                    page = 3;
+
+                    getSupportActionBar().setTitle(title);
+                    fragmentTransaction.commit();
+
+                    try {
+                        connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(this, ActionListener.Action.PUBLISH, clientHandle, args));
+                    } catch (MqttException e) {
+                        e.printStackTrace();
+                    }
+                    Toast.makeText(this,"Retrieving Electricity Bill data. Please wait.",Toast.LENGTH_SHORT).show();
+                    updating = true;
+                    break;
+                case 4:
+                    topic = "android/settings";
+                    message = "getSettings";
+                    qos = 0;
+                    retained = false;
+
+                    args = new String[2];
+                    args[0] = message;
+                    args[1] = topic+";qos:"+qos+";retained:"+retained;
+
+                    fragmentTransaction.replace(R.id.container_body, settingFragments);
+                    title = "Settings";
+                    page = 4;
+
+                    getSupportActionBar().setTitle(title);
+                    fragmentTransaction.commit();
+
+                    try {
+                        connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(this, ActionListener.Action.PUBLISH, clientHandle, args));
+                    } catch (MqttException e) {
+                        e.printStackTrace();
+                    }
+                    Toast.makeText(this,"Retrieving settings data. Please wait.",Toast.LENGTH_SHORT).show();
+                    updating = true;
+                    break;
+
+                case 5:
+                    fragmentTransaction.replace(R.id.container_body, aboutFragment);
+                    title = "About";
+                    page = 5;
+                    getSupportActionBar().setTitle(title);
+                    fragmentTransaction.commit();
+                    break;
+                default:
+                    break;
+            }
+        }
+        else
+        {
+            Toast.makeText(this,"Fetching data. Please wait.",Toast.LENGTH_SHORT).show();
         }
 
-        String title = getString(R.string.app_name);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        String topic = null;
-        String message = null;
-        int qos = 0;
-        boolean retained = false;
-
-        String[] args = new String[2];
-
-        switch (position) {
-            case 0:
-                if (page != 0){
-                    onOffFragment.update(home);
-                }
-                topic = "android/currentStatus";
-                message = "getCurrentStatus";
-                qos = 0;
-                retained = false;
-
-                args = new String[2];
-                args[0] = message;
-                args[1] = topic+";qos:"+qos+";retained:"+retained;
-
-                fragmentTransaction.replace(R.id.container_body, onOffFragment);
-                title = getString(R.string.title_home);
-                getSupportActionBar().setTitle(title);
-                fragmentTransaction.commit();
-
-                page = 0;
-
-                try {
-                    connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(this, ActionListener.Action.PUBLISH, clientHandle, args));
-                } catch (MqttException e) {
-                    e.printStackTrace();
-                }
-
-
-                break;
-            case 1:
-                if(page != 1) {
-                    LocationFragment.data = new ArrayList<>();
-                }
-                fragmentTransaction.replace(R.id.container_body, locationFragment);
-                title = getString(R.string.title_Location);
-                page = 1;
-                getSupportActionBar().setTitle(title);
-                fragmentTransaction.commit();
-
-                topic = "android/history";
-                message = "getHistory";
-                qos = 0;
-                retained = false;
-
-                args = new String[2];
-                args[0] = message;
-                args[1] = topic+";qos:"+qos+";retained:"+retained;
-
-                try {
-                    connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(this, ActionListener.Action.PUBLISH, clientHandle, args));
-                } catch (MqttException e) {
-                    e.printStackTrace();
-                }
-
-
-
-
-                break;
-            case 2:
-
-                topic = "android/statistic";
-                message = "getStatistic";
-                qos = 0;
-                retained = false;
-
-                args = new String[2];
-                args[0] = message;
-                args[1] = topic+";qos:"+qos+";retained:"+retained;
-
-
-
-                if (page != 2){
-                    statisticFragment.updateStatistic(this, statisticFragment.getCurrentPosition());
-                }
-                fragmentTransaction.replace(R.id.container_body, statisticFragment);
-                title = getString(R.string.title_statistic);
-                page = 2;
-                getSupportActionBar().setTitle(title);
-                fragmentTransaction.commit();
-
-                try {
-                    connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(this, ActionListener.Action.PUBLISH, clientHandle, args));
-                } catch (MqttException e) {
-                    e.printStackTrace();
-                }
-
-                break;
-            case 3:
-
-                topic = "android/electricityBill";
-                message = "getElectricityCost";
-                qos = 0;
-                retained = false;
-
-                args = new String[2];
-                args[0] = message;
-                args[1] = topic+";qos:"+qos+";retained:"+retained;
-
-                fragmentTransaction.replace(R.id.container_body, electricityBillFragment);
-                title = "ElectricBill";
-                page = 3;
-
-                getSupportActionBar().setTitle(title);
-                fragmentTransaction.commit();
-
-                try {
-                    connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(this, ActionListener.Action.PUBLISH, clientHandle, args));
-                } catch (MqttException e) {
-                    e.printStackTrace();
-                }
-
-                break;
-            case 4:
-                topic = "android/settings";
-                message = "getSettings";
-                qos = 0;
-                retained = false;
-
-                args = new String[2];
-                args[0] = message;
-                args[1] = topic+";qos:"+qos+";retained:"+retained;
-
-                fragmentTransaction.replace(R.id.container_body, settingFragments);
-                title = "Settings";
-                page = 4;
-
-                getSupportActionBar().setTitle(title);
-                fragmentTransaction.commit();
-
-                try {
-                    connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(this, ActionListener.Action.PUBLISH, clientHandle, args));
-                } catch (MqttException e) {
-                    e.printStackTrace();
-                }
-
-                break;
-
-            case 5:
-                fragmentTransaction.replace(R.id.container_body, aboutFragment);
-                title = "About";
-                page = 5;
-                getSupportActionBar().setTitle(title);
-                fragmentTransaction.commit();
-                break;
-            default:
-                break;
-        }
 
 
     }
@@ -353,6 +364,7 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
             if(event.getPropertyName().equals("authenticate"))
             {
                 //creates bundle to get bundle from connection
+
                 Bundle bundle = new Bundle();
                 String[] types = new String[]{"device_type","device_detail","power_node","location","group_of_device","device"};
                 String jall = connection.getBundle().getString("settings/authenticate");
@@ -405,12 +417,13 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
                     notLoggedIn(view);
                     Toast.makeText(home,"Wrong username or password",Toast.LENGTH_SHORT).show();
                 }
+                updating = false;
+                Toast.makeText(home,"Data retrieved",Toast.LENGTH_SHORT).show();
 
             }
 
             else if(event.getPropertyName().equals("settings"))
             {
-
                 String[] types = new String[]{"device_type","device_detail","power_node","location","group_of_device","device"};
                 String jall = connection.getBundle().getString("settings/authenticate");
                 Bundle bundle = connection.getBundle();
@@ -426,10 +439,13 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
                 } else {
                     notLoggedIn(view);
                 }
+                updating = false;
+                Toast.makeText(home,"Data retrieved",Toast.LENGTH_SHORT).show();
             }
 
             else if(event.getPropertyName().equals("electricityBill"))
             {
+
                 Bundle bundle;
                 bundle = connection.getBundle();
                 Log.v("home","efrag");
@@ -437,9 +453,12 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
                 fragmentTransaction.commit();
 
                 electricityBillFragment.prepareListData(bundle);
+                updating = false;
+                Toast.makeText(home,"Data retrieved",Toast.LENGTH_SHORT).show();
             }
             else if(event.getPropertyName().equals("currentStatus"))
             {
+
                 Bundle bundle;
                 bundle = connection.getBundle();
                 Log.v("currentStatus", "efrag");
@@ -451,10 +470,13 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
                 Log.v("currentStatus", "efrag1");
                 onOffFragment.update(home, bundle);
                 Log.v("currentStatus", "efrag3");
+                updating = false;
+                Toast.makeText(home,"Data retrieved",Toast.LENGTH_SHORT).show();
 
             }
             else if(event.getPropertyName().equals("statistic"))
             {
+
                 Bundle bundle;
                 bundle = connection.getBundle();
                 Log.v("statistic", "efrag");
@@ -466,21 +488,29 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
                 Log.v("statistic", "efrag1");
                 statisticFragment.updateStatistic(home, statisticFragment.getCurrentPosition(), bundle);
                 Log.v("statistic", "efrag3");
+                updating = false;
+                Toast.makeText(home,"Data retrieved",Toast.LENGTH_SHORT).show();
 
             }
             else if(event.getPropertyName().equals("history"))
             {
-                Bundle bundle;
-                bundle = connection.getBundle();
-                Log.v("history", "efrag");
+
+                    Bundle bundle;
+                    bundle = connection.getBundle();
+                    Log.v("history", "efrag");
 
 
-                //Log.d("Home", bundle.toString());
-                fragmentTransaction.replace(R.id.container_body, locationFragment);
-                fragmentTransaction.commit();
-                Log.v("history", "efrag1");
-                locationFragment.createDummyData(bundle);
-                Log.v("history", "efrag2");
+                    //Log.d("Home", bundle.toString());
+                    fragmentTransaction.replace(R.id.container_body, locationFragment);
+                    fragmentTransaction.commit();
+                    Log.v("history", "efrag1");
+                    LocationFragment.data.clear();
+                    locationFragment.createDummyData(bundle);
+                    Log.v("history", "efrag2");
+                    updating = false;
+                    Toast.makeText(home,"Data retrieved",Toast.LENGTH_SHORT).show();
+
+
             }
 
 

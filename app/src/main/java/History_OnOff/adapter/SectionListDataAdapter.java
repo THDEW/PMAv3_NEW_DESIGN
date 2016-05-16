@@ -4,6 +4,7 @@ package History_OnOff.adapter;
  * Created by my131 on 28/4/2559.
  */
 import android.content.Context;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,10 +29,15 @@ import Setting.ItemDataModel;
 import activity.Home;
 import billcalculate.BillCalculate;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import org.eclipse.paho.android.service.sample.Connection;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListDataAdapter.SingleItemRowHolder> {
 
@@ -44,11 +50,17 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
     private String clientHandle;
     private Connection connection;
 
-    public SectionListDataAdapter(Context context, ArrayList<SingleItemModel> itemsList, FragmentManager fm, String location) {
+
+
+
+    public SectionListDataAdapter(Context context, ArrayList<SingleItemModel> itemsList, FragmentManager fm, String location, Connection connection) {
         this.itemsList = itemsList;
         this.mContext = context;
         this.fm = fm;
         this.location = location;
+        this.connection = connection;
+
+
     }
 
     public SectionListDataAdapter(Context context, ArrayList<SingleItemModel> itemsList, FragmentManager fm, String location, boolean onOff,Connection connection) {
@@ -60,9 +72,12 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
         this.connection = connection;
     }
 
+
+
     @Override
     public SingleItemRowHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_single_card, null);
+
         SingleItemRowHolder mh = new SingleItemRowHolder(v);
         return mh;
     }
@@ -71,6 +86,11 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
     public void onBindViewHolder(SingleItemRowHolder holder, int i) {
 
         SingleItemModel singleItem = itemsList.get(i);
+
+        holder.connection = connection;
+        holder.connection.registerChangeListener(holder.changeListener);
+
+        holder.id = i;
 
         holder.item = itemsList.get(i);
 
@@ -103,6 +123,9 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                 break;
             }
         }
+        Log.v("rowholder","holding");
+
+
         /*}
         else{
             holder.itemImage.setBackgroundResource(R.drawable.ic_action_search);
@@ -113,6 +136,7 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                 .centerCrop()
                 .error(R.drawable.bg)
                 .into(feedListRowHolder.thumbView);*/
+
     }
 
     @Override
@@ -121,7 +145,7 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
     }
 
     public class SingleItemRowHolder extends RecyclerView.ViewHolder {
-
+        private Connection connection;
         protected TextView tvTitle;
 
         protected ImageView itemImage;
@@ -136,9 +160,14 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
 
         protected int locationId;
 
+        protected int id;
+
+        protected ChangeListener changeListener = new ChangeListener();
 
         public SingleItemRowHolder(View view) {
             super(view);
+
+            //connection.removeChangeListener(changeListener);
 
             this.tvTitle = (TextView) view.findViewById(R.id.tvTitle);
             this.itemImage = (ImageView) view.findViewById(R.id.itemImage);
@@ -191,9 +220,37 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                             } else {
 
                                 //publish here to get each data of group_of_device
+                                String[] split = LocationFragment.dateTime.split(" to ");
+                                String date = "";
+                                if(split.length == 2)
+                                {
+                                    date = split[0]+"-"+split[1];
+                                }
+                                else
+                                {
+                                    date = split[0];
+                                }
+                                String topic = "android/history/group_of_device";
+                                String message = locationId+","+powerNodeId+","+deviceId+","+date;
+
+
+                                int qos = 0;
+                                boolean retained = false;
+
+                                String[]args = new String[2];
+                                args[0] = message;
+                                args[1] = topic+";qos:"+qos+";retained:"+retained;
+
+                                try {
+                                    connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(mContext, ActionListener.Action.PUBLISH, clientHandle, args));
+                                } catch (MqttException e) {
+                                    e.printStackTrace();
+                                }
+
+                                /*
                                 LocationFragment.data.add(new GraphSeriesModel(deviceId, powerNodeId, locationId, tvTitle.getText().toString(), location
                                         , 5d, false));
-
+                                */
 
                                 itemImage.setAlpha(0.2f);
                                 selected = true;
@@ -211,11 +268,50 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
 
         public void addSeries(Bundle bundle){
 
+            String jall = bundle.getString("history/group_of_device");
+
+            JSONArray jsonArray = null;
+            JSONObject jsonObject= null;
             double value = 0; //bundle unit มา
+
+            try {
+                jsonArray = new JSONArray(jall);
+                jsonObject = (JSONObject) jsonArray.get(0);
+                value = (Double.parseDouble(jsonObject.getString("sum_energy"))/1000)/3600;
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
             LocationFragment.data.add(new GraphSeriesModel(deviceId, powerNodeId, locationId,tvTitle.getText().toString(),location
                     ,value,false));
+            connection.removeChangeListener(changeListener);
+            changeListener = new ChangeListener();
+            connection.registerChangeListener(changeListener);
 
         }
+
+        private class ChangeListener implements PropertyChangeListener {
+
+            @Override
+            public void propertyChange(PropertyChangeEvent event) {
+
+
+                if(event.getPropertyName().equals("history/group_of_device/"+locationId+"/"+powerNodeId+"/"+deviceId))
+                {
+
+                    Log.d("problem", locationId+"");
+                    Log.d("problem", powerNodeId+"");
+                    Log.d("problem", deviceId+"");
+                    Bundle bundle;
+                    bundle = connection.getBundle();
+                    Log.v("history/group_of_device", bundle.toString());
+                    addSeries(bundle);
+
+                }
+            }
+        }
+
+
     }
 
 }

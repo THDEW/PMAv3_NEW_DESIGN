@@ -279,6 +279,33 @@ public class MqttCallbackHandler implements MqttCallback  {
       c.insertBundle(bundle);
       c.changePage("history");
     }
+    else if(topic.equals("server/history/group_of_device"))
+    {
+      String[] split = message2.split("//");
+      String location_id = split[0];
+      Log.v("callback ",location_id);
+      String powerNodeId = split[1];
+      Log.v("callback",powerNodeId);
+      String deviceId = split[2];
+      message2 = split[3];
+      Log.v("callback",message2);
+      bundle = new Bundle();
+      bundle.putString("history/group_of_device", message2);
+      c.insertBundle(bundle);
+      c.changePage("history/group_of_device/"+location_id+"/"+powerNodeId+"/"+deviceId);
+    }
+    else if(topic.equals("server/history/location"))
+    {
+      String[] split = message2.split("//");
+      String location_id = split[0];
+      message2 = split[1];
+      Log.v("callback",message2);
+      bundle = new Bundle();
+      bundle.putString("history/location", message2);
+      c.insertBundle(bundle);
+      c.changePage("history/location/"+location_id);
+    }
+
 
 
 

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,13 +19,20 @@ import android.widget.TextView;
 
 import com.example.senoir.newpmatry1.R;
 
+import org.eclipse.paho.android.service.sample.ActionListener;
 import org.eclipse.paho.android.service.sample.Connection;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import History_OnOff.model.GraphSeriesModel;
 import History_OnOff.fragments.LocationFragment;
 import History_OnOff.model.SectionDataModel;
 import activity.Home;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
 public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDataAdapter.ItemRowHolder> {
@@ -65,6 +73,9 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
 
         ArrayList singleSectionItems = dataList.get(i).getAllItemsInSection();
 
+        itemRowHolder.connection = connection;
+        itemRowHolder.connection.registerChangeListener(itemRowHolder.changeListener);
+
         itemRowHolder.locationTitle.setText(sectionName);
 
         itemRowHolder.parentIndex = i;
@@ -75,7 +86,7 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
         if(Home.page == 0){
             itemListDataAdapter = new SectionListDataAdapter(mContext, singleSectionItems, fm, sectionName, onOff,connection);
         }else{
-            itemListDataAdapter = new SectionListDataAdapter(mContext, singleSectionItems, fm, sectionName);
+            itemListDataAdapter = new SectionListDataAdapter(mContext, singleSectionItems, fm, sectionName, connection);
         }
 
         itemRowHolder.backUp = itemListDataAdapter;
@@ -122,6 +133,7 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
 
     public class ItemRowHolder extends RecyclerView.ViewHolder {
 
+        protected Connection connection;
         protected TextView locationTitle;
 
         protected RecyclerView recycler_view_list;
@@ -143,6 +155,8 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
         protected int parentIndex;
 
         SectionListDataAdapter backUp;
+
+        protected ChangeListener changeListener = new ChangeListener();
 
         public ItemRowHolder(View view) {
             super(view);
@@ -168,10 +182,36 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
                             if (!selectAll) {
                                 selectAll = true;
 
-                                LocationFragment.data.add(new GraphSeriesModel(locationId,locationTitle.getText().toString()
-                                        , 10, true));
+                                //LocationFragment.data.add(new GraphSeriesModel(locationId,locationTitle.getText().toString(), 10, true));
 
                                 //publish here to get all data in a location
+
+                                String[] split = LocationFragment.dateTime.split(" to ");
+                                String date = "";
+                                if(split.length == 2)
+                                {
+                                    date = split[0]+"-"+split[1];
+                                }
+                                else
+                                {
+                                    date = split[0];
+                                }
+                                String topic = "android/history/location";
+                                String message = locationId+","+date;
+
+
+                                int qos = 0;
+                                boolean retained = false;
+
+                                String[]args = new String[2];
+                                args[0] = message;
+                                args[1] = topic+";qos:"+qos+";retained:"+retained;
+
+                                try {
+                                    connection.getClient().publish(topic, message.getBytes(), qos, retained, null, new ActionListener(mContext, ActionListener.Action.PUBLISH, clientHandle, args));
+                                } catch (MqttException e) {
+                                    e.printStackTrace();
+                                }
 
                                 for (int i = 0; i < LocationFragment.data.size(); i++) {
 
@@ -258,11 +298,46 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
 
         public void addSeries(Bundle bundle){
 
+            String jall = bundle.getString("history/location");
             double value = 0; //bundle unit มา
 
-            LocationFragment.data.add(new GraphSeriesModel(locationId,locationTitle.getText().toString()
-                    , 10, true));
+            JSONArray jsonArray = null;
+            JSONObject jsonObject= null;
 
+
+            try {
+                jsonArray = new JSONArray(jall);
+                jsonObject = (JSONObject) jsonArray.get(0);
+                value = (Double.parseDouble(jsonObject.getString("sum_energy"))/1000)/3600;
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            LocationFragment.data.add(new GraphSeriesModel(locationId,locationTitle.getText().toString()
+                    , value, true));
+            connection.removeChangeListener(changeListener);
+            changeListener = new ChangeListener();
+            connection.registerChangeListener(changeListener);
+
+        }
+
+        private class ChangeListener implements PropertyChangeListener {
+
+            @Override
+            public void propertyChange(PropertyChangeEvent event) {
+
+
+                if(event.getPropertyName().equals("history/location/"+locationId))
+                {
+
+                    Log.d("problem", locationId + "");
+                    Bundle bundle;
+                    bundle = connection.getBundle();
+                    Log.v("history/location", bundle.toString());
+                    addSeries(bundle);
+
+                }
+            }
         }
     }
 
