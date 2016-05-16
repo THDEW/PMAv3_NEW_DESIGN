@@ -298,7 +298,7 @@ public class ElectricityBillFragment extends Fragment {
             sumUnitOfLocation = sumOffPeakUnit + sumOnPeakUnit;
         }
 
-        totalCost.setText("Total: "  + df.format(costOfLocation) + " Baht/   " + df.format(sumUnitOfLocation) +" Units");
+        totalCost.setText("Total: "  + df.format(costOfLocation) + " Baht/   " + df.format(sumUnitOfLocation) +" Wh");
 
         for(int start = 0; start < electricitybillList.size(); start++) {
             expandevices = new ArrayList<String>();
@@ -410,7 +410,7 @@ public class ElectricityBillFragment extends Fragment {
 
                 try {
                     deviceNameTemp[j] = jsonObject2.getString("oltp_ip_address")+" : "+jsonObject2.getString("oltp_pin");
-                    deviceUnitsTemp[j] = (Double.parseDouble(jsonObject2.getString("sum_energy"))/1000)/3600;
+                    deviceUnitsTemp[j] = (Double.parseDouble(jsonObject2.getString("sum_energy")))/3600;
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

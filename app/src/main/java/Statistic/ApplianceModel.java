@@ -15,7 +15,7 @@ public class ApplianceModel {
 
     public ApplianceModel(String appliname, double elecusage, String frontelectusage) {
         this.appliname = appliname;
-        this.elecusage = (elecusage/1000)/3600;
+        this.elecusage = (elecusage)/3600;
         this.frontelectusage = frontelectusage;
     }
     public ApplianceModel(String locationname, double elecusageLocation, String frontelectusage,boolean isLocation){

@@ -213,7 +213,7 @@ public class OnFragment extends Fragment{
                     jsonObject1 = (JSONObject) jsonArray2.get(j);
                     deviceIDTemp[j] = Integer.parseInt(jsonObject1.getString("group_of_device_id"));
                     deviceNameTemp[j] = jsonObject1.getString("name")+ ":"+jsonObject1.getString("pin");
-                    devicePowerTemp[j] = (Double.parseDouble(jsonObject1.getString("sum_energy_today"))/1000)/3600;
+                    devicePowerTemp[j] = (Double.parseDouble(jsonObject1.getString("sum_energy_today")))/3600;
                     Log.v("onfrag",jsonObject1.toString());
                     Log.d("thisthis",""+devicePowerTemp[j]);
                 } catch (JSONException e) {

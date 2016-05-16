@@ -193,14 +193,14 @@ public class MonthlyFragment extends Fragment implements AdapterView.OnItemSelec
         if (Home.menu_statistic==0) {
             for (start = 0; start < numsizeGoD; start++) {
                 //ตรงนี้นะสัสApplianceModel(device name, กำลังไฟฟ้าที่ใช้,วันที่เปนสตริงนะ,constant string)
-                ApplianceModel appliances = new ApplianceModel(deviceName[start], Double.parseDouble(devicePower[start]), "Electricity Usage (kW/hr) : ");
+                ApplianceModel appliances = new ApplianceModel(deviceName[start], Double.parseDouble(devicePower[start]), "Electricity Usage (W/h) : ");
                 applianceModelListeList.add(appliances);
                 Log.v("monthlyfrag", "yay3");
             }
         } else if (Home.menu_statistic==1) {
             for (start0 = 0; start0 < numsizeLocation ; start0++) {
                 //ตรงนี้นะสัสApplianceModel(location name, กำลังไฟฟ้าที่ใช้,วันที่เปนสตริงนะ,constant string)
-                ApplianceModel locationapp = new ApplianceModel(locationName[start0], Double.parseDouble(locationPower[start0]), "Electricity Usage (kW/hr) : ");
+                ApplianceModel locationapp = new ApplianceModel(locationName[start0], Double.parseDouble(locationPower[start0]), "Electricity Usage (W/h) : ");
                 applianceModelListeList.add(locationapp);
                 Log.v("monthlyfrag", "yay4");
             }

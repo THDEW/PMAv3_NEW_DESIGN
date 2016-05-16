@@ -277,7 +277,7 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
             try {
                 jsonArray = new JSONArray(jall);
                 jsonObject = (JSONObject) jsonArray.get(0);
-                value = (Double.parseDouble(jsonObject.getString("sum_energy"))/1000)/3600;
+                value = (Double.parseDouble(jsonObject.getString("sum_energy")))/3600;
             } catch (JSONException e) {
                 e.printStackTrace();
             }

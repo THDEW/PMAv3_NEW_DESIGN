@@ -552,6 +552,22 @@ public class Home extends  AppCompatActivity implements FragmentDrawer.FragmentD
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
+        //Register receivers again
+        if(connection!= null)
+        {
+            connection.getClient().registerResources(this);
+            connection.getClient().setCallback(new MqttCallbackHandler
+                    (this, connection.getClient().getServerURI() + connection.getClient().getClientId()));
+        }
+
+
+    }
+
 
 
 }
