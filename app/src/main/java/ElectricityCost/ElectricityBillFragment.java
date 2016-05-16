@@ -107,10 +107,10 @@ public class ElectricityBillFragment extends Fragment {
                 // TODO Auto-generated method stub
                 String item = parent.getItemAtPosition(pos).toString();
                 switch (item) {
-                    case "Less than 150 Units/Month":
+                    case "Less than 150 kWh/Month":
                         onspinnerselected = 0;
                         break;
-                    case "More than 150 Units/Month":
+                    case "More than 150 kWh/Month":
                         onspinnerselected = 1;
                         break;
 //
@@ -180,7 +180,7 @@ public class ElectricityBillFragment extends Fragment {
             sumUnitOfLocation = sumOffPeakUnit + sumOnPeakUnit;
         }
 
-        totalCost.setText("Total: " + df.format(costOfLocation) + " Baht/   " + df.format(sumUnitOfLocation) + " Units");
+        totalCost.setText("Total: " + df.format(costOfLocation) + " Baht/   " + df.format(sumUnitOfLocation) + " kWh");
 
         for(int start = 0; start < electricitybillList.size(); start++) {
             expandevices = new ArrayList<String>();
@@ -198,13 +198,13 @@ public class ElectricityBillFragment extends Fragment {
 
             listDataHeader.add(electricitybillList.get(start).getLocationName() +":\n"+
                     df.format(electricitybillList.get(start).getCostLocation()) + "  Baht/ " +
-                    df.format(electricitybillList.get(start).getUnitLocation()) + "  Units");
+                    df.format(electricitybillList.get(start).getUnitLocation()) + "  kWh");
 
             for (int begin = 0; begin < electricitybillList.get(start).getDevicesName().size(); begin++) {
 
                 expandevices.add(begin, electricitybillList.get(start).getDevicesNamestring(begin)+":\n"+
                         df.format(electricitybillList.get(start).getCostDevice(begin)) + "  Baht/ " +
-                        df.format(electricitybillList.get(start).getUnitDevicesdou(begin)) + "  Units");
+                        df.format(electricitybillList.get(start).getUnitDevicesdou(begin)) + "  kWh");
             }
             listDataChild.put(listDataHeader.get(start), expandevices);
             Log.d("Size", expandevices.size()+"");
@@ -298,7 +298,7 @@ public class ElectricityBillFragment extends Fragment {
             sumUnitOfLocation = sumOffPeakUnit + sumOnPeakUnit;
         }
 
-        totalCost.setText("Total: "  + df.format(costOfLocation) + " Baht/   " + df.format(sumUnitOfLocation) +" Wh");
+        totalCost.setText("Total: "  + df.format(costOfLocation) + " Baht/   " + df.format(sumUnitOfLocation) +" kWh");
 
         for(int start = 0; start < electricitybillList.size(); start++) {
             expandevices = new ArrayList<String>();
@@ -316,13 +316,13 @@ public class ElectricityBillFragment extends Fragment {
 
             listDataHeader.add(electricitybillList.get(start).getLocationName() +":\n"+
                     df.format(electricitybillList.get(start).getCostLocation()) + "  Baht/ " +
-                    df.format(electricitybillList.get(start).getUnitLocation()) + "  Units");
+                    df.format(electricitybillList.get(start).getUnitLocation()) + "  kWh");
 
             for (int begin = 0; begin < electricitybillList.get(start).getDevicesName().size(); begin++) {
 
                 expandevices.add(begin, electricitybillList.get(start).getDevicesNamestring(begin)+":\n"+
                         df.format(electricitybillList.get(start).getCostDevice(begin)) + "  Baht/ " +
-                        df.format(electricitybillList.get(start).getUnitDevicesdou(begin)) + "  Units");
+                        df.format(electricitybillList.get(start).getUnitDevicesdou(begin)) + "  kWh");
             }
             listDataChild.put(listDataHeader.get(start), expandevices);
             Log.d("Size", expandevices.size()+"");
@@ -410,7 +410,7 @@ public class ElectricityBillFragment extends Fragment {
 
                 try {
                     deviceNameTemp[j] = jsonObject2.getString("oltp_ip_address")+" : "+jsonObject2.getString("oltp_pin");
-                    deviceUnitsTemp[j] = (Double.parseDouble(jsonObject2.getString("sum_energy")))/3600;
+                    deviceUnitsTemp[j] = (Double.parseDouble(jsonObject2.getString("sum_energy"))/1000)/3600;
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
