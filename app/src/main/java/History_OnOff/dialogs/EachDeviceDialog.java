@@ -193,8 +193,11 @@ public class EachDeviceDialog extends DialogFragment {
         graph.getGridLabelRenderer().setHorizontalAxisTitle("Current time");
         graph.getGridLabelRenderer().setVerticalAxisTitle("Energy Consumption (Ws)");
         graph.getGridLabelRenderer().setVerticalLabelsVisible(false);
-        graph.getSecondScale().setMinY(0.1);
+
+        graph.getSecondScale().setMinY(0);
         graph.getSecondScale().setMaxY(getMax() + 2);
+        graph.getViewport().setMinY(0);
+        graph.getViewport().setMaxY(getMax() + 2);
 
         graph.getViewport().setYAxisBoundsManual(true);
 
@@ -309,7 +312,7 @@ public class EachDeviceDialog extends DialogFragment {
 
 
 
-        energyTv.setText(this.energy + " kW/hr");
+        energyTv.setText(this.energy + " kWhr");
         timeTv.setText(this.lastTime);
         recordTv.setText(this.lastRecord + " Ws");
 //        billTv.setText(this.bill);

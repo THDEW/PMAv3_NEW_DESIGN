@@ -168,7 +168,7 @@ public class LocationFragment extends Fragment {
         series.setDrawValuesOnTop(true);
         series.setValuesOnTopColor(Color.WHITE);
 
-        final DecimalFormat d = new DecimalFormat("0");
+        final DecimalFormat d = new DecimalFormat("0.00");
 
         graph.getSecondScale().setLabelFormatter(new DefaultLabelFormatter() {
             @Override
@@ -178,13 +178,13 @@ public class LocationFragment extends Fragment {
                     return super.formatLabel(value, isValueX);
                 } else {
                     // show currency for y values
-                    return super.formatLabel(Double.parseDouble(d.format(value)), isValueX) + " kW/hr   x";
+                    return super.formatLabel(Double.parseDouble(d.format(value)), isValueX) + " kWhr   x";
                 }
             }
         });
 
         graph.getGridLabelRenderer().setNumHorizontalLabels(5);
-        graph.getGridLabelRenderer().setVerticalAxisTitle("Energy Consumption (kW/hr)");
+        graph.getGridLabelRenderer().setVerticalAxisTitle("Energy Consumption (kWhr)");
         graph.getGridLabelRenderer().setVerticalLabelsVisible(false);
         graph.getViewport().setMinX(0);
         graph.getViewport().setMaxX(4);
