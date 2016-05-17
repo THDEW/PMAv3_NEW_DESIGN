@@ -178,13 +178,13 @@ public class LocationFragment extends Fragment {
                     return super.formatLabel(value, isValueX);
                 } else {
                     // show currency for y values
-                    return super.formatLabel(Double.parseDouble(d.format(value)), isValueX) + " kWhr   x";
+                    return super.formatLabel(Double.parseDouble(d.format(value)), isValueX) + " kWh   |";
                 }
             }
         });
 
         graph.getGridLabelRenderer().setNumHorizontalLabels(5);
-        graph.getGridLabelRenderer().setVerticalAxisTitle("Energy Consumption (kWhr)");
+        graph.getGridLabelRenderer().setVerticalAxisTitle("Energy Consumption (kWh)");
         graph.getGridLabelRenderer().setVerticalLabelsVisible(false);
         graph.getViewport().setMinX(0);
         graph.getViewport().setMaxX(4);
@@ -213,9 +213,14 @@ public class LocationFragment extends Fragment {
                 }
                 if(data.size() != 0) {
                     graph.getViewport().setMinY(0);
-                    graph.getViewport().setMaxY(getMax() + getMax() * 0.8);
                     graph.getSecondScale().setMinY(0);
-                    graph.getSecondScale().setMaxY(getMax() + getMax() * 0.8);
+                    if(getMax() != 0) {
+                        graph.getViewport().setMaxY(getMax() + getMax() * 0.8);
+                        graph.getSecondScale().setMaxY(getMax() + getMax() * 0.8);
+                    } else {
+                        graph.getSecondScale().setMaxY(5);
+                        graph.getViewport().setMaxY(5);
+                    }
                 } else {
                     graph.getViewport().setMinY(0);
                     graph.getViewport().setMaxY(5);
