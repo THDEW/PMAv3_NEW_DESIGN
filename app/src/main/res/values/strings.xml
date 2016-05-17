@@ -16,8 +16,8 @@
     <string name="spinner_item_max">Max Power usage</string>
     <string name="spinner_item_min">Min Power usage</string>
 
-    <string name="spinner_elecbill_1.1">Less than 150 Units/Month</string>
-    <string name="spinner_elecbill_1.2">More than 150 Units/Month</string>
+    <string name="spinner_elecbill_1.1">Less than 150 kWh/Month</string>
+    <string name="spinner_elecbill_1.2">More than 150 kWh/Month</string>
     <!--<string name="spinner_elecbill_1.31">Time of Use Tariff(Voltage:12-24KV)</string>-->
     <!--<string name="spinner_elecbill_1.32">Time of Use Tariff(Voltage:less than 12KV)</string>-->
     <!--<string name="spinner_item_date">Date and Time</string>-->

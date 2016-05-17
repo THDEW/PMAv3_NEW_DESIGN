@@ -106,6 +106,7 @@ public class ElectricityBillFragment extends Fragment {
                                        int pos, long id) {
                 // TODO Auto-generated method stub
                 String item = parent.getItemAtPosition(pos).toString();
+
                 switch (item) {
                     case "Less than 150 kWh/Month":
                         onspinnerselected = 0;
