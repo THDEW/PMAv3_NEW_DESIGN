@@ -171,7 +171,7 @@ public class IntroductionPage extends Activity {
         super.onDestroy();
         if(connection!= null)
         {
-            connection.getClient().unregisterResources();
+            //connection.getClient().unregisterResources();
             connection.getClient().close();
         }
     }
